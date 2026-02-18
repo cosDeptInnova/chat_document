@@ -149,22 +149,19 @@ DOC_HISTORY_MAX_LEN = int(os.getenv("CHATDOC_HISTORY_MAX_LEN", "20"))
 DOC_SESSION_KEY_PREFIX = "chatdoc:session"
 DOC_HISTORY_KEY_PREFIX = "chatdoc:history"
 
-CHATDOC_MAX_TO_THREAD = int(os.getenv("CHATDOC_MAX_TO_THREAD", "6"))
-_CHATDOC_THREAD_LIMITER = anyio.CapacityLimiter(CHATDOC_MAX_TO_THREAD)
+CHATDOC_CREW_THREAD_LIMIT = max(1, int(os.getenv("CHATDOC_CREW_THREAD_LIMIT", "8") or "8"))
+CHATDOC_PLANNER_THREAD_LIMIT = max(1, int(os.getenv("CHATDOC_PLANNER_THREAD_LIMIT", "8") or "8"))
+
+CHATDOC_CREW_LIMITER = anyio.CapacityLimiter(CHATDOC_CREW_THREAD_LIMIT)
+CHATDOC_PLANNER_LIMITER = anyio.CapacityLimiter(CHATDOC_PLANNER_THREAD_LIMIT)
 
 T = TypeVar("T")
-
-# Limita threads concurrentes (producción)
-_CHATDOC_THREAD_LIMIT = int(os.getenv("CHATDOC_THREAD_LIMIT", "8") or "8")
-_CHATDOC_THREAD_LIMIT = max(1, _CHATDOC_THREAD_LIMIT)
-CHATDOC_THREAD_LIMITER = anyio.CapacityLimiter(_CHATDOC_THREAD_LIMIT)
-
 
 async def run_sync_kwargs(
     func: Callable[..., T],
     /,
     *args: Any,
-    limiter: anyio.CapacityLimiter = _CHATDOC_THREAD_LIMITER,
+    limiter: anyio.CapacityLimiter = CHATDOC_CREW_LIMITER,
     **kwargs: Any,
 ) -> T:
     """
@@ -1243,7 +1240,7 @@ async def query_document(
                 mode=mode,
                 doc_meta=doc_meta_for_planner,
                 access_token=access_token,
-                limiter=_CHATDOC_THREAD_LIMITER,  # 👈 limiter para el thread pool
+                limiter=CHATDOC_PLANNER_LIMITER,
             )
             if not isinstance(doc_plan, dict):
                 doc_plan = {}
@@ -1345,7 +1342,7 @@ async def query_document(
                 top_k=api_top_k,
                 min_score=api_min_score,
                 window=api_window,
-                limiter=_CHATDOC_THREAD_LIMITER,
+                limiter=CHATDOC_CREW_LIMITER,
             )
             response_text = clean_text(response_text or "")
         except Exception as e:

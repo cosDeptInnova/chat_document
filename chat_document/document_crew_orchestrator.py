@@ -4,6 +4,7 @@ import os
 import logging
 from typing import List, Dict, Any, Optional
 import json
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from crewai import Agent, Task, Crew, Process, LLM  # type: ignore[import]
 import threading
 import time
@@ -192,9 +193,13 @@ class DocumentCrewOrchestrator:
         variants = variants[: max(1, int(max_variants))]
         per_k = max(1, int(per_query_topk))
 
-        all_chunks: List[Dict[str, Any]] = []
+        try:
+            max_parallel = int(os.getenv("CHATDOC_MULTIQUERY_PARALLELISM", "4"))
+        except Exception:
+            max_parallel = 4
+        max_parallel = max(1, min(max_parallel, len(variants)))
 
-        for q in variants:
+        def _fetch_for_query(q: str) -> List[Dict[str, Any]]:
             out = self._fetch_context_via_mcp(
                 document_id=document_id,
                 normalized_prompt=q,
@@ -209,12 +214,43 @@ class DocumentCrewOrchestrator:
             ) or {}
 
             chunks = out.get("chunks") or []
-            if isinstance(chunks, list) and chunks:
-                # anotamos de dónde viene (útil para debugging interno; no se muestra al usuario)
-                for ch in chunks:
-                    if isinstance(ch, dict):
-                        ch.setdefault("_retrieved_by_query", q[:160])
-                all_chunks.extend([c for c in chunks if isinstance(c, dict)])
+            if not isinstance(chunks, list) or not chunks:
+                return []
+
+            result: List[Dict[str, Any]] = []
+            for ch in chunks:
+                if isinstance(ch, dict):
+                    ch.setdefault("_retrieved_by_query", q[:160])
+                    result.append(ch)
+            return result
+
+        all_chunks: List[Dict[str, Any]] = []
+        started = time.perf_counter()
+
+        if max_parallel == 1:
+            for q in variants:
+                all_chunks.extend(_fetch_for_query(q))
+        else:
+            with ThreadPoolExecutor(max_workers=max_parallel, thread_name_prefix="chatdoc-mq") as executor:
+                future_to_query = {executor.submit(_fetch_for_query, q): q for q in variants}
+                for future in as_completed(future_to_query):
+                    query = future_to_query[future]
+                    try:
+                        all_chunks.extend(future.result())
+                    except Exception as exc:
+                        logger.warning(
+                            "[CHATDOC_FETCH] multiquery fallo para variant='%s': %s",
+                            query[:120],
+                            exc,
+                        )
+
+        logger.info(
+            "[CHATDOC_FETCH] multiquery variants=%d parallelism=%d raw_chunks=%d elapsed_ms=%.1f",
+            len(variants),
+            max_parallel,
+            len(all_chunks),
+            (time.perf_counter() - started) * 1000.0,
+        )
 
         merged = self._dedupe_chunks(all_chunks)
 
