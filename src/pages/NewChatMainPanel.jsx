@@ -22,6 +22,9 @@ import {
   fetchNlpUploadContext,
   bootstrapWebsearch,
   sendWebSearchMessage,
+  bootstrapLegalsearch,
+  uploadLegalSearchFiles,
+  sendLegalSearchMessage,
   rateMessage
 } from "../lib/api";
 
@@ -40,8 +43,9 @@ export default function NuevoChatMainPanel({
   const urlChatId = searchParams.get("chatId");
   const urlChatMode = (searchParams.get("chatMode") || "modelo").toLowerCase();
 
-  // Modo de chat: "modelo" | "chatdoc" | "web"
-  const chatMode = ["chatdoc", "web"].includes(urlChatMode) ? urlChatMode : "modelo";
+  // Modo de chat: "modelo" | "chatdoc" | "web" | "legal_explorer"
+  const chatMode = ["chatdoc", "web", "legal_explorer"].includes(urlChatMode) ? urlChatMode : "modelo";
+  const isSearchMode = chatMode === "web" || chatMode === "legal_explorer";
 
 
   const effectiveInitialMessage =
@@ -67,7 +71,7 @@ export default function NuevoChatMainPanel({
 
   // doc_session_id del microservicio chat_document (cuando chatMode = "chatdoc")
   const [docSessionId, setDocSessionId] = useState(null);
-  // search_session_id del microservicio web_search (cuando chatMode = "web")
+  // search_session_id del microservicio de búsqueda (web/legal)
   const [searchSessionId, setSearchSessionId] = useState(null);
 
   // Gestión de archivos adjuntos (solo para UI del siguiente mensaje)
@@ -206,7 +210,7 @@ export default function NuevoChatMainPanel({
   const finalTranscriptRef = useRef("");
   const silenceTimerRef = useRef(null);
   const hasSentMessageRef = useRef(false);
-  const webHydrationBlockedRef = useRef(new Set());
+  const searchHydrationBlockedRef = useRef(new Set());
   const modelHydrationBlockedRef = useRef(new Set());
 
 
@@ -277,11 +281,12 @@ export default function NuevoChatMainPanel({
     });
   }, [chatMode]);
 
-  // CSRF para web_search cuando el modo es web
+  // CSRF para motores de búsqueda (web/legal)
   useEffect(() => {
-    if (chatMode !== "web") return;
-    bootstrapWebsearch().catch((err) => {
-      console.warn("Error inicializando CSRF de web_search:", err);
+    if (chatMode !== "web" && chatMode !== "legal_explorer") return;
+    const bootstrapFn = chatMode === "legal_explorer" ? bootstrapLegalsearch : bootstrapWebsearch;
+    bootstrapFn().catch((err) => {
+      console.warn("Error inicializando CSRF de búsqueda:", err);
     });
   }, [chatMode]);
 
@@ -317,9 +322,9 @@ export default function NuevoChatMainPanel({
   useEffect(() => {
     if (!conversationId) return;
 
-    // ✅ En modo web, si marcamos este conversationId como "bloqueado",
+    // ✅ En modo búsqueda, si marcamos este conversationId como "bloqueado",
     // evitamos que el fetch inicial sobrescriba la respuesta optimista local.
-    if (chatMode === "web" && webHydrationBlockedRef.current.has(conversationId)) {
+    if (isSearchMode && searchHydrationBlockedRef.current.has(conversationId)) {
       return;
     }
 
@@ -348,8 +353,8 @@ export default function NuevoChatMainPanel({
         });
 
         //Tras una hidratación real, marcamos esta conversación como ya "conocida"
-        if (chatMode === "web") {
-          webHydrationBlockedRef.current.add(conversationId);
+        if (isSearchMode) {
+          searchHydrationBlockedRef.current.add(conversationId);
         }
 
         setMessages(mappedMessages);
@@ -365,7 +370,7 @@ export default function NuevoChatMainPanel({
     return () => {
       cancelled = true;
     };
-  }, [conversationId, chatMode]);
+  }, [conversationId, chatMode, isSearchMode]);
 
 
   // Scroll automático al final
@@ -454,6 +459,34 @@ export default function NuevoChatMainPanel({
         };
       }
 
+      if (chatMode === "legal_explorer") {
+        const nextSearchSessionId = searchSessionId || crypto.randomUUID();
+        const data = await uploadLegalSearchFiles({
+          files,
+          searchSessionId: nextSearchSessionId,
+          conversationId: conversationId || null,
+        });
+        console.log("Respuesta /api/legalsearch/search/uploadfile:", data);
+
+        const legalFiles = Array.isArray(data?.files) ? data.files : [];
+        const ids = legalFiles.map((f) => f?.file_id).filter(Boolean);
+        const details = legalFiles.map((f) => ({
+          filename: f?.filename,
+          message: f?.status === "ok" ? "Archivo legal procesado." : null,
+          error: f?.error || null,
+        }));
+
+        return {
+          ids,
+          message: data?.message || null,
+          details,
+          conversationId: data?.conversation_id ?? null,
+          docSessionId: null,
+          rawData: data,
+          searchSessionId: data?.search_session_id || nextSearchSessionId,
+        };
+      }
+
       // 🧠 MODO MODELO / 🌐 WEB: subida efímera
       const data = await uploadEphemeralFiles(files);
       console.log("Respuesta /api/modelo/uploadfile/:", data);
@@ -535,21 +568,12 @@ export default function NuevoChatMainPanel({
         };
       }
 
-      // 🌐 MODO WEB SEARCH  ✅ (incluye file_ids/files)
+      // 🌐 MODO WEB SEARCH
       if (chatMode === "web") {
         const convIdToSend = currentConversationId || conversationId;
 
         const data = await sendWebSearchMessage({
           prompt: text,
-
-          search_session_id: searchSessionId,
-          conversation_id: convIdToSend,
-
-          // ✅ Adjuntos (si tu backend los soporta)
-          file_ids: fileIds,
-          files: fileIds,
-
-          // compatibilidad extra (wrapper camelCase)
           searchSessionId,
           conversationId: convIdToSend,
         });
@@ -574,6 +598,35 @@ export default function NuevoChatMainPanel({
           conversationId: newConversationId,
           searchSessionId: newSearchSessionId,
           messageId: aiMessageId,
+        };
+      }
+
+      // ⚖️ MODO LEGAL EXPLORER
+      if (chatMode === "legal_explorer") {
+        const convIdToSend = currentConversationId || conversationId;
+        const nextSearchSessionId = searchSessionId || crypto.randomUUID();
+
+        const data = await sendLegalSearchMessage({
+          prompt: text,
+          searchSessionId: nextSearchSessionId,
+          conversationId: convIdToSend,
+          attachedFileIds: fileIds,
+        });
+
+        const aiText =
+          data.reply ||
+          data.response ||
+          data.answer ||
+          data.content ||
+          "Respuesta generada tras la exploración legal.";
+
+        return {
+          content: aiText,
+          conversationId:
+            data.conversation_id || data.conversationId || data.chat_id || convIdToSend,
+          searchSessionId:
+            data.search_session_id || data.searchSessionId || nextSearchSessionId,
+          messageId: data.id || data.message_id || null,
         };
       }
 
@@ -620,7 +673,7 @@ export default function NuevoChatMainPanel({
     setIsProcessingFiles(true);
 
     // Si el usuario vuelve a adjuntar un archivo con el mismo nombre, lo "des-bloqueamos"
-    if (chatMode === "web") {
+    if (isSearchMode) {
       files.forEach((f) => webRemovedDuringUploadRef.current.delete(f.name));
     }
     if (chatMode === "modelo") {
@@ -708,16 +761,21 @@ export default function NuevoChatMainPanel({
     setAttachedFiles((prev) => [...prev, ...files]);
 
     try {
-      const { ids, details, conversationId: convFromUpload, rawData } =
-        await uploadFilesToBackend(files);
+      const {
+        ids,
+        details,
+        conversationId: convFromUpload,
+        rawData,
+        searchSessionId: searchSessionFromUpload,
+      } = await uploadFilesToBackend(files);
 
       if (chatMode === "modelo" && convFromUpload) {
         modelHydrationBlockedRef.current.add(convFromUpload);
       }
 
       //WEB: bloquea hidratación que podría “pisar” mensajes locales
-      if (chatMode === "web" && convFromUpload) {
-        webHydrationBlockedRef.current.add(convFromUpload);
+      if (isSearchMode && convFromUpload) {
+        searchHydrationBlockedRef.current.add(convFromUpload);
       }
 
       if (convFromUpload && convFromUpload !== conversationId) {
@@ -725,8 +783,12 @@ export default function NuevoChatMainPanel({
         setHasStarted(true);
       }
 
+      if (isSearchMode && searchSessionFromUpload) {
+        setSearchSessionId(searchSessionFromUpload);
+      }
+
       // ✅ WEB: capturamos texto extraído para concatenarlo al prompt
-      if (chatMode === "web") {
+      if (isSearchMode) {
         const entriesFromResponse = files
           .map((f, idx) => {
             if (webRemovedDuringUploadRef.current.has(f.name)) return null;
@@ -813,7 +875,7 @@ export default function NuevoChatMainPanel({
        *
        * Como has pedido "los mismos cambios", dejamos que MODELO NO limpie.
        */
-      if (chatMode !== "web") {
+      if (!isSearchMode) {
         setAttachedFiles([]);
       }
     } catch (err) {
@@ -1325,7 +1387,7 @@ export default function NuevoChatMainPanel({
 
     //WEB: concatenar el texto extraído de adjuntos al prompt del usuario
     let webFileIdsToSend = [];
-    if (chatMode === "web") {
+    if (isSearchMode) {
       const ctx = buildWebContextBlock(webPendingFiles);
       webFileIdsToSend = getWebFileIds(webPendingFiles);
 
@@ -1351,12 +1413,12 @@ export default function NuevoChatMainPanel({
       } = await sendMessageToBackend(finalTextForBackend, {
         currentConversationId: conversationId,
         nlpDepartmentDirectory,
-        fileIds: chatMode === "web" ? webFileIdsToSend : [],
+        fileIds: isSearchMode ? webFileIdsToSend : [],
       });
 
 
-      if (chatMode === "web" && newConvId) {
-        webHydrationBlockedRef.current.add(newConvId);
+      if (isSearchMode && newConvId) {
+        searchHydrationBlockedRef.current.add(newConvId);
       }
       if (chatMode === "modelo" && newConvId) {
         modelHydrationBlockedRef.current.add(newConvId);
@@ -1380,7 +1442,7 @@ export default function NuevoChatMainPanel({
 
       setMessages((prev) => [...prev, aiResponse]);
 
-      if (chatMode === "web") {
+      if (isSearchMode) {
         setWebPendingFiles([]);
         webRemovedDuringUploadRef.current.clear();
       }
@@ -1678,7 +1740,7 @@ export default function NuevoChatMainPanel({
 
                           setAttachedFiles((prev) => prev.filter((_, i) => i !== idx));
 
-                          if (chatMode === "web" && fileToRemove?.name) {
+                          if (isSearchMode && fileToRemove?.name) {
                             webRemovedDuringUploadRef.current.add(fileToRemove.name);
                             setWebPendingFiles((prev) => prev.filter((e) => e.name !== fileToRemove.name));
                           }
@@ -1716,6 +1778,8 @@ export default function NuevoChatMainPanel({
                       ? "Pregunta lo que necesites sobre el documento cargado"
                       : chatMode === "web"
                       ? "Pregunta lo que necesites (buscaré en la web y citaré fuentes)"
+                      : chatMode === "legal_explorer"
+                      ? "Pregunta lo que necesites (exploración legal avanzada con fuentes)"
                       : "Pregunta lo que necesites"
                   }
 
