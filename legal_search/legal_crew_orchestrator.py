@@ -667,7 +667,10 @@ class LegalSearchCrewOrchestrator:
         disable_batch = os.getenv("LEGALSEARCH_DISABLE_SEARCH_BATCH", "0") == "1"
 
         tool_timeout = _float_env("LEGALSEARCH_TOOL_TIMEOUT_SEC", 60.0)
-        iter_timeout = _float_env("LEGALSEARCH_ITER_TIMEOUT_SEC", 120.0)
+        # Timeout por iteración de la crew legal.
+        # Subimos el default a 5 minutos para casos complejos de investigación
+        # (múltiples fuentes + validación) sin cortar la ejecución prematuramente.
+        iter_timeout = _float_env("LEGALSEARCH_ITER_TIMEOUT_SEC", 300.0)
         max_retries = _int_env("LEGALSEARCH_TOOL_RETRIES", 2)
         backoff_base = _float_env("LEGALSEARCH_TOOL_BACKOFF_BASE", 0.5)
 

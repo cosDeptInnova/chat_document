@@ -117,6 +117,8 @@ WEBSEARCH_HISTORY_MAX_LEN = int(os.getenv("WEBSEARCH_HISTORY_MAX_LEN", "30"))
 WS_SESSION_KEY_PREFIX = "websearch:session"
 WS_HISTORY_KEY_PREFIX = "websearch:history"
 WS_HITL_KEY_PREFIX = "websearch:hitl"
+WS_FILE_KEY_PREFIX = "websearch:file"
+WS_FILE_INDEX_KEY_PREFIX = "websearch:file_index"
 
 app = FastAPI()
 
@@ -205,24 +207,104 @@ def _extract_text_for_legal_context(file_path: str, filename: str) -> str:
     return ""
 
 
+def _legal_file_key(user_id: int, search_session_id: str, file_id: str) -> str:
+    return f"{WS_FILE_KEY_PREFIX}:{user_id}:{search_session_id}:{file_id}"
+
+
+def _legal_file_index_key(user_id: int, search_session_id: str) -> str:
+    return f"{WS_FILE_INDEX_KEY_PREFIX}:{user_id}:{search_session_id}"
+
+
+async def _store_legal_ephemeral_file(
+    user_id: int,
+    search_session_id: str,
+    file_id: str,
+    payload: Dict[str, Any],
+    ttl: int,
+) -> None:
+    """Almacena cada fichero en clave dedicada para acceso O(1) por file_id.
+
+    Mantiene también un índice por sesión para recuperar últimos ficheros cuando
+    no se pasan `attached_file_ids` en la pregunta.
+    """
+    if redis_conv_client is None:
+        return
+
+    data = json.dumps(payload, ensure_ascii=False)
+    file_key = _legal_file_key(user_id, search_session_id, file_id)
+    idx_key = _legal_file_index_key(user_id, search_session_id)
+
+    pipe = redis_conv_client.pipeline()
+    pipe.set(file_key, data, ex=ttl)
+    pipe.lpush(idx_key, file_id)
+    pipe.ltrim(idx_key, 0, 199)  # límite defensivo por sesión
+    pipe.expire(idx_key, ttl)
+    await pipe.execute()
+
+
+async def _load_legal_ephemeral_files(
+    user_id: int,
+    search_session_id: str,
+    file_ids: List[str],
+) -> List[Dict[str, Any]]:
+    if redis_conv_client is None:
+        return []
+
+    wanted_ids = [str(fid).strip() for fid in (file_ids or []) if str(fid).strip()]
+
+    if not wanted_ids:
+        idx_key = _legal_file_index_key(user_id, search_session_id)
+        wanted_ids = [
+            x.decode("utf-8") if isinstance(x, (bytes, bytearray)) else str(x)
+            for x in (await redis_conv_client.lrange(idx_key, 0, 7))
+        ]
+
+    if not wanted_ids:
+        return []
+
+    keys = [_legal_file_key(user_id, search_session_id, fid) for fid in wanted_ids]
+    rows = await redis_conv_client.mget(keys)
+
+    out: List[Dict[str, Any]] = []
+    for raw in rows:
+        if not raw:
+            continue
+        try:
+            if isinstance(raw, (bytes, bytearray)):
+                raw = raw.decode("utf-8")
+            item = json.loads(raw)
+            if isinstance(item, dict):
+                out.append(item)
+        except Exception:
+            continue
+    return out
+
+
 async def _build_legal_user_context(user_id: int, search_session_id: str, conversation_id: Optional[int], file_ids: List[str]) -> Dict[str, Any]:
-    raw_files = await get_ephemeral_files(user_id)
-    selected: List[Dict[str, Any]] = []
-    wanted = set(file_ids or [])
-    for item in raw_files:
-        if not isinstance(item, dict):
-            continue
-        meta = item.get("meta") if isinstance(item.get("meta"), dict) else {}
-        item_sid = str(meta.get("search_session_id") or "").strip()
-        item_cid = meta.get("conversation_id")
-        item_id = str(meta.get("file_id") or "").strip()
-        if item_sid and item_sid != search_session_id:
-            continue
-        if conversation_id and item_cid and int(item_cid) != int(conversation_id):
-            continue
-        if wanted and item_id not in wanted:
-            continue
-        selected.append(item)
+    selected = await _load_legal_ephemeral_files(
+        user_id=user_id,
+        search_session_id=search_session_id,
+        file_ids=file_ids or [],
+    )
+
+    # Fallback retrocompatible: payloads antiguos en clave global ephemeral:{user_id}
+    if not selected:
+        raw_files = await get_ephemeral_files(user_id)
+        wanted = set(file_ids or [])
+        for item in raw_files:
+            if not isinstance(item, dict):
+                continue
+            meta = item.get("meta") if isinstance(item.get("meta"), dict) else {}
+            item_sid = str(meta.get("search_session_id") or "").strip()
+            item_cid = meta.get("conversation_id")
+            item_id = str(meta.get("file_id") or "").strip()
+            if item_sid and item_sid != search_session_id:
+                continue
+            if conversation_id and item_cid and int(item_cid) != int(conversation_id):
+                continue
+            if wanted and item_id not in wanted:
+                continue
+            selected.append(item)
 
     selected = selected[-8:]
     chunks: List[str] = []
@@ -598,6 +680,18 @@ async def web_search_upload_file(
             "size_bytes": len(content),
         }
         await add_ephemeral_file(user_id, filename, extracted_text, ttl=ttl, meta=meta)
+        await _store_legal_ephemeral_file(
+            user_id=user_id,
+            search_session_id=search_session_id,
+            file_id=file_id,
+            payload={
+                "filename": filename,
+                "text": extracted_text,
+                "uploaded_at": datetime.utcnow().isoformat(),
+                "meta": meta,
+            },
+            ttl=ttl,
+        )
         context_lines.append(f"Archivo {filename}:\n{extracted_text[:2400]}")
         file_result["chars_extracted"] = len(extracted_text)
         responses.append(file_result)
@@ -1033,4 +1127,4 @@ def log_websearch_interaction(
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8200)
+    uvicorn.run(app, host="0.0.0.0", port=int(os.getenv("LEGALSEARCH_PORT", "8201")))

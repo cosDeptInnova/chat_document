@@ -24,6 +24,9 @@ const COMPARATOR_API_BASE =
 const WEBSEARCH_API_BASE =
   process.env.REACT_APP_WEBSEARCH_API_BASE || "/api/websearch";
 
+const LEGALSEARCH_API_BASE =
+  process.env.REACT_APP_LEGALSEARCH_API_BASE || "/api/legalsearch";
+
 // CSRF web_search (csrftoken_websearch)
 function getWebsearchCsrfToken() {
   return getCookieValue("csrftoken_websearch");
@@ -208,6 +211,46 @@ async function websearchFetch(
   }
 
   // CSRF para métodos no-idempotentes
+  if (["POST", "PUT", "PATCH", "DELETE"].includes(method.toUpperCase())) {
+    const csrf = getWebsearchCsrfToken();
+    if (csrf) {
+      opts.headers["X-CSRFToken"] = csrf;
+    }
+  }
+
+  const res = await fetch(url, opts);
+  if (!res.ok) {
+    const text = await res.text().catch(() => "");
+    throw new Error(`Error ${res.status} en ${url}: ${text}`);
+  }
+
+  const ct = res.headers.get("content-type") || "";
+  if (ct.includes("application/json")) {
+    return res.json();
+  }
+  return res.text();
+}
+
+async function legalsearchFetch(
+  path,
+  { method = "GET", headers = {}, body } = {},
+) {
+  const url = `${LEGALSEARCH_API_BASE}${path}`;
+  const opts = {
+    method,
+    credentials: "include",
+    headers: {
+      ...headers,
+    },
+  };
+
+  if (body instanceof FormData) {
+    opts.body = body;
+  } else if (body !== undefined) {
+    opts.body = JSON.stringify(body);
+    opts.headers["Content-Type"] = "application/json";
+  }
+
   if (["POST", "PUT", "PATCH", "DELETE"].includes(method.toUpperCase())) {
     const csrf = getWebsearchCsrfToken();
     if (csrf) {
@@ -757,6 +800,69 @@ export async function sendWebSearchMessage({
       prompt,
       search_session_id: searchSessionId,
       conversation_id: conversationId,
+      top_k: topK,
+      max_iters: maxIters,
+    },
+  });
+}
+
+export async function fetchLegalsearchCsrfToken() {
+  try {
+    return await legalsearchFetch("/csrf-token", { method: "GET" });
+  } catch (e) {
+    console.error("Error al obtener CSRF token de legal_search:", e);
+    throw e;
+  }
+}
+
+export async function bootstrapLegalsearch() {
+  try {
+    await fetchLegalsearchCsrfToken();
+    return { ok: true };
+  } catch (error) {
+    console.error("bootstrapLegalsearch: error inicializando CSRF:", error);
+    return { ok: false, error: error?.message || String(error) };
+  }
+}
+
+export async function uploadLegalSearchFiles({
+  files,
+  searchSessionId,
+  conversationId = null,
+}) {
+  const formData = new FormData();
+  (files || []).forEach((f) => formData.append("files", f));
+
+  const params = new URLSearchParams();
+  if (searchSessionId) params.set("search_session_id", searchSessionId);
+  if (conversationId !== null && conversationId !== undefined) {
+    params.set("conversation_id", String(conversationId));
+  }
+
+  const qs = params.toString();
+  const path = qs ? `/search/uploadfile?${qs}` : "/search/uploadfile";
+
+  return legalsearchFetch(path, {
+    method: "POST",
+    body: formData,
+  });
+}
+
+export async function sendLegalSearchMessage({
+  prompt,
+  searchSessionId = null,
+  conversationId = null,
+  attachedFileIds = [],
+  topK = null,
+  maxIters = null,
+}) {
+  return legalsearchFetch("/search/query", {
+    method: "POST",
+    body: {
+      prompt,
+      search_session_id: searchSessionId,
+      conversation_id: conversationId,
+      attached_file_ids: attachedFileIds,
       top_k: topK,
       max_iters: maxIters,
     },
