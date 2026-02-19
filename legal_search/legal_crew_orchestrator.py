@@ -955,6 +955,7 @@ class LegalSearchCrewOrchestrator:
         history: Optional[List[Dict[str, Any]]] = None,
         top_k: int = 4,
         max_iters: int = 2,
+        user_context: str = "",
         *,
         auth_token: Optional[str] = None,  # ✅ USER JWT (con o sin Bearer; se normaliza en MCPClient)
     ) -> Dict[str, Any]:
@@ -998,7 +999,11 @@ class LegalSearchCrewOrchestrator:
 
         # 1) Planner
         history_str = self._format_history(history or [])
-        planner_desc = build_legal_planner_prompt(history_str=history_str, user_prompt=user_prompt)
+        planner_desc = build_legal_planner_prompt(
+            history_str=history_str,
+            user_prompt=user_prompt,
+            extra_context=(user_context or "")[:6000],
+        )
 
         t0 = perf_counter()
         planner_raw = self._run_single_agent_task(
@@ -1101,7 +1106,11 @@ class LegalSearchCrewOrchestrator:
             norm_queries = new_queries
 
         # 3) Writer
-        writer_desc = build_legal_writer_prompt(user_prompt=user_prompt, sources=all_sources)
+        writer_desc = build_legal_writer_prompt(
+            user_prompt=user_prompt,
+            sources=all_sources,
+            extra_context=(user_context or "")[:8000],
+        )
 
         t_w = perf_counter()
         candidate = clean_llm_text(
