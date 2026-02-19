@@ -107,6 +107,16 @@ export const useCases = [
     initialMessage: "Hola, ¿qué información quieres que consulte en la web por ti?",
   },
   {
+    title: "Exploración legal avanzada",
+    description: "Investiga normativa, jurisprudencia y criterios con un flujo legal especializado y fuentes trazables",
+    departments: ["Más usados", "RRHH", "Administración", "Comunicación", "Comercial"],
+    icon: GlobeAltIcon,
+    tab: "nuevo",
+    popularity: 7,
+    engine: "legal_explorer",
+    initialMessage: "Hola, ¿qué cuestión legal quieres explorar en profundidad?",
+  },
+  {
     title: "Hablar con documentos",
     description: "Sube cualquier archivo de texto grande e interactúa con ello mediante una de las crews de Cosmos",
     departments: ["Más usados", "RRHH", "Administración", "Comunicación", "Comercial"],
