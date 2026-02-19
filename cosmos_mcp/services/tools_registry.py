@@ -73,20 +73,24 @@ class ToolRegistry:
         - tags_all = AND
         """
         out: List[ToolSpec] = []
-        any_set = {t for t in (tags_any or []) if t}
-        all_set = {t for t in (tags_all or []) if t}
+        crew_norm = (crew_name or "").strip().lower() or None
+        any_set = {str(t).strip().lower() for t in (tags_any or []) if str(t).strip()}
+        all_set = {str(t).strip().lower() for t in (tags_all or []) if str(t).strip()}
 
         for spec in self._tools.values():
-            if crew_name and spec.for_crews:
-                if "*" not in spec.for_crews and crew_name not in spec.for_crews:
+            spec_crews = {str(c).strip().lower() for c in (spec.for_crews or []) if str(c).strip()}
+            spec_tags = {str(t).strip().lower() for t in (spec.tags or []) if str(t).strip()}
+
+            if crew_norm and spec_crews:
+                if "*" not in spec_crews and crew_norm not in spec_crews:
                     continue
 
             if any_set:
-                if not any(t in spec.tags for t in any_set):
+                if not any(t in spec_tags for t in any_set):
                     continue
 
             if all_set:
-                if not all(t in spec.tags for t in all_set):
+                if not all(t in spec_tags for t in all_set):
                     continue
 
             out.append(spec)
