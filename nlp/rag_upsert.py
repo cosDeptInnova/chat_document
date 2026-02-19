@@ -131,6 +131,7 @@ def upsert_documents_to_db_impl(indexer, documents: List[str], doc_names: List[s
     # -------- Config ----------
     PREVIEW_CHARS     = int(os.getenv("PAYLOAD_CHUNK_PREVIEW_CHARS", "220"))
     CHUNK_MAX_CHARS   = int(os.getenv("QDRANT_PAYLOAD_CHUNK_MAXCHARS", "4096"))
+    EMBED_MAX_CHARS   = int(os.getenv("QDRANT_EMBED_TEXT_MAXCHARS", str(CHUNK_MAX_CHARS)))
     BATCH_EMB         = int(os.getenv("HF_EMBED_BATCH", "32"))
     MAX_POINTS_BATCH  = int(os.getenv("QDRANT_UPSERT_CHUNK", "200"))
     MAX_REQ_MB        = float(os.getenv("QDRANT_MAX_REQUEST_MB", "24"))
@@ -146,6 +147,7 @@ def upsert_documents_to_db_impl(indexer, documents: List[str], doc_names: List[s
 
     EMBED_CHUNK = int(os.getenv("QDRANT_UPSERT_EMBED_CHUNK", str(MAX_POINTS_BATCH)))
     EMBED_CHUNK = max(1, EMBED_CHUNK)
+    EMBED_MAX_CHARS = max(256, EMBED_MAX_CHARS)
 
     # Registrar tag en Redis UNA vez
     if getattr(indexer, "client_tag", None):
@@ -286,11 +288,14 @@ def upsert_documents_to_db_impl(indexer, documents: List[str], doc_names: List[s
         docs_chunk = documents[chunk_start:chunk_end]
         names_chunk = doc_names[chunk_start:chunk_end]
 
+        # Acotar texto para embedding (evita secuencias extremas y latencias/picos innecesarios)
+        docs_for_embed = [(t or "")[:EMBED_MAX_CHARS] for t in docs_chunk]
+
         # 1) Embedding del chunk bajo cupo INGEST (pool="ingest")
         try:
-            docs_prefixed = [indexer._prep_doc(t) for t in docs_chunk]
+            docs_prefixed = [indexer._prep_doc(t) for t in docs_for_embed]
         except Exception:
-            docs_prefixed = docs_chunk
+            docs_prefixed = docs_for_embed
 
         vecs = None
         with _ingest_gpu_slot(indexer) as dev:
@@ -382,7 +387,7 @@ def upsert_documents_to_db_impl(indexer, documents: List[str], doc_names: List[s
             # SPLADE inline (si aplica) — ✅ NO doble _prep_doc
             if sparse_enabled and (not splade_deferred) and splade_ready:
                 try:
-                    idxs, vals = indexer._sparse_encode_text(txt or "")
+                    idxs, vals = indexer._sparse_encode_text(chunk_full)
                     if idxs and vals:
                         point_vector[sparse_name] = qmodels.SparseVector(indices=idxs, values=vals)
                 except Exception as e:
