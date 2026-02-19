@@ -17,7 +17,16 @@ def dynamic_fragment_size_impl(total_tokens: int) -> int:
     Se mantiene firma y trazas (print) del original.
     """
     print(f"(fragment_size) total_tokens={total_tokens}", flush=True)
-    size = 60 if total_tokens < 240 else 120 if total_tokens < 1200 else 180
+    # Configurable para producción (sin romper backward compatibility):
+    # - documentos cortos: chunks pequeños para precisión
+    # - documentos medianos/largos: chunks más amplios para capturar secciones completas
+    short = int(os.getenv("RAG_CHUNK_TOKENS_SHORT", "90"))
+    medium = int(os.getenv("RAG_CHUNK_TOKENS_MEDIUM", "180"))
+    large = int(os.getenv("RAG_CHUNK_TOKENS_LARGE", "280"))
+    t1 = int(os.getenv("RAG_CHUNK_BREAKPOINT_1", "320"))
+    t2 = int(os.getenv("RAG_CHUNK_BREAKPOINT_2", "1800"))
+
+    size = short if total_tokens < t1 else medium if total_tokens < t2 else large
     print(f"(fragment_size) size={size}", flush=True)
     return size
 
@@ -32,6 +41,10 @@ def fragment_text_semantically_impl(
     Conserva las trazas y el comportamiento del método original.
     """
     import re
+
+    min_overlap = int(os.getenv("RAG_CHUNK_MIN_OVERLAP_TOKENS", "40"))
+    overlap_ratio = float(os.getenv("RAG_CHUNK_OVERLAP_RATIO", "0.30"))
+    overlap_tokens = max(overlap_tokens, min_overlap, int(max_tokens * overlap_ratio))
 
     print(f"(fragment) Iniciando fragmentación semántica: max_tokens={max_tokens}, overlap={overlap_tokens}", flush=True)
 
@@ -62,8 +75,18 @@ def fragment_text_semantically_impl(
         return [p for p in parts if p.strip()]
 
     segments = []
+    segment_headers = []
+    active_header = ""
     for b in blocks:
-        segments.extend(split_block(b))
+        parts = split_block(b)
+        if not parts:
+            continue
+        first_line = parts[0].splitlines()[0].strip() if parts[0].strip() else ""
+        if title_re.match(first_line):
+            active_header = first_line
+        for p in parts:
+            segments.append(p)
+            segment_headers.append(active_header)
 
     # ÚNICO pase spaCy sobre todos los segmentos
     nlp = _get_nlp()
@@ -73,10 +96,12 @@ def fragment_text_semantically_impl(
     # Construye frases y cuenta tokens por sentencia sin más llamadas a nlp()
     sent_texts: List[str] = []
     sent_tokens: List[int] = []
-    for d in seg_docs:
+    for seg_header, d in zip(segment_headers, seg_docs):
         for s in d.sents:
             st = s.text.strip()
             if st:
+                if seg_header and seg_header.lower() not in st.lower():
+                    st = f"{seg_header}\n{st}"
                 sent_texts.append(st)
                 sent_tokens.append(len(s))
 
