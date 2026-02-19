@@ -1,0 +1,779 @@
+# web_search/main.py
+"""
+Microservicio `web_search`: búsqueda web avanzada con CrewAI.
+
+- Autenticado/CSRF igual que chat_document.
+- Redis para sesiones e historial de búsquedas conversacionales.
+- Consume tools MCP (ddg_*) a través del MCP Gateway (desde el orquestador).
+- Orquesta una crew: planner → ejecutor de tools → analista → redactor → revisor (recursivo).
+"""
+
+from fastapi import (
+    FastAPI,
+    Request,
+    HTTPException,
+    Depends,
+    BackgroundTasks,
+    Response,
+)
+from fastapi.responses import PlainTextResponse
+# Si quieres devolver JSON con errores detallados, puedes usar JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+from pathlib import Path
+from typing import Optional, Dict, Any, List
+from datetime import datetime, timezone
+import os
+import time
+import json
+import uuid
+import logging
+import asyncio
+import redis.asyncio as aioredis
+from prometheus_client import generate_latest, CONTENT_TYPE_LATEST, Counter, Histogram
+from time import perf_counter
+
+from config.database import get_db
+from config.models import (
+    Conversation,
+    Message,
+    UsageLog,
+    AuditLog,
+)
+from sqlalchemy.orm import Session
+
+from utils import (
+    STORAGE_ROOT,
+    ROLE_SUPERVISOR,
+    ROLE_USER,
+    generate_csrf_token,
+    validate_csrf_double_submit,
+    init_redis_clients,
+    get_current_auth_chatdoc,
+    clean_text,
+    extract_raw_bearer_token,
+)
+from legal_crew_orchestrator import LegalSearchCrewOrchestrator
+from metrics import (
+    status_class,
+    hash_user_id,
+    user_metrics_enabled,
+    WEBSEARCH_HTTP_REQUESTS_TOTAL,
+    WEBSEARCH_HTTP_LATENCY_SECONDS,
+    WEBSEARCH_HTTP_INFLIGHT,
+    WEBSEARCH_USER_ENDPOINT_REQUESTS_TOTAL,
+    WEBSEARCH_QUERY_REQUESTS_TOTAL,
+    WEBSEARCH_QUERY_ERRORS_TOTAL,
+    WEBSEARCH_QUERY_DURATION_SECONDS,
+    WEBSEARCH_ANSWER_CHARS,
+    WEBSEARCH_SOURCES_PER_ANSWER,
+    WEBSEARCH_NORMALIZED_QUERIES_PER_ANSWER,
+    WEBSEARCH_CREW_RUN_SECONDS,
+    WEBSEARCH_AGENT_STEP_DURATION_SECONDS,
+    WEBSEARCH_TOOL_CALLS_TOTAL,
+    WEBSEARCH_TOOL_DURATION_SECONDS,
+    WEBSEARCH_REDIS_OPS_TOTAL,
+    WEBSEARCH_REDIS_LATENCY_SECONDS,
+    WEBSEARCH_REDIS_CONNECTED,
+    WEBSEARCH_DB_LATENCY_SECONDS,
+    WEBSEARCH_DB_ERRORS_TOTAL,
+    WEBSEARCH_BG_TASKS_TOTAL,
+)
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("web_search")
+
+BASE_DIR = Path(__file__).resolve().parent
+LOGS_ROOT = Path(os.getenv("COSMOS_WEBSEARCH_LOGS_DIR", str(BASE_DIR / "logs"))).resolve()
+
+# CSRF
+CSRF_COOKIE_NAME = "csrftoken_websearch"
+AUTH_ORIGIN = os.getenv("COSMOS_AUTH_ORIGIN", "http://localhost:7000")
+FRONTEND_URL = os.getenv("COSMOS_FRONTEND_URL", "http://localhost").rstrip("/")
+
+# Redis global (se inicializa en startup)
+redis_core_client: Optional[aioredis.Redis] = None
+redis_conv_client: Optional[aioredis.Redis] = None
+
+WEBSEARCH_SESSION_TTL = int(os.getenv("WEBSEARCH_SESSION_TTL", "3600"))
+WEBSEARCH_HISTORY_MAX_LEN = int(os.getenv("WEBSEARCH_HISTORY_MAX_LEN", "30"))
+
+WS_SESSION_KEY_PREFIX = "websearch:session"
+WS_HISTORY_KEY_PREFIX = "websearch:history"
+
+app = FastAPI()
+
+# CORS (similar a modelo_negocio / chat_document)
+ALLOWED_ORIGINS_ENV = os.getenv("COSMOS_ALLOWED_ORIGINS", "")
+if ALLOWED_ORIGINS_ENV:
+    allowed_origins = [o.strip() for o in ALLOWED_ORIGINS_ENV.split(",") if o.strip()]
+else:
+    allowed_origins = [
+        "http://localhost:3000",
+        "http://localhost:5173",
+        AUTH_ORIGIN,
+    ]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=allowed_origins,
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["*"],
+)
+
+
+class WebSearchQueryRequest(BaseModel):
+    prompt: str
+    search_session_id: Optional[str] = None
+    conversation_id: Optional[int] = None
+    # Opciones avanzadas
+    top_k: Optional[int] = None      # URLs a profundizar por iteración
+    max_iters: Optional[int] = None  # recursión (planner→ejecutor)
+
+
+class WebSearchQueryResponse(BaseModel):
+    reply: str
+    response: str
+    conversation_id: int
+    search_session_id: str
+    sources: List[Dict[str, Any]]
+    normalized_queries: List[str] = []
+    plan_meta: Dict[str, Any] = {}
+
+
+# -----------------------------
+# Helpers de CSRF y Redis
+# -----------------------------
+def validate_csrf(request: Request) -> None:
+    validate_csrf_double_submit(
+        request,
+        cookie_name=CSRF_COOKIE_NAME,
+        header_name="X-CSRFToken",
+        error_detail="CSRF token inválido o ausente en servicio web_search.",
+    )
+
+def get_websearch_crew(request: Request) -> "LegalSearchCrewOrchestrator":
+    """
+    Devuelve el orquestador de la crew legal ligado al lifecycle de la app.
+
+    Mantiene el nombre 'websearch_crew' para no tocar más wiring en main.py,
+    aunque el orquestador sea LegalSearchCrewOrchestrator.
+    """
+    crew_obj = getattr(request.app.state, "websearch_crew", None)
+    if crew_obj is None:
+        # Fallback ultra-defensivo
+        crew_obj = LegalSearchCrewOrchestrator()
+        request.app.state.websearch_crew = crew_obj
+    return crew_obj
+
+
+@app.get("/csrf-token", response_model=dict)
+async def get_csrf_token_endpoint(request: Request, response: Response):
+    token = request.cookies.get(CSRF_COOKIE_NAME)
+    if not token:
+        token = generate_csrf_token()
+    response.set_cookie(
+        key=CSRF_COOKIE_NAME,
+        value=token,
+        httponly=False,   # el front puede leerla
+        secure=False,     # en prod: True + HTTPS
+        samesite="Lax",
+    )
+    return {"csrf_token": token}
+
+
+@app.middleware("http")
+async def metrics_middleware(request: Request, call_next):
+    endpoint = request.url.path
+    method = request.method
+
+    start = perf_counter()
+    WEBSEARCH_HTTP_INFLIGHT.labels(endpoint=endpoint).inc()
+
+    code = 500
+    try:
+        response = await call_next(request)
+        code = getattr(response, "status_code", 200)
+        return response
+    except Exception:
+        # Para excepciones no manejadas, contamos como 5xx
+        code = 500
+        raise
+    finally:
+        duration = perf_counter() - start
+        WEBSEARCH_HTTP_LATENCY_SECONDS.labels(endpoint=endpoint, method=method).observe(duration)
+        WEBSEARCH_HTTP_REQUESTS_TOTAL.labels(
+            endpoint=endpoint,
+            method=method,
+            status_class=status_class(code),
+        ).inc()
+        WEBSEARCH_HTTP_INFLIGHT.labels(endpoint=endpoint).dec()
+
+@app.on_event("startup")
+async def initialize_redis():
+    global redis_core_client, redis_conv_client
+    redis_host = os.getenv("REDIS_HOST", "localhost")
+    redis_port = int(os.getenv("REDIS_PORT", "6379"))
+
+    t0 = perf_counter()
+    try:
+        redis_core_client = aioredis.Redis(host=redis_host, port=redis_port, decode_responses=True)
+        redis_conv_client = aioredis.Redis(host=redis_host, port=redis_port, decode_responses=True, db=3)
+
+        # registro en utils (como ya haces)
+        init_redis_clients(redis_core_client, redis_conv_client)
+
+        # Best-effort ping para marcar "connected"
+        try:
+            await redis_core_client.ping()
+            await redis_conv_client.ping()
+            WEBSEARCH_REDIS_CONNECTED.set(1)
+        except Exception:
+            WEBSEARCH_REDIS_CONNECTED.set(0)
+
+        logger.info(
+            "[startup-websearch] Redis conectado en %s:%s (db=0 y db=3) y registrado en utils.",
+            redis_host,
+            redis_port,
+        )
+    finally:
+        WEBSEARCH_REDIS_LATENCY_SECONDS.labels(op="startup_initialize_redis").observe(perf_counter() - t0)
+
+    # Instancia del orquestador ligada al ciclo de vida de la app (AHORA: LegalSearchCrewOrchestrator)
+    app.state.websearch_crew = LegalSearchCrewOrchestrator()
+    logger.info("[startup-websearch] LegalSearchCrewOrchestrator inicializado y guardado en app.state (websearch_crew).")
+
+
+@app.on_event("shutdown")
+async def shutdown_redis():
+    global redis_core_client, redis_conv_client
+    t0 = perf_counter()
+    try:
+        if redis_core_client is not None:
+            try:
+                await redis_core_client.close()
+            except Exception:
+                pass
+        if redis_conv_client is not None:
+            try:
+                await redis_conv_client.close()
+            except Exception:
+                pass
+        WEBSEARCH_REDIS_CONNECTED.set(0)
+        logger.info("[shutdown-websearch] Redis clients cerrados.")
+    finally:
+        WEBSEARCH_REDIS_LATENCY_SECONDS.labels(op="shutdown_redis").observe(perf_counter() - t0)
+
+
+async def store_ws_session(
+    user_id: int,
+    search_session_id: str,
+    payload: Dict[str, Any],
+    ttl: Optional[int] = None,
+) -> None:
+    if redis_core_client is None:
+        WEBSEARCH_REDIS_OPS_TOTAL.labels(op="store_ws_session", result="error").inc()
+        raise RuntimeError("Redis core client not initialized")
+
+    key = f"{WS_SESSION_KEY_PREFIX}:{user_id}:{search_session_id}"
+    t0 = perf_counter()
+    try:
+        await redis_core_client.set(
+            key,
+            json.dumps(payload, ensure_ascii=False),
+            ex=ttl or WEBSEARCH_SESSION_TTL,
+        )
+        WEBSEARCH_REDIS_OPS_TOTAL.labels(op="store_ws_session", result="ok").inc()
+    except Exception:
+        WEBSEARCH_REDIS_OPS_TOTAL.labels(op="store_ws_session", result="error").inc()
+        raise
+    finally:
+        WEBSEARCH_REDIS_LATENCY_SECONDS.labels(op="store_ws_session").observe(perf_counter() - t0)
+
+
+
+async def get_ws_session(user_id: int, search_session_id: str) -> Optional[Dict[str, Any]]:
+    if redis_core_client is None:
+        WEBSEARCH_REDIS_OPS_TOTAL.labels(op="get_ws_session", result="error").inc()
+        raise RuntimeError("Redis core client not initialized")
+
+    key = f"{WS_SESSION_KEY_PREFIX}:{user_id}:{search_session_id}"
+    t0 = perf_counter()
+    raw = None
+    try:
+        raw = await redis_core_client.get(key)
+        if not raw:
+            WEBSEARCH_REDIS_OPS_TOTAL.labels(op="get_ws_session", result="miss").inc()
+            return None
+
+        try:
+            parsed = json.loads(raw)
+            WEBSEARCH_REDIS_OPS_TOTAL.labels(op="get_ws_session", result="hit").inc()
+            return parsed
+        except json.JSONDecodeError:
+            WEBSEARCH_REDIS_OPS_TOTAL.labels(op="get_ws_session", result="decode_error").inc()
+            logger.warning(
+                "No se pudo parsear ws_session en Redis (key=%s). Valor crudo truncado: %r",
+                key,
+                raw[:200],
+            )
+            return None
+    except Exception:
+        WEBSEARCH_REDIS_OPS_TOTAL.labels(op="get_ws_session", result="error").inc()
+        raise
+    finally:
+        WEBSEARCH_REDIS_LATENCY_SECONDS.labels(op="get_ws_session").observe(perf_counter() - t0)
+
+
+
+async def append_ws_history(
+    user_id: int,
+    search_session_id: str,
+    entry: Dict[str, Any],
+    ttl: Optional[int] = None,
+) -> None:
+    if redis_conv_client is None:
+        WEBSEARCH_REDIS_OPS_TOTAL.labels(op="append_ws_history", result="error").inc()
+        raise RuntimeError("Redis conv client not initialized")
+
+    key = f"{WS_HISTORY_KEY_PREFIX}:{user_id}:{search_session_id}"
+    t0 = perf_counter()
+    try:
+        raw = await redis_conv_client.get(key)
+        if raw:
+            try:
+                history = json.loads(raw)
+                if not isinstance(history, list):
+                    history = []
+            except json.JSONDecodeError:
+                WEBSEARCH_REDIS_OPS_TOTAL.labels(op="append_ws_history", result="decode_error").inc()
+                history = []
+        else:
+            history = []
+
+        history.append(entry)
+        if len(history) > WEBSEARCH_HISTORY_MAX_LEN:
+            history = history[-WEBSEARCH_HISTORY_MAX_LEN:]
+
+        await redis_conv_client.set(
+            key,
+            json.dumps(history, ensure_ascii=False),
+            ex=ttl or WEBSEARCH_SESSION_TTL,
+        )
+        WEBSEARCH_REDIS_OPS_TOTAL.labels(op="append_ws_history", result="ok").inc()
+    except Exception:
+        WEBSEARCH_REDIS_OPS_TOTAL.labels(op="append_ws_history", result="error").inc()
+        raise
+    finally:
+        WEBSEARCH_REDIS_LATENCY_SECONDS.labels(op="append_ws_history").observe(perf_counter() - t0)
+
+
+async def get_ws_history(user_id: int, search_session_id: str) -> List[Dict[str, Any]]:
+    if redis_conv_client is None:
+        WEBSEARCH_REDIS_OPS_TOTAL.labels(op="get_ws_history", result="error").inc()
+        raise RuntimeError("Redis conv client not initialized")
+
+    key = f"{WS_HISTORY_KEY_PREFIX}:{user_id}:{search_session_id}"
+    t0 = perf_counter()
+    raw = None
+    try:
+        raw = await redis_conv_client.get(key)
+        if not raw:
+            WEBSEARCH_REDIS_OPS_TOTAL.labels(op="get_ws_history", result="miss").inc()
+            return []
+
+        try:
+            history = json.loads(raw)
+            WEBSEARCH_REDIS_OPS_TOTAL.labels(op="get_ws_history", result="hit").inc()
+            return history if isinstance(history, list) else []
+        except json.JSONDecodeError:
+            WEBSEARCH_REDIS_OPS_TOTAL.labels(op="get_ws_history", result="decode_error").inc()
+            logger.warning(
+                "No se pudo parsear ws_history en Redis (key=%s). Valor crudo truncado: %r",
+                key,
+                raw[:200],
+            )
+            return []
+    except Exception:
+        WEBSEARCH_REDIS_OPS_TOTAL.labels(op="get_ws_history", result="error").inc()
+        raise
+    finally:
+        WEBSEARCH_REDIS_LATENCY_SECONDS.labels(op="get_ws_history").observe(perf_counter() - t0)
+
+
+# -----------------------------
+# Endpoints
+# -----------------------------
+@app.get("/metrics")
+async def metrics():
+    payload = generate_latest()
+    return PlainTextResponse(payload, media_type=CONTENT_TYPE_LATEST)
+
+
+_START_TIME = time.monotonic()
+
+@app.get("/health", tags=["health"])
+async def health():
+    uptime_seconds = int(time.monotonic() - _START_TIME)
+    return {
+        "status": "ok",
+        "service": os.getenv("SERVICE_NAME", "unknown-service"),
+        "uptime_seconds": uptime_seconds,
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+    }
+
+@app.post("/search/query", response_model=WebSearchQueryResponse)
+async def web_search_query(
+    request: Request,
+    background_tasks: BackgroundTasks,
+    body: WebSearchQueryRequest,
+    auth: dict = Depends(get_current_auth_chatdoc),
+    db: Session = Depends(get_db),
+    orchestrator: "LegalSearchCrewOrchestrator" = Depends(get_websearch_crew),
+):
+    endpoint_label = "/search/query"
+    start_total = perf_counter()
+
+    WEBSEARCH_QUERY_REQUESTS_TOTAL.labels(endpoint=endpoint_label).inc()
+
+    user_id = auth.get("user_id")
+    user_label = hash_user_id(user_id) if (user_id is not None) else "unknown"
+
+    def _count_user(status_code: int) -> None:
+        if user_metrics_enabled() and user_id is not None:
+            WEBSEARCH_USER_ENDPOINT_REQUESTS_TOTAL.labels(
+                endpoint=endpoint_label,
+                user=user_label,
+                status_class=status_class(status_code),
+            ).inc()
+
+    # --- CSRF ---
+    try:
+        validate_csrf(request)
+    except HTTPException as e:
+        WEBSEARCH_QUERY_ERRORS_TOTAL.labels(endpoint=endpoint_label, kind="csrf").inc()
+        _count_user(e.status_code)
+        raise
+
+    prompt = (body.prompt or "").strip()
+    if not prompt:
+        WEBSEARCH_QUERY_ERRORS_TOTAL.labels(endpoint=endpoint_label, kind="bad_request").inc()
+        _count_user(400)
+        raise HTTPException(status_code=400, detail="No se ha proporcionado prompt para la búsqueda.")
+
+    # --- Config ---
+    try:
+        default_top_k = int(os.getenv("WEBSEARCH_TOP_K", "4"))
+    except ValueError:
+        default_top_k = 4
+
+    try:
+        default_max_iters = int(os.getenv("WEBSEARCH_MAX_ITERS", "2"))
+    except ValueError:
+        default_max_iters = 2
+
+    top_k = body.top_k or default_top_k
+    max_iters = max(1, body.max_iters or default_max_iters)
+
+    # --- Session Redis ---
+    search_session_id = body.search_session_id or uuid.uuid4().hex
+    try:
+        ws_session = await get_ws_session(user_id, search_session_id)
+        if not ws_session:
+            ws_session = {
+                "created_at": datetime.now(timezone.utc).isoformat(),
+                "queries": [],
+            }
+            await store_ws_session(user_id, search_session_id, ws_session)
+    except Exception:
+        WEBSEARCH_QUERY_ERRORS_TOTAL.labels(endpoint=endpoint_label, kind="redis").inc()
+        _count_user(500)
+        raise HTTPException(status_code=500, detail="Error de sesión Redis en web_search.")
+
+    # --- Conversation DB ---
+    conversation_id = body.conversation_id
+    try:
+        t_db = perf_counter()
+        if conversation_id:
+            conversation = (
+                db.query(Conversation)
+                .filter(Conversation.id == conversation_id, Conversation.user_id == user_id)
+                .first()
+            )
+            WEBSEARCH_DB_LATENCY_SECONDS.labels(op="db_fetch_conversation").observe(perf_counter() - t_db)
+        else:
+            conversation = Conversation(
+                user_id=user_id,
+                conversation_text="",
+                created_at=datetime.now(timezone.utc),
+            )
+            db.add(conversation)
+            t_commit = perf_counter()
+            db.commit()
+            WEBSEARCH_DB_LATENCY_SECONDS.labels(op="db_commit_create_conversation").observe(perf_counter() - t_commit)
+            db.refresh(conversation)
+            conversation_id = conversation.id
+
+        # persist USER message + conversation text
+        if conversation.conversation_text:
+            conversation.conversation_text += f"\nUSER: {prompt}"
+        else:
+            conversation.conversation_text = f"USER: {prompt}"
+
+        user_msg = Message(
+            conversation_id=conversation.id,
+            sender="USER",
+            content=prompt,
+            created_at=datetime.now(timezone.utc),
+        )
+        db.add(user_msg)
+        db.add(conversation)
+        t_commit2 = perf_counter()
+        db.commit()
+        WEBSEARCH_DB_LATENCY_SECONDS.labels(op="db_commit_user_message").observe(perf_counter() - t_commit2)
+        db.refresh(conversation)
+
+    except Exception:
+        WEBSEARCH_DB_ERRORS_TOTAL.labels(op="conversation_write").inc()
+        WEBSEARCH_QUERY_ERRORS_TOTAL.labels(endpoint=endpoint_label, kind="db").inc()
+        _count_user(500)
+        raise HTTPException(status_code=500, detail="Error DB guardando conversación en web_search.")
+
+    # --- Load history ---
+    try:
+        history = await get_ws_history(user_id, search_session_id)
+    except Exception:
+        WEBSEARCH_QUERY_ERRORS_TOTAL.labels(endpoint=endpoint_label, kind="redis").inc()
+        _count_user(500)
+        raise HTTPException(status_code=500, detail="Error leyendo historial Redis en web_search.")
+
+    # --- Orquestación CrewAI (LEGAL) ---
+    crew_start = perf_counter()
+    try:
+        # Token efectivo para MCP (multiusuario):
+        # - si tu cookie guarda "Bearer <jwt>", la helper ya lo normaliza
+        # - si viene por Authorization: Bearer <jwt>, también
+        mcp_auth_token = extract_raw_bearer_token(request)
+
+        user_auth_header = request.headers.get("Authorization") or ""
+        result = await asyncio.to_thread(
+            orchestrator.run_legal_search,
+            user_prompt=prompt,
+            history=history,
+            top_k=top_k,
+            max_iters=max_iters,
+            auth_token=user_auth_header,
+        )
+        
+    except Exception as e:
+        WEBSEARCH_QUERY_ERRORS_TOTAL.labels(endpoint=endpoint_label, kind="crew").inc()
+        logger.exception("[web_search/query] Error ejecutando LegalSearchCrew: %s", e)
+        _count_user(500)
+        raise HTTPException(status_code=500, detail="Error generando la respuesta de búsqueda legal.")
+    finally:
+        WEBSEARCH_CREW_RUN_SECONDS.labels(top_k=str(top_k), max_iters=str(max_iters)).observe(perf_counter() - crew_start)
+
+    # --- Métricas deep: pasos/agentes y tools (si el orquestador devuelve trazas) ---
+    try:
+        agent_steps = result.get("agent_steps") or result.get("steps") or []
+        if isinstance(agent_steps, list):
+            for s in agent_steps:
+                if not isinstance(s, dict):
+                    continue
+                step = (s.get("step") or s.get("name") or "unknown").strip() or "unknown"
+                dur = s.get("duration") or s.get("seconds")
+                if dur is not None:
+                    try:
+                        WEBSEARCH_AGENT_STEP_DURATION_SECONDS.labels(step=step).observe(float(dur))
+                    except Exception:
+                        pass
+
+        tool_events = result.get("tool_events") or result.get("tools") or result.get("tool_calls") or []
+        if isinstance(tool_events, list):
+            for ev in tool_events:
+                if not isinstance(ev, dict):
+                    continue
+                tool = (ev.get("tool") or ev.get("name") or "unknown").strip() or "unknown"
+                status = (ev.get("status") or "unknown").strip() or "unknown"
+                WEBSEARCH_TOOL_CALLS_TOTAL.labels(tool=tool, status=status).inc()
+                dur = ev.get("duration") or ev.get("seconds")
+                if dur is not None:
+                    try:
+                        WEBSEARCH_TOOL_DURATION_SECONDS.labels(tool=tool).observe(float(dur))
+                    except Exception:
+                        pass
+    except Exception:
+        # No queremos romper la request por métricas.
+        pass
+
+    # --- Respuesta / normalización ---
+    answer_text: str = clean_text(result.get("final_answer") or "")
+    sources: List[Dict[str, Any]] = result.get("sources") or []
+    normalized_queries: List[str] = result.get("normalized_queries") or []
+
+    # Métricas de output
+    WEBSEARCH_ANSWER_CHARS.observe(len(answer_text))
+    WEBSEARCH_SOURCES_PER_ANSWER.observe(len(sources) if isinstance(sources, list) else 0)
+    WEBSEARCH_NORMALIZED_QUERIES_PER_ANSWER.observe(len(normalized_queries) if isinstance(normalized_queries, list) else 0)
+
+    # --- Background persistence con métricas ---
+    def persist_bot_and_usage(convo_id: int, content: str, meta: Dict[str, Any]) -> None:
+        t_task = perf_counter()
+        status = "ok"
+        db_local = next(get_db())
+        try:
+            t_db1 = perf_counter()
+            bot_msg = Message(
+                conversation_id=convo_id,
+                sender="BOT",
+                content=content,
+                created_at=datetime.now(timezone.utc),
+            )
+            db_local.add(bot_msg)
+            db_local.commit()
+            db_local.refresh(bot_msg)
+            WEBSEARCH_DB_LATENCY_SECONDS.labels(op="db_commit_bot_message").observe(perf_counter() - t_db1)
+
+            t_db2 = perf_counter()
+            usage = UsageLog(
+                message_id=bot_msg.id,
+                conversation_id=convo_id,
+                # ✅ opcional: renombrar env var (sin romper, con fallback)
+                model_name=os.getenv("LEGALSEARCH_MODEL_NAME", os.getenv("WEBSEARCH_MODEL_NAME", os.getenv("CREW_MODEL_NAME", "legalsearch-llm"))),
+                prompt_tokens=0,
+                completion_tokens=0,
+                total_tokens=0,
+                cost=0.0,
+                created_at=datetime.now(timezone.utc),
+            )
+            db_local.add(usage)
+
+            audit = AuditLog(
+                user_id=user_id,
+                # ✅ opcional: entidad distinta para auditoría (sin romper si no la usas)
+                entity_name=os.getenv("LEGALSEARCH_AUDIT_ENTITY", "LegalSearchAnswer"),
+                entity_id=convo_id,
+                action="CREATE",
+                old_data=None,
+                new_data={
+                    "search_session_id": search_session_id,
+                    "prompt": prompt,
+                    "normalized_queries": meta.get("normalized_queries") or [],
+                    "sources": meta.get("sources") or [],
+                    "response": content,
+                    # ✅ guardamos metadatos del plan si existen (sin romper)
+                    "plan_meta": meta.get("plan_meta") or {},
+                },
+                timestamp=datetime.now(timezone.utc),
+            )
+            db_local.add(audit)
+            db_local.commit()
+            WEBSEARCH_DB_LATENCY_SECONDS.labels(op="db_commit_usage_audit").observe(perf_counter() - t_db2)
+
+        except Exception:
+            status = "error"
+            WEBSEARCH_DB_ERRORS_TOTAL.labels(op="bg_persist").inc()
+            logger.exception("[web_search/bg] Error persistiendo bot/usage/audit")
+        finally:
+            db_local.close()
+            WEBSEARCH_BG_TASKS_TOTAL.labels(task="persist_bot_and_usage", status=status).inc()
+            WEBSEARCH_DB_LATENCY_SECONDS.labels(op="bg_task_total").observe(perf_counter() - t_task)
+
+    background_tasks.add_task(
+        persist_bot_and_usage,
+        conversation.id,
+        answer_text,
+        {
+            "sources": sources,
+            "normalized_queries": normalized_queries,
+            "plan_meta": result.get("plan_meta") or {},
+        },
+    )
+
+    # --- Persist BOT answer en conversation_text (en request-thread) ---
+    try:
+        t_db3 = perf_counter()
+        if conversation.conversation_text:
+            conversation.conversation_text += f"\nBOT: {answer_text}"
+        else:
+            conversation.conversation_text = f"BOT: {answer_text}"
+        db.add(conversation)
+        db.commit()
+        db.refresh(conversation)
+        WEBSEARCH_DB_LATENCY_SECONDS.labels(op="db_commit_conversation_append_bot").observe(perf_counter() - t_db3)
+    except Exception:
+        WEBSEARCH_DB_ERRORS_TOTAL.labels(op="conversation_append_bot").inc()
+        WEBSEARCH_QUERY_ERRORS_TOTAL.labels(endpoint=endpoint_label, kind="db").inc()
+        _count_user(500)
+        raise HTTPException(status_code=500, detail="Error DB guardando respuesta en conversación.")
+
+    # --- History append Redis ---
+    history_entry = {
+        "conversation_id": conversation.id,
+        "user_id": user_id,
+        "search_session_id": search_session_id,
+        "prompt": prompt,
+        "normalized_queries": normalized_queries,
+        "response": answer_text,
+        "sources": sources,
+        # ✅ guardamos metadatos del plan legal si existen
+        "plan_meta": result.get("plan_meta") or {},
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+    }
+
+    try:
+        await append_ws_history(user_id, search_session_id, history_entry)
+    except Exception:
+        WEBSEARCH_QUERY_ERRORS_TOTAL.labels(endpoint=endpoint_label, kind="redis").inc()
+        _count_user(500)
+        raise HTTPException(status_code=500, detail="Error guardando historial Redis en web_search.")
+
+    # --- File log best-effort ---
+    try:
+        log_websearch_interaction(
+            user_id=user_id,
+            search_session_id=search_session_id,
+            conversation_id=conversation.id,
+            entry=history_entry,
+        )
+    except Exception:
+        pass
+
+    # --- Final metrics ---
+    total_duration = perf_counter() - start_total
+    WEBSEARCH_QUERY_DURATION_SECONDS.labels(endpoint=endpoint_label).observe(total_duration)
+    _count_user(200)
+
+    return WebSearchQueryResponse(
+        reply=answer_text,
+        response=answer_text,
+        conversation_id=conversation.id,
+        search_session_id=search_session_id,
+        sources=sources,
+        normalized_queries=normalized_queries,
+        plan_meta=result.get("plan_meta") or {},
+    )
+
+
+def log_websearch_interaction(
+    user_id: int,
+    search_session_id: str,
+    conversation_id: int,
+    entry: Dict[str, Any],
+) -> None:
+    try:
+        date_str = datetime.utcnow().strftime("%Y-%m-%d")
+        day_dir = LOGS_ROOT / date_str
+        day_dir.mkdir(parents=True, exist_ok=True)
+        filename = f"user_{user_id}_websearch_{search_session_id}_conv_{conversation_id}.log"
+        log_path = day_dir / filename
+        with log_path.open("a", encoding="utf-8") as f:
+            f.write(json.dumps(entry, ensure_ascii=False) + "\n")
+    except Exception as e:
+        logger.warning("No se pudo escribir log de web_search (%s): %s", LOGS_ROOT, e)
+
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8200)
