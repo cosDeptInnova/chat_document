@@ -5,8 +5,10 @@ import textwrap
 from datetime import datetime, timezone
 
 
-def build_legal_planner_prompt(*, history_str: str, user_prompt: str) -> str:
+def build_legal_planner_prompt(*, history_str: str, user_prompt: str, extra_context: str = "") -> str:
     today = datetime.now(timezone.utc).date().isoformat()
+
+    context_block = f"\nContexto documental aportado por usuario:\n---\n{extra_context}\n---\n" if extra_context else ""
 
     return textwrap.dedent(f"""
     Eres un planificador experto en investigación legal (juristas/abogados internos) para
@@ -36,6 +38,7 @@ def build_legal_planner_prompt(*, history_str: str, user_prompt: str) -> str:
 
     Petición actual:
     {user_prompt}
+    {context_block}
 
     Salida estricta:
     - Devuelve SIEMPRE que puedas JSON válido con esta forma EXACTA (keys estables):
@@ -144,8 +147,9 @@ def build_legal_analyst_prompt(
     )
 
 
-def build_legal_writer_prompt(*, user_prompt: str, sources: List[Dict[str, Any]]) -> str:
+def build_legal_writer_prompt(*, user_prompt: str, sources: List[Dict[str, Any]], extra_context: str = "") -> str:
     sources_block = _sources_text(sources, include_content=True, max_content_chars=900)
+    context_block = f"\nContexto documental adicional (subido por usuario):\n{extra_context}\n" if extra_context else ""
 
     return textwrap.dedent(f"""
     Eres el redactor final de un memo legal interno (departamento jurídico corporativo + inmobiliario).
@@ -158,6 +162,7 @@ def build_legal_writer_prompt(*, user_prompt: str, sources: List[Dict[str, Any]]
 
     Petición del usuario:
     {user_prompt}
+    {context_block}
 
     Fuentes disponibles (numeradas):
     {sources_block}

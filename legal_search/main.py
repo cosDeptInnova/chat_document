@@ -15,19 +15,23 @@ from fastapi import (
     Depends,
     BackgroundTasks,
     Response,
+    UploadFile,
+    File,
 )
 from fastapi.responses import PlainTextResponse
 # Si quieres devolver JSON con errores detallados, puedes usar JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from pathlib import Path
-from typing import Optional, Dict, Any, List
+from typing import Optional, Dict, Any, List, Literal
 from datetime import datetime, timezone
 import os
 import time
 import json
 import uuid
 import logging
+import tempfile
+import hashlib
 import asyncio
 import redis.asyncio as aioredis
 from prometheus_client import generate_latest, CONTENT_TYPE_LATEST, Counter, Histogram
@@ -52,6 +56,18 @@ from utils import (
     get_current_auth_chatdoc,
     clean_text,
     extract_raw_bearer_token,
+    allowed_file,
+    extract_text_from_pdf,
+    extract_text_from_docx,
+    extract_text_from_doc,
+    extract_text_from_xlsx,
+    extract_text_from_csv,
+    extract_text_from_pptx,
+    extract_text_from_txt,
+    add_ephemeral_file,
+    get_ephemeral_files,
+    set_user_context,
+    scan_with_clamav,
 )
 from legal_crew_orchestrator import LegalSearchCrewOrchestrator
 from metrics import (
@@ -100,6 +116,7 @@ WEBSEARCH_HISTORY_MAX_LEN = int(os.getenv("WEBSEARCH_HISTORY_MAX_LEN", "30"))
 
 WS_SESSION_KEY_PREFIX = "websearch:session"
 WS_HISTORY_KEY_PREFIX = "websearch:history"
+WS_HITL_KEY_PREFIX = "websearch:hitl"
 
 app = FastAPI()
 
@@ -127,6 +144,9 @@ class WebSearchQueryRequest(BaseModel):
     prompt: str
     search_session_id: Optional[str] = None
     conversation_id: Optional[int] = None
+    attached_file_ids: List[str] = Field(default_factory=list)
+    human_in_the_loop: bool = False
+    require_human_approval: bool = False
     # Opciones avanzadas
     top_k: Optional[int] = None      # URLs a profundizar por iteración
     max_iters: Optional[int] = None  # recursión (planner→ejecutor)
@@ -138,8 +158,19 @@ class WebSearchQueryResponse(BaseModel):
     conversation_id: int
     search_session_id: str
     sources: List[Dict[str, Any]]
-    normalized_queries: List[str] = []
-    plan_meta: Dict[str, Any] = {}
+    normalized_queries: List[str] = Field(default_factory=list)
+    plan_meta: Dict[str, Any] = Field(default_factory=dict)
+    context_files: List[Dict[str, Any]] = Field(default_factory=list)
+    hitl: Dict[str, Any] = Field(default_factory=dict)
+
+
+class HumanReviewDecisionRequest(BaseModel):
+    search_session_id: str
+    conversation_id: int
+    review_task_id: str
+    decision: Literal["approve", "revise", "reject"]
+    reviewer_notes: Optional[str] = ""
+    revised_prompt: Optional[str] = ""
 
 
 # -----------------------------
@@ -152,6 +183,75 @@ def validate_csrf(request: Request) -> None:
         header_name="X-CSRFToken",
         error_detail="CSRF token inválido o ausente en servicio web_search.",
     )
+
+def _extract_text_for_legal_context(file_path: str, filename: str) -> str:
+    ext = (filename.rsplit(".", 1)[-1] if "." in filename else "").lower()
+    if ext == "pdf":
+        return extract_text_from_pdf(file_path)
+    if ext == "docx":
+        return extract_text_from_docx(file_path)
+    if ext == "doc":
+        return extract_text_from_doc(file_path)
+    if ext == "xlsx":
+        return extract_text_from_xlsx(file_path)
+    if ext == "csv":
+        return extract_text_from_csv(file_path)
+    if ext == "pptx":
+        return extract_text_from_pptx(file_path)
+    if ext == "txt":
+        return extract_text_from_txt(file_path)
+    if ext in {"jpg", "jpeg", "png"}:
+        return "[Imagen subida por usuario. OCR no habilitado en legal_search actualmente.]"
+    return ""
+
+
+async def _build_legal_user_context(user_id: int, search_session_id: str, conversation_id: Optional[int], file_ids: List[str]) -> Dict[str, Any]:
+    raw_files = await get_ephemeral_files(user_id)
+    selected: List[Dict[str, Any]] = []
+    wanted = set(file_ids or [])
+    for item in raw_files:
+        if not isinstance(item, dict):
+            continue
+        meta = item.get("meta") if isinstance(item.get("meta"), dict) else {}
+        item_sid = str(meta.get("search_session_id") or "").strip()
+        item_cid = meta.get("conversation_id")
+        item_id = str(meta.get("file_id") or "").strip()
+        if item_sid and item_sid != search_session_id:
+            continue
+        if conversation_id and item_cid and int(item_cid) != int(conversation_id):
+            continue
+        if wanted and item_id not in wanted:
+            continue
+        selected.append(item)
+
+    selected = selected[-8:]
+    chunks: List[str] = []
+    for idx, f in enumerate(selected, start=1):
+        fn = f.get("filename") or f"archivo_{idx}"
+        txt = (f.get("text") or "").strip()
+        if not txt:
+            continue
+        chunks.append(f"[{idx}] Archivo: {fn}\n{txt[:2200]}")
+
+    return {"context": "\n\n".join(chunks).strip(), "files": selected}
+
+
+
+
+async def _store_hitl_task(user_id: int, payload: Dict[str, Any]) -> None:
+    if redis_conv_client is None:
+        raise RuntimeError("Redis conv client not initialized")
+    key = f"{WS_HITL_KEY_PREFIX}:{user_id}:{payload['search_session_id']}:{payload['conversation_id']}:{payload['review_task_id']}"
+    await redis_conv_client.set(key, json.dumps(payload, ensure_ascii=False), ex=WEBSEARCH_SESSION_TTL)
+
+
+async def _read_hitl_task(user_id: int, search_session_id: str, conversation_id: int, review_task_id: str) -> Optional[Dict[str, Any]]:
+    if redis_conv_client is None:
+        raise RuntimeError("Redis conv client not initialized")
+    key = f"{WS_HITL_KEY_PREFIX}:{user_id}:{search_session_id}:{conversation_id}:{review_task_id}"
+    raw = await redis_conv_client.get(key)
+    return json.loads(raw) if raw else None
+
 
 def get_websearch_crew(request: Request) -> "LegalSearchCrewOrchestrator":
     """
@@ -423,6 +523,117 @@ async def health():
         "timestamp": datetime.now(timezone.utc).isoformat(),
     }
 
+@app.post("/search/uploadfile", response_model=dict)
+async def web_search_upload_file(
+    request: Request,
+    search_session_id: str,
+    conversation_id: Optional[int] = None,
+    files: List[UploadFile] = File(...),
+    auth: dict = Depends(get_current_auth_chatdoc),
+):
+    validate_csrf(request)
+    user_id = auth.get("user_id")
+    if not user_id:
+        raise HTTPException(status_code=401, detail="Usuario no autenticado.")
+
+    max_file_mb = int(os.getenv("LEGALSEARCH_EPHEMERAL_MAX_FILE_MB", "20"))
+    max_file_bytes = max_file_mb * 1024 * 1024
+    ttl = int(os.getenv("LEGALSEARCH_EPHEMERAL_TTL", str(WEBSEARCH_SESSION_TTL)))
+
+    responses: List[Dict[str, Any]] = []
+    context_lines: List[str] = []
+
+    for upload in files:
+        filename = upload.filename or "uploaded_file"
+        file_id = uuid.uuid4().hex
+        file_result: Dict[str, Any] = {"filename": filename, "file_id": file_id, "status": "ok"}
+
+        if not allowed_file(filename):
+            file_result["status"] = "rejected"
+            file_result["error"] = "Tipo de archivo no soportado"
+            responses.append(file_result)
+            continue
+
+        content = await upload.read()
+        if len(content) > max_file_bytes:
+            file_result["status"] = "rejected"
+            file_result["error"] = f"Archivo supera el límite de {max_file_mb}MB"
+            responses.append(file_result)
+            continue
+
+        av_result = await scan_with_clamav(content, filename=filename)
+        if av_result.get("status") == "INFECTED":
+            file_result["status"] = "rejected"
+            file_result["error"] = f"Malware detectado: {av_result.get('virus_name') or 'unknown'}"
+            responses.append(file_result)
+            continue
+
+        suffix = "." + filename.rsplit(".", 1)[-1].lower() if "." in filename else ""
+        tmp_path = None
+        extracted_text = ""
+        try:
+            with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
+                tmp.write(content)
+                tmp_path = tmp.name
+            extracted_text = (_extract_text_for_legal_context(tmp_path, filename) or "").strip()
+        except Exception as e:
+            logger.warning("Error extrayendo texto %s: %s", filename, e)
+            extracted_text = ""
+        finally:
+            if tmp_path and os.path.exists(tmp_path):
+                try:
+                    os.remove(tmp_path)
+                except Exception:
+                    pass
+
+        if not extracted_text:
+            extracted_text = f"[No se pudo extraer texto útil de {filename}]"
+
+        digest = hashlib.sha256(content).hexdigest()
+        meta = {
+            "file_id": file_id,
+            "search_session_id": search_session_id,
+            "conversation_id": conversation_id,
+            "sha256": digest,
+            "size_bytes": len(content),
+        }
+        await add_ephemeral_file(user_id, filename, extracted_text, ttl=ttl, meta=meta)
+        context_lines.append(f"Archivo {filename}:\n{extracted_text[:2400]}")
+        file_result["chars_extracted"] = len(extracted_text)
+        responses.append(file_result)
+
+    if context_lines:
+        await set_user_context(user_id, "\n\n".join(context_lines)[:12000], ttl=ttl)
+
+    return {
+        "search_session_id": search_session_id,
+        "conversation_id": conversation_id,
+        "files": responses,
+        "accepted": len([x for x in responses if x.get("status") == "ok"]),
+    }
+
+
+@app.post("/search/hitl/decision", response_model=dict)
+async def submit_human_review_decision(
+    request: Request,
+    body: HumanReviewDecisionRequest,
+    auth: dict = Depends(get_current_auth_chatdoc),
+):
+    validate_csrf(request)
+    user_id = auth.get("user_id")
+    task = await _read_hitl_task(user_id, body.search_session_id, body.conversation_id, body.review_task_id)
+    if not task:
+        raise HTTPException(status_code=404, detail="Tarea de revisión no encontrada.")
+
+    task["decision"] = body.decision
+    task["reviewer_notes"] = (body.reviewer_notes or "").strip()
+    task["revised_prompt"] = (body.revised_prompt or "").strip()
+    task["reviewed_at"] = datetime.now(timezone.utc).isoformat()
+    await _store_hitl_task(user_id, task)
+
+    return {"status": "ok", "task": task}
+
+
 @app.post("/search/query", response_model=WebSearchQueryResponse)
 async def web_search_query(
     request: Request,
@@ -548,21 +759,35 @@ async def web_search_query(
         _count_user(500)
         raise HTTPException(status_code=500, detail="Error leyendo historial Redis en web_search.")
 
+    context_bundle = await _build_legal_user_context(
+        user_id=user_id,
+        search_session_id=search_session_id,
+        conversation_id=conversation.id if conversation else conversation_id,
+        file_ids=body.attached_file_ids or [],
+    )
+    user_context = context_bundle.get("context") or ""
+    context_files = context_bundle.get("files") or []
+
+    complexity_markers = ("decreto", "reglamento", "compliance", "sanción", "litigio", "auditoría")
+    if not body.max_iters and (user_context or any(k in prompt.lower() for k in complexity_markers)):
+        max_iters = min(5, max_iters + 1)
+
     # --- Orquestación CrewAI (LEGAL) ---
     crew_start = perf_counter()
     try:
-        # Token efectivo para MCP (multiusuario):
-        # - si tu cookie guarda "Bearer <jwt>", la helper ya lo normaliza
-        # - si viene por Authorization: Bearer <jwt>, también
-        mcp_auth_token = extract_raw_bearer_token(request)
-
         user_auth_header = request.headers.get("Authorization") or ""
+        if not user_auth_header:
+            raw = auth.get("access_token") or extract_raw_bearer_token(request)
+            if raw:
+                user_auth_header = f"Bearer {raw}"
+
         result = await asyncio.to_thread(
             orchestrator.run_legal_search,
             user_prompt=prompt,
             history=history,
             top_k=top_k,
             max_iters=max_iters,
+            user_context=user_context,
             auth_token=user_auth_header,
         )
         
@@ -611,6 +836,29 @@ async def web_search_query(
     answer_text: str = clean_text(result.get("final_answer") or "")
     sources: List[Dict[str, Any]] = result.get("sources") or []
     normalized_queries: List[str] = result.get("normalized_queries") or []
+
+    hitl_payload: Dict[str, Any] = {}
+    if body.human_in_the_loop or body.require_human_approval:
+        review_task_id = uuid.uuid4().hex
+        task = {
+            "review_task_id": review_task_id,
+            "search_session_id": search_session_id,
+            "conversation_id": conversation.id,
+            "user_id": user_id,
+            "status": "pending_review",
+            "decision": None,
+            "prompt": prompt,
+            "draft_answer": answer_text,
+            "sources": sources,
+            "created_at": datetime.now(timezone.utc).isoformat(),
+        }
+        await _store_hitl_task(user_id, task)
+        hitl_payload = {
+            "enabled": True,
+            "status": "pending_review",
+            "review_task_id": review_task_id,
+            "require_human_approval": bool(body.require_human_approval),
+        }
 
     # Métricas de output
     WEBSEARCH_ANSWER_CHARS.observe(len(answer_text))
@@ -753,6 +1001,15 @@ async def web_search_query(
         sources=sources,
         normalized_queries=normalized_queries,
         plan_meta=result.get("plan_meta") or {},
+        context_files=[
+            {
+                "filename": f.get("filename"),
+                "file_id": (f.get("meta") or {}).get("file_id") if isinstance(f.get("meta"), dict) else None,
+                "uploaded_at": f.get("uploaded_at"),
+            }
+            for f in context_files
+        ],
+        hitl=hitl_payload,
     )
 
 
