@@ -1,0 +1,234 @@
+/* CSS propiuo de Tailwind, es necesario llamarlo aquí */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Mi CSS personalizado para el proyecto */
+
+/* Para ocultar el scroll pero mantener funcionalidad */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;  /*Para aplicarlo en IE y Edge */
+  scrollbar-width: none;     /* Para aplicarlo en Firefox */
+}
+
+/* Animaciones para el efecto de desvanecimiento de los mensajes */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.message-animate {
+  animation: fadeInUp 0.4s ease-out;
+}
+
+/* Animación de entrada del modal de la imagen del input */
+@keyframes fadeInAndUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-fadeInAndUp {
+  animation: fadeInAndUp 0.3s ease-out;
+}
+
+/* Animación para el aviso del límite de archivos adjuntos */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(0.5rem); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.25s ease-out;
+}
+
+/* Restricciones para los mensajes para que no sobrepasen el 70% del espacio del contenedor y sean estéticos */
+.chat-message {
+  max-width: 80%;
+  word-break: break-word;
+  white-space: pre-wrap;
+  border-radius: 0.75rem;
+  animation: fadeInUp 0.3s ease-in-out;
+}
+
+.chat-message.user {
+  align-self: flex-end;
+}
+
+.chat-message.system {
+  align-self: flex-start;
+}
+
+/* Estilos para el input donde se ecriben los mensjaes para COSMOS */
+.custom-textarea {
+  overflow-y: auto;
+  line-height: 1.5rem;
+  scrollbar-width: thin;
+}
+
+/* Para que no se superponga el icono del ojo en cambiar contraseña que pone el navegador en los campos password */
+input::-ms-reveal,
+input::-ms-clear,
+input::-webkit-password-toggle-button,
+input::-webkit-credentials-auto-fill-button {
+  display: none !important;
+  -webkit-appearance: none;
+}
+
+/* Css para ocultar el scrollbar de la pagina del historial */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Edge */
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE y Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
+/* Css para las animaciones de fade-in y fade-out del modal de eliminacion del historial */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+.animate-scaleIn {
+  animation: scaleIn 0.25s ease-out forwards;
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(10px); }
+}
+
+@keyframes scaleOut {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(0.95); }
+}
+
+.animate-fadeOut {
+  animation: fadeOut 0.3s ease-in forwards;
+}
+
+.animate-scaleOut {
+  animation: scaleOut 0.25s ease-in forwards;
+}
+
+/* Ajustes específicos para portátiles (entre 768px y 1280px) para el chat de Voz con el Agente */
+@media (min-width: 768px) and (max-width: 1280px) {
+  .voice-message-bubble {
+    font-size: 11.5px !important;
+    padding: 0.45rem 0.6rem !important; /* reduce padding */
+    max-width: 80% !important; /* burbujas más pequeñas */
+  }
+}
+
+/* Ajustes específicos para portátiles (entre 768px y 1280px) para el panel de controles de voz  de la pagina de chat de voz con el agente*/
+@media (min-width: 768px) and (max-width: 1280px) {
+  /* Contenedor principal */
+  .voice-controls-container {
+    padding: 0.75rem !important; /* reduce el padding del contenedor */
+  }
+
+  /* Botones grandes (mic y colgar) */
+  .voice-controls-container .w-14 {
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+  }
+
+  /* Labels debajo de los botones */
+  .voice-controls-container span.text-xs {
+    font-size: 9px !important;
+  }
+
+  /* Gap entre botones y controles */
+  .voice-controls-container .flex.items-center.justify-center > div {
+    gap: 0.25rem !important;
+  }
+
+  /* Control de volumen */
+  .voice-controls-container .w-44 {
+    width: 6rem !important;
+  }
+
+  /* Presets de volumen */
+  .voice-controls-container .w-48 {
+    width: 9rem !important;
+  }
+
+  /* Gap entre sliders y presets */
+  .voice-controls-container .flex.flex-col.items-center.gap-3 {
+    gap: 0.5rem !important;
+  }
+
+  /* Shortcuts informativos */
+  .voice-controls-container > div.mt-4 {
+    margin-top: 0.25rem !important;
+    font-size: 8px !important;
+  }
+}
+
+/* Para controlar el desfase del modo claro/oscuro en el voice-layout */
+.voice-layout-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* ocupa toda la altura visible */
+  overflow: hidden; /* evita desbordamientos globales */
+}
+
+.voice-layout-main {
+  flex: 1; /* ocupa todo el espacio restante debajo del header */
+  overflow-y: auto; /* permite hacer scroll solo dentro del contenido */
+  scroll-behavior: smooth;
+}
+
+.voice-layout-main::-webkit-scrollbar {
+  display: none; /* oculta el scrollbar */
+}
+
+.voice-layout, .voice-layout-main, .voice-layout-main > div {
+  background-color: inherit;
+  transition: background-color 0.3s ease;
+}
+
+body.dark-mode {
+  background-color: #111827;
+  color: white;
+}
+
+body.dark-mode .voice-layout-main > div {
+  background-color: #1f2937; /* contenedor de mensajes */
+}
+
+body.dark-mode .voice-message-bubble {
+  background-color: #374151; /* burbujas oscuras */
+  color: white;
+}
+
+/* Para evitar solapamiento entre el Header y el contenido en pantallas pequeñas */
+@media (max-height: 700px) {
+  .voice-layout-main {
+    padding-bottom: 4rem;
+  }
+}
