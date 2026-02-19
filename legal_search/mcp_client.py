@@ -427,6 +427,7 @@ class MCPClient:
         tags_all: Optional[List[str]] = None,
         *,
         auth_token: Optional[str] = None,
+        user_auth_token: Optional[str] = None,
     ) -> List[Dict[str, Any]]:
         last_exc = None
         for attempt in range(self.max_retries + 1):
@@ -436,6 +437,7 @@ class MCPClient:
                     tags_any=tags_any,
                     tags_all=tags_all,
                     auth_token=auth_token,
+                    user_auth_token=user_auth_token,
                 )
             except Exception as e:
                 last_exc = e
@@ -623,10 +625,11 @@ class MCPClient:
         tags_all: Optional[List[str]] = None,
         *,
         auth_token: Optional[str] = None,
+        user_auth_token: Optional[str] = None,
     ) -> List[Dict[str, Any]]:
         try:
             async with self._lock:
-                client = self._build_client(auth_token=auth_token)
+                client = self._build_client(auth_token=auth_token, user_auth_token=user_auth_token)
 
             async with client:
                 # 1) registry enriquecido
@@ -688,6 +691,7 @@ class MCPClient:
             tags_any=tags_any,
             tags_all=tags_all,
             auth_token=auth_token,
+            user_auth_token=user_auth_token,
         )
 
 
@@ -701,9 +705,16 @@ class MCPClient:
         tags_all: Optional[List[str]] = None,
         *,
         auth_token: Optional[str] = None,
+        user_auth_token: Optional[str] = None,
     ) -> List[Dict[str, Any]]:
         return self._run_sync(
-            self.alist_tools(crew=crew, tags_any=tags_any, tags_all=tags_all, auth_token=auth_token)
+            self.alist_tools(
+                crew=crew,
+                tags_any=tags_any,
+                tags_all=tags_all,
+                auth_token=auth_token,
+                user_auth_token=user_auth_token,
+            )
         )
 
 
