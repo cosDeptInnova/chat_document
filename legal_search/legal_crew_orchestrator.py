@@ -391,8 +391,7 @@ class LegalSearchCrewOrchestrator:
                 tools = self.mcp.list_tools(
                     crew=crew_name,
                     auth_token=self.mcp_registry_token,          # S2S
-                    # Si implementas list_tools con user_auth_token, pásalo aquí:
-                    # user_auth_token=user_auth_token,
+                    user_auth_token=user_auth_token,
                 ) or []
 
                 if isinstance(tools, dict) and "tools" in tools:
@@ -504,6 +503,37 @@ class LegalSearchCrewOrchestrator:
 
             if self.fetch_tool_name not in self.available_tools:
                 self.fetch_tool_name = pick("fetch") or self.fetch_tool_name
+
+    def _ensure_required_tools(self, *, user_auth_token: Optional[str] = None) -> bool:
+        """
+        Garantiza que search/fetch estén presentes antes de ejecutar iteraciones.
+
+        Estrategia:
+        - Intento con cache actual.
+        - Refresh forzado con crew configurada + fallbacks.
+        - Último intento de auto-pick.
+        """
+        with self._tools_lock:
+            has_search = self.search_tool_name in self.available_tools
+            has_fetch = self.fetch_tool_name in self.available_tools
+            if has_search and has_fetch:
+                return True
+
+        self._refresh_tools(force=True, user_auth_token=user_auth_token)
+        self._validate_tool_names()
+
+        with self._tools_lock:
+            if self.search_tool_name in self.available_tools and self.fetch_tool_name in self.available_tools:
+                return True
+
+            auto_search = self._auto_pick_tool("search")
+            auto_fetch = self._auto_pick_tool("fetch")
+            if auto_search:
+                self.search_tool_name = auto_search
+            if auto_fetch:
+                self.fetch_tool_name = auto_fetch
+
+            return self.search_tool_name in self.available_tools and self.fetch_tool_name in self.available_tools
 
     # ----------------------
     # Runner helper (LLM)
@@ -985,6 +1015,31 @@ class LegalSearchCrewOrchestrator:
         if not self.available_tools or (time.time() - self._tools_last_refresh) > self._tools_ttl_sec:
             self._refresh_tools(force=True, user_auth_token=auth_token)
             self._validate_tool_names()
+
+        if not self._ensure_required_tools(user_auth_token=auth_token):
+            return {
+                "final_answer": (
+                    "No fue posible resolver de forma segura las tools MCP requeridas "
+                    "(search/fetch) para esta ejecución legal."
+                ),
+                "sources": [],
+                "normalized_queries": [],
+                "tool_trace": [],
+                "agent_steps": [],
+                "tool_events": [
+                    {
+                        "tool": "discovery",
+                        "status": "error",
+                        "reason": "missing_required_tools",
+                        "search_tool": self.search_tool_name,
+                        "fetch_tool": self.fetch_tool_name,
+                    }
+                ],
+                "plan_meta": {
+                    "crew_name": self.crew_name,
+                    "available_tools": list(self.available_tools.keys()),
+                },
+            }
 
         # parámetros defensivos
         try:
