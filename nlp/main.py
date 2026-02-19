@@ -1495,7 +1495,10 @@ async def process_user_files(
 
         session_key = f"session:{user_id}"
         raw = await redis_client.get(session_key)
-        session_data = json.loads(raw) if raw else {}
+        try:
+            session_data = json.loads(raw) if raw else {}
+        except Exception:
+            session_data = {}
 
         # client_tag persistente en sesión
         if client_tag:
@@ -1544,6 +1547,7 @@ async def process_user_files(
                 for f in files:
                     if os.path.splitext(f)[1].lower() in valid_exts:
                         found_files.append(str(Path(r) / f))
+        found_files = sorted(list(dict.fromkeys(found_files)))
 
         if not found_files:
             return JSONResponse(status_code=200, content={
@@ -1569,14 +1573,17 @@ async def process_user_files(
         # 4) Leer estado previo (lista de ya procesados) desde Redis
         redis_key = f"indexer:{user_directory}"
         raw_idx = await redis_client.get(redis_key)
+        stored = {}
         if raw_idx:
-            stored = json.loads(raw_idx).get("user", {})
-            processed = set(stored.get("files", []))
-        else:
-            processed = set()
+            try:
+                stored = json.loads(raw_idx) or {}
+            except Exception:
+                stored = {}
+        processed = set((stored.get("user", {}) or {}).get("files", []) or [])
 
         # 5) Normalizar paths (Windows-safe) y calcular incrementales
-        norm = lambda p: os.path.normcase(os.path.normpath(p))
+        def norm(p: str) -> str:
+            return os.path.normcase(os.path.normpath(str(p or "")))
         norm_processed = {norm(p) for p in processed}
         norm_files     = {norm(p) for p in found_files}
         new_files_norm = sorted(list(norm_files - norm_processed))
@@ -1822,6 +1829,8 @@ async def process_department_files(
                 except Exception:
                     pass
 
+        failed_departments: List[Dict[str, str]] = []
+
         for dept in departments:
             dept_dir_rel = dept.get("department_directory")
             if not dept_dir_rel:
@@ -1830,12 +1839,12 @@ async def process_department_files(
             dept_dir = PATH_BASE_DEPARTMENTS / dept_dir_rel / "uploaded_files"
             dept_dir.mkdir(parents=True, exist_ok=True)
 
-            files_in_dir = [
+            files_in_dir = sorted(list(dict.fromkeys([
                 os.path.join(r, f)
                 for r, _, files in os.walk(dept_dir)
                 for f in files
                 if os.path.splitext(f)[1].lower() in valid_extensions
-            ]
+            ])))
             if not files_in_dir:
                 continue
             had_files = True
@@ -1847,69 +1856,76 @@ async def process_department_files(
             default_path = idx_dir / f"{dept_name}_index"
 
             redis_key = f"indexer:{dept_dir_rel}"
-            raw_idx = await redis_client.get(redis_key)
-            if raw_idx:
-                stored = json.loads(raw_idx)
-                processed = set(stored.get("files", []))
-                index_filepath = Path(stored.get("index_filepath") or default_path)
-            else:
-                processed = set()
-                index_filepath = default_path
+            try:
+                raw_idx = await redis_client.get(redis_key)
+                if raw_idx:
+                    try:
+                        stored = json.loads(raw_idx) or {}
+                    except Exception:
+                        stored = {}
+                    processed = set(stored.get("files", []) or [])
+                    index_filepath = Path(stored.get("index_filepath") or default_path)
+                else:
+                    processed = set()
+                    index_filepath = default_path
 
-            norm_proc = {os.path.normpath(p) for p in processed}
-            norm_files = {os.path.normpath(p) for p in files_in_dir}
-            new_files = list(norm_files - norm_proc)
+                norm_proc = {os.path.normcase(os.path.normpath(p)) for p in processed}
+                norm_files = {os.path.normcase(os.path.normpath(p)) for p in files_in_dir}
+                new_files = list(norm_files - norm_proc)
 
-            if new_files:
-                #  micro-opt: set(new_files) una vez
-                new_files_set = set(new_files)
-
-                #  indexado incremental en thread
-                idx = await asyncio.to_thread(
-                    make_indexer,
-                    files=[p for p in files_in_dir if os.path.normpath(p) in new_files_set],
-                    index_filepath=str(index_filepath),
-                    user_id=dept_name,
-                    client_tag="",
-                    use_cache=False,  # ingest: no cache
-                )
-                norm_proc |= set(new_files)
-                _invalidate_indexer_cache(str(index_filepath), str(dept_name))
-            else:
-                #  attach lectura en thread (cache ok)
-                idx = await asyncio.to_thread(
-                    make_indexer,
-                    files=None,
-                    index_filepath=str(index_filepath),
-                    user_id=dept_name,
-                    client_tag="",
-                    use_cache=True,
-                )
-
-                # Warmup ligero solo en attach (no en ingest)
-                try:
-                    await loop.run_in_executor(None, _warmup_models, idx)
-                except Exception as e:
-                    logging.warning(
-                        "[process_department_files] warmup modelos falló para '%s': %s",
-                        dept_name, e,
+                if new_files:
+                    new_files_set = set(new_files)
+                    idx = await asyncio.to_thread(
+                        make_indexer,
+                        files=[p for p in files_in_dir if os.path.normcase(os.path.normpath(p)) in new_files_set],
+                        index_filepath=str(index_filepath),
+                        user_id=dept_name,
+                        client_tag="",
+                        use_cache=False,
+                    )
+                    norm_proc |= set(new_files)
+                    _invalidate_indexer_cache(str(index_filepath), str(dept_name))
+                else:
+                    idx = await asyncio.to_thread(
+                        make_indexer,
+                        files=None,
+                        index_filepath=str(index_filepath),
+                        user_id=dept_name,
+                        client_tag="",
+                        use_cache=True,
                     )
 
-            indexers[dept_name] = idx
+                    try:
+                        await loop.run_in_executor(None, _warmup_models, idx)
+                    except Exception as e:
+                        logging.warning(
+                            "[process_department_files] warmup modelos falló para '%s': %s",
+                            dept_name, e,
+                        )
 
-            rec = db.query(Department).filter(
-                Department.department_directory == dept_dir_rel
-            ).first()
-            if not rec:
-                rec = Department(name=dept_name, department_directory=dept_dir_rel)
-            rec.faiss_index_path = str(index_filepath)
-            db.add(rec)
-            db.commit()
+                indexers[dept_name] = idx
 
-            await redis_client.set(
-                redis_key,
-                json.dumps({"index_filepath": str(index_filepath), "files": list(norm_proc)})
-            )
+                rec = db.query(Department).filter(
+                    Department.department_directory == dept_dir_rel
+                ).first()
+                if not rec:
+                    rec = Department(name=dept_name, department_directory=dept_dir_rel)
+                rec.faiss_index_path = str(index_filepath)
+                db.add(rec)
+                db.commit()
+
+                await redis_client.set(
+                    redis_key,
+                    json.dumps({"index_filepath": str(index_filepath), "files": list(norm_proc)})
+                )
+            except Exception as dept_exc:
+                logging.exception("[process_department_files] Error en '%s': %s", dept_dir_rel, dept_exc)
+                failed_departments.append({"department": str(dept_dir_rel), "error": str(dept_exc)})
+                try:
+                    db.rollback()
+                except Exception:
+                    pass
+                continue
 
         if not had_files:
             return Response(status_code=204)
@@ -1922,7 +1938,11 @@ async def process_department_files(
 
         return JSONResponse(
             status_code=200,
-            content={"message": "Procesamiento departamental completado.", "departments": summary}
+            content={
+                "message": "Procesamiento departamental completado.",
+                "departments": summary,
+                "failed_departments": failed_departments,
+            }
         )
 
     except Exception as e:

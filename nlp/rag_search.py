@@ -203,6 +203,11 @@ def _build_qdrant_filter_from_filters(
         "documento": "documento",
         "doc_name": "documento",
         "file_name": "documento",
+        "seccion": "section",
+        "sección": "section",
+        "apartado": "section",
+        "heading": "section",
+        "title": "section",
     }
 
     # --- 1) Documento ---
@@ -258,6 +263,7 @@ def _build_qdrant_filter_from_filters(
         "doc_id",
         "tags",
     }
+    section_keys = {"section", "section_path", "section_ancestors"}
 
     # campos int típicos
     int_keys = {"page", "row_idx", "row_id", "chunk_index"}
@@ -290,6 +296,22 @@ def _build_qdrant_filter_from_filters(
                     must.extend(_build_conditions_for_scalar(k, vv))
             else:
                 must.extend(_build_conditions_for_scalar(k, v))
+            continue
+
+        if k in section_keys:
+            vals = _as_list(v)
+            if vals:
+                # sección: OR flexible entre campos enriquecidos
+                for sv in vals:
+                    sval = str(sv).strip()
+                    if not sval:
+                        continue
+                    sval_c = _canon(indexer, sval)
+                    should.append(qmodels.FieldCondition(key="section_path", match=qmodels.MatchText(text=sval)))
+                    should.append(qmodels.FieldCondition(key="section_ancestors", match=qmodels.MatchText(text=sval)))
+                    should.append(qmodels.FieldCondition(key="tags", match=qmodels.MatchText(text=sval)))
+                    should.extend(_build_conditions_for_scalar("section_path", sval))
+                    should.extend(_build_conditions_for_scalar("section_path", sval_c))
             continue
 
         if k in int_keys:
@@ -621,9 +643,21 @@ def search_impl(
             for t in matched_tags:
                 must.append(qmodels.FieldCondition(key="tags", match=qmodels.MatchValue(value=t)))
 
+    # --- hints de sección desde query (cuando el planner no los emitió) ---
+    auto_filters = dict(filters or {})
+    try:
+        if not any(k in auto_filters for k in ("section", "section_path", "seccion", "sección", "apartado", "heading")):
+            m = re.search(r"(?:secci[oó]n|apartado|cap[ií]tulo|heading|section)\s+([\w\-\.\/: ]{2,80})", query or "", flags=re.I)
+            if m:
+                sec = (m.group(1) or "").strip(" .,:;\"'()[]{}")
+                if sec:
+                    auto_filters["section"] = sec
+    except Exception:
+        pass
+
     # --- filters dict (planner/tool) ---
     try:
-        f_must, f_should, f_must_not = _build_qdrant_filter_from_filters(indexer, filters)
+        f_must, f_should, f_must_not = _build_qdrant_filter_from_filters(indexer, auto_filters)
         must.extend(f_must)
         should.extend(f_should)
         must_not.extend(f_must_not)

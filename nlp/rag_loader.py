@@ -929,7 +929,12 @@ def dynamic_fragment_size_impl(total_tokens: int) -> int:
     Se mantiene firma y trazas (print) del original.
     """
     print(f"(fragment_size) total_tokens={total_tokens}", flush=True)
-    size = 60 if total_tokens < 240 else 120 if total_tokens < 1200 else 180
+    short = int(os.getenv("RAG_CHUNK_TOKENS_SHORT", "90"))
+    medium = int(os.getenv("RAG_CHUNK_TOKENS_MEDIUM", "180"))
+    large = int(os.getenv("RAG_CHUNK_TOKENS_LARGE", "280"))
+    t1 = int(os.getenv("RAG_CHUNK_BREAKPOINT_1", "320"))
+    t2 = int(os.getenv("RAG_CHUNK_BREAKPOINT_2", "1800"))
+    size = short if total_tokens < t1 else medium if total_tokens < t2 else large
     print(f"(fragment_size) size={size}", flush=True)
     return size
 
@@ -944,6 +949,10 @@ def fragment_text_semantically_impl(
     Misma lógica, pero sin construir listas enormes intermedias (streaming).
     """
     import re
+
+    min_overlap = int(os.getenv("RAG_CHUNK_MIN_OVERLAP_TOKENS", "40"))
+    overlap_ratio = float(os.getenv("RAG_CHUNK_OVERLAP_RATIO", "0.30"))
+    overlap_tokens = max(overlap_tokens, min_overlap, int(max_tokens * overlap_ratio))
 
     print(
         f"(fragment) Iniciando fragmentación semántica: max_tokens={max_tokens}, overlap={overlap_tokens}",
@@ -981,8 +990,18 @@ def fragment_text_semantically_impl(
         return [p for p in parts if p.strip()]
 
     segments: List[str] = []
+    segment_headers: List[str] = []
+    active_header = ""
     for b in blocks:
-        segments.extend(split_block(b))
+        parts = split_block(b)
+        if not parts:
+            continue
+        first_line = parts[0].splitlines()[0].strip() if parts[0].strip() else ""
+        if title_re.match(first_line):
+            active_header = first_line
+        for p in parts:
+            segments.append(p)
+            segment_headers.append(active_header)
 
     nlp = _get_nlp()
     batch_size = int(os.getenv("NLP_PIPE_BATCH", "32"))
@@ -1014,11 +1033,13 @@ def fragment_text_semantically_impl(
         total = sum(o_counts)
 
     # Streaming spaCy: no guardamos docs ni todas las frases
-    for d in nlp.pipe(segments, batch_size=batch_size):
+    for seg_header, d in zip(segment_headers, nlp.pipe(segments, batch_size=batch_size)):
         for s in d.sents:
             st = s.text.strip()
             if not st:
                 continue
+            if seg_header and seg_header.lower() not in st.lower():
+                st = f"{seg_header}\n{st}"
             tk = len(s)
 
             current.append(st)
