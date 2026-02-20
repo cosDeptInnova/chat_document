@@ -123,6 +123,11 @@ def build_doc_analyst_prompt(
 
     description = f"""{system_block}
 
+RESTRICCIÓN DE VENTANA DE CONTEXTO:
+- Mantén tu salida compacta y densa: objetivo <= 2.200 tokens.
+- Prioriza evidencia concreta frente a narrativas largas.
+- Si hay demasiados hallazgos, selecciona los de mayor impacto y marca el resto como pendiente.
+
 {goal_block}
 
 === Metadatos del documento ===
@@ -185,6 +190,45 @@ Devuelve un informe en texto plano con ESTA ESTRUCTURA EXACTA (cabeceras incluid
 """
 
     return description
+
+
+def build_doc_synthesizer_prompt(
+    user_prompt: str,
+    normalized_prompt: str,
+    precision_report: str,
+    coverage_report: str,
+) -> str:
+    return f"""Eres un sintetizador senior para minería documental en producción.
+
+Tu misión es reconciliar DOS informes internos:
+- Informe PRECISIÓN: prioriza fragmentos de alta confianza.
+- Informe COBERTURA: prioriza amplitud de recuperación.
+
+Pregunta del usuario:
+{user_prompt}
+
+Pregunta normalizada:
+{normalized_prompt}
+
+=== Informe PRECISIÓN ===
+{precision_report}
+
+=== Informe COBERTURA ===
+{coverage_report}
+
+REGLAS DE SÍNTESIS:
+- Conserva SOLO afirmaciones soportadas por evidencia explícita.
+- Si hay conflicto, elige la versión más respaldada y explica brevemente la discrepancia.
+- No inventes datos ni cites páginas inexistentes.
+- Mantén salida compacta para no rebasar presupuesto de contexto (objetivo <= 1.600 tokens).
+
+SALIDA (texto plano):
+1) RESPUESTA_BASE_CONSENSUADA
+2) EVIDENCIAS_PRIORIZADAS
+3) DISCREPANCIAS_O_INCERTIDUMBRES
+4) HUECOS_DE_INFORMACION
+5) QUERIES_DE_RECUPERACION_ADICIONAL
+"""
 
 
 def build_doc_writer_prompt(

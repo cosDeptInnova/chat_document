@@ -4,8 +4,9 @@ from __future__ import annotations
 
 import os
 import re
+import asyncio
 import logging
-from typing import Optional, Dict, Any, Union
+from typing import Optional, Dict, Any, Union, List
 
 import httpx
 from mcp.server.fastmcp import Context
@@ -454,6 +455,119 @@ async def chatdoc_query_tool(
         data["trace"].update({"return_format": fmt})
 
     return data
+
+
+@cosmos_tool(
+    name="chatdoc_dual_query_tool",
+    description=(
+        "Ejecuta dos recuperaciones contra /chatdoc/query (precision+coverage), "
+        "fusiona resultados y devuelve trazabilidad por pasada."
+    ),
+    tags=["rag", "document", "chatdoc", "query", "dual", "production"],
+    for_crews=["document_crew"],
+)
+@mcp_server.tool(
+    name="chatdoc_dual_query_tool",
+    description="Dual retrieval robusto para ChatDoc con dos pasadas paralelas.",
+)
+async def chatdoc_dual_query_tool(
+    document_id: str,
+    query: str,
+    top_k: int = 8,
+    min_score: float = 0.0,
+    window: int = 1,
+    return_format: str = "json",
+    access_token: Optional[str] = None,
+    user_id: Optional[int] = None,
+    ctx: Optional[Context[ServerSession, MCPAppContext]] = None,
+) -> Union[str, Dict[str, Any]]:
+    """Dual retrieval con sesgo precision/coverage para latencia estable y mejor recall."""
+    fmt = (return_format or "json").lower().strip()
+    if fmt not in ("text", "json", "trace_json"):
+        fmt = "json"
+
+    base_top_k = max(1, min(int(top_k), 32))
+    base_window = max(0, min(int(window), 5))
+    base_min_score = float(min_score)
+
+    precision_payload: Dict[str, Any] = {
+        "document_id": document_id,
+        "query": query,
+        "top_k": base_top_k,
+        "min_score": max(base_min_score, 0.12),
+        "window": min(base_window, 2),
+    }
+    coverage_payload: Dict[str, Any] = {
+        "document_id": document_id,
+        "query": query,
+        "top_k": min(32, base_top_k + 4),
+        "min_score": max(0.0, base_min_score * 0.7),
+        "window": min(5, base_window + 1),
+    }
+
+    if user_id is not None:
+        precision_payload["user_id"] = int(user_id)
+        coverage_payload["user_id"] = int(user_id)
+
+    cookies, headers = await build_nlp_auth(access_token=access_token)
+    endpoint = f"{NLP_APP_BASE_URL.rstrip('/')}/chatdoc/query"
+
+    async with httpx.AsyncClient(timeout=NLP_REQUEST_TIMEOUT) as client:
+        precision_task = client.post(endpoint, json=precision_payload, cookies=cookies or None, headers=headers or None)
+        coverage_task = client.post(endpoint, json=coverage_payload, cookies=cookies or None, headers=headers or None)
+        precision_resp, coverage_resp = await asyncio.gather(precision_task, coverage_task)
+
+    precision_resp.raise_for_status()
+    coverage_resp.raise_for_status()
+
+    precision_data = precision_resp.json() or {}
+    coverage_data = coverage_resp.json() or {}
+
+    precision_results = precision_data.get("results") if isinstance(precision_data.get("results"), list) else []
+    coverage_results = coverage_data.get("results") if isinstance(coverage_data.get("results"), list) else []
+
+    merged: List[Dict[str, Any]] = []
+    seen = set()
+    for pass_name, items in (("precision", precision_results), ("coverage", coverage_results)):
+        for item in items:
+            if not isinstance(item, dict):
+                continue
+            txt = (item.get("text") or "").strip()
+            if not txt:
+                continue
+            key = txt[:800]
+            if key in seen:
+                continue
+            seen.add(key)
+            enriched = dict(item)
+            enriched["retrieval_pass"] = pass_name
+            merged.append(enriched)
+
+    merged.sort(key=lambda x: float(x.get("score") or 0.0), reverse=True)
+
+    payload_out: Dict[str, Any] = {
+        "status": "ok" if merged else "no_results",
+        "document_id": document_id,
+        "query": query,
+        "results": merged[: min(48, len(merged))],
+        "precision_count": len(precision_results),
+        "coverage_count": len(coverage_results),
+    }
+    payload_out["chunks"] = payload_out["results"]
+    payload_out["fragments"] = payload_out["results"]
+
+    if fmt == "text":
+        texts = [str(x.get("text") or "").strip() for x in payload_out["results"] if str(x.get("text") or "").strip()]
+        return "\n\n---\n\n".join(texts) or "Sin resultados para la consulta."
+
+    if fmt == "trace_json":
+        payload_out["trace"] = {
+            "precision_payload": precision_payload,
+            "coverage_payload": coverage_payload,
+            "return_format": fmt,
+        }
+
+    return payload_out
 
 
 # ---------------------------------------------------------------------
