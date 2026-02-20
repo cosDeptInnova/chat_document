@@ -1736,26 +1736,25 @@ def _get_notetaker_base_url() -> str:
 # display_name normalization
 # -------------------------
 _DISPLAY_NAME_BAD_CHARS = re.compile(r"[\r\n\t]")
-_DISPLAY_NAME_HAS_AT = re.compile(r"@")
-_DISPLAY_NAME_MULTI_SPACE = re.compile(r"\s+")
 
 
 def _normalize_display_name(value: Optional[str]) -> str:
     """
-    display_name debe ser "Nombre Apellidos" (no email).
-    - limpia espacios
-    - rechaza si contiene '@'
-    - exige al menos 2 palabras
+    Normaliza el nombre visible para Notetaker siguiendo el mismo criterio
+    práctico que usa /me: priorizar el nombre de usuario y evitar que sea email.
     """
     if not value:
         return ""
-    v = " ".join(value.strip().split())
+
+    v = _DISPLAY_NAME_BAD_CHARS.sub(" ", value)
+    v = " ".join(v.strip().split())
     if not v:
         return ""
+
+    # Evitamos pasar emails como nombre visible.
     if "@" in v:
         return ""
-    if len(v.split()) < 2:
-        return ""
+
     return v
 
 
@@ -1798,11 +1797,11 @@ async def _resolve_notetaker_identity_like_me(request: Request, auth: Dict[str, 
     if not email:
         raise HTTPException(status_code=400, detail="No se pudo determinar el email del usuario.")
 
-    # username igual que /me (ojo: tu /me mete fallback al prefijo del email,
-    # aquí NO lo usamos para display_name porque no es nombre+apellidos).
+    # username igual que /me: name de SSO -> username de sesión -> prefijo de email
     username = (
         (sso.get("name") or "")  # En tu /me lo usas como username
         or (session.get("username", "") or "")
+        or (email.split("@")[0] if email else "")
     ).strip()
 
     display_name = _normalize_display_name(username)
@@ -1834,9 +1833,11 @@ def _build_notetaker_url(email: str, display_name: str, user_id: int) -> Dict[st
 
     params: Dict[str, str] = {"email": email}
 
-    # display_name solo si es válido (ya normalizado)
+    # Enviamos display_name y también name para mantener compatibilidad
+    # con implementaciones de Notetaker que lean cualquiera de los dos.
     if display_name:
         params["display_name"] = display_name
+        params["name"] = display_name
 
     token_value: Optional[str] = None
     if include_token:
