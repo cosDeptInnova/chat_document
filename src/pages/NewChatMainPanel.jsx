@@ -1,7 +1,6 @@
 // src/pages/NewChatMainPanel.jsx
 import React, { useState, useRef, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { FiPhone } from "react-icons/fi";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
@@ -1915,50 +1914,6 @@ export default function NuevoChatMainPanel({
                 </div>
 
                 <div className="flex gap-1 md:gap-2 items-center">
-                  {/* Botón del teléfono para acceder a la ventana del chat con el agente por voz */}
-                  <button
-                    onClick={handleOpenVoiceAgent}
-                    className={`
-                      relative flex items-center justify-center
-                      w-9 h-9 md:w-10 md:h-10 rounded-full border-none cursor-pointer
-                      transition-all duration-300 ease-in-out
-                      shadow-lg hover:shadow-xl hover:scale-110 active:scale-95
-                      ${videosPreloaded 
-                        ? isDarkMode 
-                          ? 'bg-blue-400 hover:bg-blue-500'
-                          : 'bg-blue-700 hover:bg-blue-800'
-                        : isDarkMode 
-                          ? 'bg-red-600 hover:bg-red-700' 
-                          : 'bg-red-500 hover:bg-red-600'
-                      }
-                    `}
-                    title={
-                      videosPreloaded
-                        ? "Pulsa para hablar con un agente"
-                        : `La función hablar con un agente está cargando ${preloadProgress}%`
-                    }
-                  >
-                    {/* Icono del teléfono en blanco */}
-                    <FiPhone 
-                      size={20} 
-                      className="text-white transition-colors duration-300"
-                    />
-                    
-                    {/* Indicador de estado de preload */}
-                    {!videosPreloaded && (
-                      <div className="absolute -top-1 -right-1">
-                        <div className="relative flex">
-                          <div className="absolute animate-ping w-3 h-3 bg-amber-400 rounded-full opacity-75" />
-                          <div className="relative w-3 h-3 bg-amber-500 rounded-full border border-white" />
-                        </div>
-                      </div>
-                    )}
-                    
-                    {videosPreloaded && (
-                      <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full border border-white" />
-                    )}
-                  </button>
-
                   {/* Micrófono */}
                   <button
                     onClick={() => {
