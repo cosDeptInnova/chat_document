@@ -81,6 +81,26 @@ def create_doc_reviewer_agent(llm: LLM, verbose: bool = False) -> Agent:
         verbose=verbose,
     )
 
+
+def create_doc_synthesizer_agent(llm: LLM, verbose: bool = False) -> Agent:
+    return Agent(
+        role="Sintetizador de evidencias multi-pasada",
+        goal=(
+            "Fusionar informes parciales de minería (precisión y cobertura), "
+            "resolver conflictos entre evidencias y entregar una síntesis consistente "
+            "lista para redacción final."
+        ),
+        backstory=(
+            "Eres especialista en reconciliación de fuentes documentales. "
+            "Cuando dos recuperaciones traen matices distintos, priorizas el texto "
+            "más fuerte, declaras incertidumbres y dejas una base robusta para producción."
+        ),
+        llm=llm,
+        tools=[],
+        allow_delegation=False,
+        verbose=verbose,
+    )
+
 def create_doc_scout_agent(llm: LLM, verbose: bool = False) -> Agent:
     """
     Agente explorador opcional (no rompe nada si no se usa).

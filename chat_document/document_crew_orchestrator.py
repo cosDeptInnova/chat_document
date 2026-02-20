@@ -16,6 +16,7 @@ from document_crew_src.agents import (
     create_doc_writer_agent,
     create_doc_planner_agent,
     create_doc_reviewer_agent,
+    create_doc_synthesizer_agent,
 )
 from document_crew_src.utils import clean_llm_text
 from document_crew_src.prompts import (
@@ -23,6 +24,7 @@ from document_crew_src.prompts import (
     build_doc_writer_prompt,
     build_doc_planner_prompt,
     build_doc_verifier_prompt,
+    build_doc_synthesizer_prompt,
 )
 from mcp_client import MCPClient  
 
@@ -79,6 +81,7 @@ class DocumentCrewOrchestrator:
         self.doc_analyst: Agent = create_doc_analyst_agent(self.llm_doc_analyst, verbose)
         self.doc_writer: Agent = create_doc_writer_agent(self.llm_doc_writer, verbose)
         self.doc_reviewer: Agent = create_doc_reviewer_agent(self.llm_doc_writer, verbose)
+        self.doc_synthesizer: Agent = create_doc_synthesizer_agent(self.llm_doc_writer, verbose)
 
         # --- MCP client (bus real) ---
         self.mcp = MCPClient()
@@ -113,6 +116,88 @@ class DocumentCrewOrchestrator:
         except Exception:
             self._crew_acquire_timeout_s = 30.0
 
+
+
+    def _cap_text_budget(self, text: str, max_chars: int) -> str:
+        if not isinstance(text, str):
+            return ""
+        budget = max(2000, int(max_chars))
+        if len(text) <= budget:
+            return text
+        return text[:budget] + "\n\n… (contexto recortado por presupuesto de inferencia)\n"
+
+    def _fetch_dual_context_via_mcp(
+        self,
+        *,
+        document_id: str,
+        normalized_prompt: str,
+        top_k: int,
+        min_score: float,
+        window: int,
+        access_token: Optional[str],
+        mcp_auth_token: Optional[str],
+    ) -> Dict[str, List[Dict[str, Any]]]:
+        """
+        Ejecuta dos recuperaciones QA en paralelo:
+        - precision: umbral más estricto
+        - coverage: mayor recall
+        """
+        try:
+            precision_score = float(os.getenv("CHATDOC_DUAL_PRECISION_MIN_SCORE", "0.12"))
+        except Exception:
+            precision_score = 0.12
+
+        precision_min_score = max(float(min_score or 0.0), precision_score)
+        coverage_min_score = max(0.0, float(min_score or 0.0) * 0.7)
+
+        try:
+            coverage_topk_boost = int(os.getenv("CHATDOC_DUAL_COVERAGE_TOPK_BOOST", "4"))
+        except Exception:
+            coverage_topk_boost = 4
+
+        coverage_topk = min(32, max(1, int(top_k) + max(1, coverage_topk_boost)))
+        precision_topk = max(1, int(top_k))
+
+        precision_window = max(0, min(int(window), 2))
+        coverage_window = max(0, min(int(window) + 1, 3))
+
+        configs = {
+            "precision": dict(top_k=precision_topk, min_score=precision_min_score, window=precision_window),
+            "coverage": dict(top_k=coverage_topk, min_score=coverage_min_score, window=coverage_window),
+        }
+
+        out: Dict[str, List[Dict[str, Any]]] = {"precision": [], "coverage": []}
+
+        def _one(pass_name: str, cfg: Dict[str, Any]) -> List[Dict[str, Any]]:
+            res = self._fetch_context_via_mcp(
+                document_id=document_id,
+                normalized_prompt=normalized_prompt,
+                mode="qa",
+                top_k=int(cfg["top_k"]),
+                min_score=float(cfg["min_score"]),
+                window=int(cfg["window"]),
+                access_token=access_token,
+                mcp_auth_token=mcp_auth_token,
+            ) or {}
+            chunks = res.get("chunks") or []
+            if not isinstance(chunks, list):
+                return []
+            for c in chunks:
+                if isinstance(c, dict):
+                    c.setdefault("_retrieval_pass", pass_name)
+            return [c for c in chunks if isinstance(c, dict)]
+
+        with ThreadPoolExecutor(max_workers=2, thread_name_prefix="chatdoc-dual-retrieval") as ex:
+            futs = {ex.submit(_one, name, cfg): name for name, cfg in configs.items()}
+            for fut in as_completed(futs):
+                name = futs[fut]
+                try:
+                    out[name] = fut.result()
+                except Exception as exc:
+                    logger.warning("[CHATDOC_FETCH] dual retrieval failed pass=%s err=%s", name, exc)
+                    out[name] = []
+
+        return out
 
     def _safe_list_str(self, v: Any, max_items: int = 12) -> list[str]:
         if not isinstance(v, list):
@@ -1395,26 +1480,103 @@ class DocumentCrewOrchestrator:
         doc_meta = base_meta
 
         # -------------------------
-        # 1) Analista
+        # 1) Analista (dual-pass opcional)
         # -------------------------
-        analyst_description = build_doc_analyst_prompt(
-            mode=mode_norm,
-            history_str=history_str,
-            user_prompt=norm_prompt,
-            doc_context=doc_ctx or "No hay fragmentos disponibles del documento.",
-            doc_meta=doc_meta,
-            precomputed_summary=precomputed_summary,
-        )
-        analyst_description = (
-            f"[CHATDOC_ID {chat_id}] (etiqueta interna, NO la menciones)\n\n"
-            + analyst_description
+        analyst_ctx = doc_ctx or "No hay fragmentos disponibles del documento."
+        analyst_ctx = self._cap_text_budget(analyst_ctx, max_doc_context_chars)
+
+        analyst_raw = ""
+        dual_pass_enabled = (
+            os.getenv("CHATDOC_DUAL_ANALYST_ENABLED", "1") == "1"
+            and mode_norm == "qa"
+            and bool(document_id)
         )
 
-        analyst_raw = self._run_single_agent_task(
-            agent=self.doc_analyst,
-            description=analyst_description,
-            expected_output="Un informe estructurado mining-grade basado SOLO en el documento.",
-        )
+        if dual_pass_enabled:
+            dual = self._fetch_dual_context_via_mcp(
+                document_id=document_id,
+                normalized_prompt=norm_prompt,
+                top_k=top_k,
+                min_score=min_score,
+                window=window,
+                access_token=access_token,
+                mcp_auth_token=mcp_auth_token,
+            )
+            precision_ctx = self._build_doc_context_from_chunks(dual.get("precision") or [])
+            coverage_ctx = self._build_doc_context_from_chunks(dual.get("coverage") or [])
+
+            precision_ctx = self._cap_text_budget(precision_ctx or analyst_ctx, max_doc_context_chars // 2)
+            coverage_ctx = self._cap_text_budget(coverage_ctx or analyst_ctx, max_doc_context_chars // 2)
+
+            precision_prompt = build_doc_analyst_prompt(
+                mode=mode_norm,
+                history_str=history_str,
+                user_prompt=norm_prompt,
+                doc_context=precision_ctx,
+                doc_meta={**(doc_meta or {}), "retrieval_pass": "precision"},
+                precomputed_summary=precomputed_summary,
+            )
+            coverage_prompt = build_doc_analyst_prompt(
+                mode=mode_norm,
+                history_str=history_str,
+                user_prompt=norm_prompt,
+                doc_context=coverage_ctx,
+                doc_meta={**(doc_meta or {}), "retrieval_pass": "coverage"},
+                precomputed_summary=precomputed_summary,
+            )
+
+            def _run_internal(desc: str) -> str:
+                return self._run_single_agent_task(
+                    agent=self.doc_analyst,
+                    description=f"[CHATDOC_ID {chat_id}] (etiqueta interna, NO la menciones)\n\n" + desc,
+                    expected_output="Un informe estructurado mining-grade basado SOLO en el documento.",
+                )
+
+            precision_raw = ""
+            coverage_raw = ""
+            with ThreadPoolExecutor(max_workers=2, thread_name_prefix="chatdoc-dual-analyst") as ex:
+                fut_p = ex.submit(_run_internal, precision_prompt)
+                fut_c = ex.submit(_run_internal, coverage_prompt)
+                try:
+                    precision_raw = fut_p.result()
+                except Exception as exc:
+                    logger.warning("[CHATDOC_ANALYST] precision pass failed: %s", exc)
+                try:
+                    coverage_raw = fut_c.result()
+                except Exception as exc:
+                    logger.warning("[CHATDOC_ANALYST] coverage pass failed: %s", exc)
+
+            synth_prompt = build_doc_synthesizer_prompt(
+                user_prompt=user_prompt,
+                normalized_prompt=norm_prompt,
+                precision_report=precision_raw or "Sin informe de precisión.",
+                coverage_report=coverage_raw or "Sin informe de cobertura.",
+            )
+            analyst_raw = self._run_single_agent_task(
+                agent=self.doc_synthesizer,
+                description=synth_prompt,
+                expected_output="Síntesis reconciliada y trazable para redacción final.",
+            )
+
+        if not analyst_raw:
+            analyst_description = build_doc_analyst_prompt(
+                mode=mode_norm,
+                history_str=history_str,
+                user_prompt=norm_prompt,
+                doc_context=analyst_ctx,
+                doc_meta=doc_meta,
+                precomputed_summary=precomputed_summary,
+            )
+            analyst_description = (
+                f"[CHATDOC_ID {chat_id}] (etiqueta interna, NO la menciones)\n\n"
+                + analyst_description
+            )
+
+            analyst_raw = self._run_single_agent_task(
+                agent=self.doc_analyst,
+                description=analyst_description,
+                expected_output="Un informe estructurado mining-grade basado SOLO en el documento.",
+            )
 
         # -------------------------
         # 2) Redactor
