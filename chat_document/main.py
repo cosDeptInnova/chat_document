@@ -26,7 +26,7 @@ from fastapi.responses import PlainTextResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 from pathlib import Path
-from typing import Callable, Optional, Dict, Any, List, TypeVar
+from typing import Callable, Optional, Dict, Any, List, TypeVar, Tuple
 from mimetypes import guess_type
 from datetime import datetime, timezone
 import os
@@ -149,6 +149,11 @@ DOC_HISTORY_MAX_LEN = int(os.getenv("CHATDOC_HISTORY_MAX_LEN", "20"))
 DOC_SESSION_KEY_PREFIX = "chatdoc:session"
 DOC_HISTORY_KEY_PREFIX = "chatdoc:history"
 
+CHATDOC_AGENT_CONTEXT_VERSION = "1.0"
+CHATDOC_CONTEXT_MAX_FACTS = max(8, int(os.getenv("CHATDOC_CONTEXT_MAX_FACTS", "40") or "40"))
+CHATDOC_CONTEXT_MAX_NOTES = max(8, int(os.getenv("CHATDOC_CONTEXT_MAX_NOTES", "30") or "30"))
+CHATDOC_CONTEXT_MAX_TEXT_LEN = max(300, int(os.getenv("CHATDOC_CONTEXT_MAX_TEXT_LEN", "1200") or "1200"))
+
 CHATDOC_CREW_THREAD_LIMIT = max(1, int(os.getenv("CHATDOC_CREW_THREAD_LIMIT", "8") or "8"))
 CHATDOC_PLANNER_THREAD_LIMIT = max(1, int(os.getenv("CHATDOC_PLANNER_THREAD_LIMIT", "8") or "8"))
 
@@ -217,6 +222,8 @@ class DocumentQueryRequest(BaseModel):
     doc_session_id: str
     conversation_id: Optional[int] = None
     mode: Optional[str] = None  # "qa" | "summary" | None
+    hitl_feedback: Optional[Dict[str, Any]] = None
+    client_context: Optional[Dict[str, Any]] = None
 
 
 class DocumentSourceFragment(BaseModel):
@@ -231,6 +238,217 @@ class DocumentQueryResponse(BaseModel):
     conversation_id: int
     doc_session_id: str
     sources: List[DocumentSourceFragment] = Field(default_factory=list)
+    hitl_required: bool = False
+    context_version: Optional[str] = None
+
+
+class DocumentContextResponse(BaseModel):
+    doc_session_id: str
+    conversation_id: Optional[int] = None
+    context_version: str
+    context: Dict[str, Any]
+
+
+def _trim_text(value: Any, max_len: int = CHATDOC_CONTEXT_MAX_TEXT_LEN) -> str:
+    if value is None:
+        return ""
+    text = str(value).strip()
+    if len(text) <= max_len:
+        return text
+    return text[:max_len] + "…"
+
+
+def _trim_json_like(data: Any, max_items: int = 10, max_depth: int = 2) -> Any:
+    if max_depth <= 0:
+        return _trim_text(data, 240)
+    if isinstance(data, dict):
+        out: Dict[str, Any] = {}
+        for idx, (k, v) in enumerate(data.items()):
+            if idx >= max_items:
+                break
+            out[_trim_text(k, 80)] = _trim_json_like(v, max_items=max_items, max_depth=max_depth - 1)
+        return out
+    if isinstance(data, list):
+        return [_trim_json_like(x, max_items=max_items, max_depth=max_depth - 1) for x in data[:max_items]]
+    if isinstance(data, (str, int, float, bool)) or data is None:
+        return _trim_text(data, 240) if isinstance(data, str) else data
+    return _trim_text(data, 240)
+
+
+def _base_agent_context(doc_session: Dict[str, Any]) -> Dict[str, Any]:
+    return {
+        "version": CHATDOC_AGENT_CONTEXT_VERSION,
+        "document_profile": {
+            "document_id": doc_session.get("document_id"),
+            "file_name": doc_session.get("file_name"),
+            "page_count": doc_session.get("page_count"),
+        },
+        "conversation_state": {
+            "turn": 0,
+            "last_mode": None,
+            "last_normalized_prompt": None,
+            "last_response_excerpt": None,
+        },
+        "derived_facts": [],
+        "open_items": [],
+        "human_feedback_notes": [],
+        "safety": {
+            "requires_human_confirmation": False,
+            "last_feedback": None,
+        },
+        "client_context": {},
+    }
+
+
+def _normalize_agent_context(doc_session: Dict[str, Any]) -> Dict[str, Any]:
+    current = doc_session.get("agent_context")
+    if not isinstance(current, dict):
+        return _base_agent_context(doc_session)
+
+    base = _base_agent_context(doc_session)
+    base.update({k: v for k, v in current.items() if k in base})
+
+    if not isinstance(base.get("document_profile"), dict):
+        base["document_profile"] = {}
+    base["document_profile"].update(
+        {
+            "document_id": doc_session.get("document_id"),
+            "file_name": doc_session.get("file_name"),
+            "page_count": doc_session.get("page_count"),
+        }
+    )
+
+    if not isinstance(base.get("conversation_state"), dict):
+        base["conversation_state"] = {}
+    conv = base["conversation_state"]
+    conv.setdefault("turn", 0)
+    conv.setdefault("last_mode", None)
+    conv.setdefault("last_normalized_prompt", None)
+    conv.setdefault("last_response_excerpt", None)
+
+    for list_key in ("derived_facts", "open_items", "human_feedback_notes"):
+        if not isinstance(base.get(list_key), list):
+            base[list_key] = []
+
+    if not isinstance(base.get("safety"), dict):
+        base["safety"] = {}
+    base["safety"].setdefault("requires_human_confirmation", False)
+    base["safety"].setdefault("last_feedback", None)
+
+    if not isinstance(base.get("client_context"), dict):
+        base["client_context"] = {}
+
+    base["version"] = CHATDOC_AGENT_CONTEXT_VERSION
+    return base
+
+
+def _apply_hitl_and_client_context(
+    context: Dict[str, Any],
+    hitl_feedback: Optional[Dict[str, Any]],
+    client_context: Optional[Dict[str, Any]],
+) -> Tuple[Dict[str, Any], bool]:
+    hitl_required = False
+
+    if isinstance(client_context, dict) and client_context:
+        context["client_context"].update(_trim_json_like(client_context, max_items=12, max_depth=2))
+
+    if isinstance(hitl_feedback, dict) and hitl_feedback:
+        feedback_type = _trim_text(hitl_feedback.get("type") or "general", 40).lower()
+        note = _trim_text(
+            hitl_feedback.get("note")
+            or hitl_feedback.get("comment")
+            or hitl_feedback.get("reason")
+            or "",
+            CHATDOC_CONTEXT_MAX_TEXT_LEN,
+        )
+        approved = hitl_feedback.get("approved")
+        requires_confirmation = bool(hitl_feedback.get("requires_confirmation", False))
+
+        context["safety"]["last_feedback"] = {
+            "type": feedback_type,
+            "approved": approved,
+            "note": note,
+            "at": datetime.now(timezone.utc).isoformat(),
+        }
+        context["safety"]["requires_human_confirmation"] = requires_confirmation
+
+        if note:
+            context["human_feedback_notes"].append(
+                {
+                    "type": feedback_type,
+                    "note": note,
+                    "at": datetime.now(timezone.utc).isoformat(),
+                }
+            )
+            context["human_feedback_notes"] = context["human_feedback_notes"][-CHATDOC_CONTEXT_MAX_NOTES:]
+
+        if approved is False or requires_confirmation:
+            hitl_required = True
+
+    return context, hitl_required
+
+
+def _build_orchestrator_history(
+    history: List[Dict[str, Any]],
+    context: Dict[str, Any],
+) -> List[Dict[str, Any]]:
+    safe_history = list(history or [])
+    context_line = {
+        "prompt": "[CONTEXTO ESTABLE DEL USUARIO Y DOCUMENTO]",
+        "response": json.dumps(
+            {
+                "document_profile": context.get("document_profile"),
+                "conversation_state": context.get("conversation_state"),
+                "derived_facts": (context.get("derived_facts") or [])[-8:],
+                "open_items": (context.get("open_items") or [])[-8:],
+                "human_feedback_notes": (context.get("human_feedback_notes") or [])[-5:],
+            },
+            ensure_ascii=False,
+        ),
+    }
+    safe_history.append(context_line)
+    return safe_history[-DOC_HISTORY_MAX_LEN:]
+
+
+def _update_agent_context_after_response(
+    context: Dict[str, Any],
+    *,
+    mode: str,
+    normalized_prompt: str,
+    response_text: str,
+    plan: Dict[str, Any],
+) -> Dict[str, Any]:
+    conv = context.get("conversation_state") or {}
+    turn = conv.get("turn")
+    turn = int(turn) if isinstance(turn, int) else 0
+    conv.update(
+        {
+            "turn": turn + 1,
+            "last_mode": mode,
+            "last_normalized_prompt": _trim_text(normalized_prompt, 280),
+            "last_response_excerpt": _trim_text(response_text, 380),
+        }
+    )
+    context["conversation_state"] = conv
+
+    candidate_fact = {
+        "type": "query_summary",
+        "query_type": _trim_text(plan.get("query_type") or "unknown", 40),
+        "normalized_prompt": _trim_text(normalized_prompt, 200),
+        "response_excerpt": _trim_text(response_text, 260),
+        "at": datetime.now(timezone.utc).isoformat(),
+    }
+    context["derived_facts"].append(candidate_fact)
+    context["derived_facts"] = context["derived_facts"][-CHATDOC_CONTEXT_MAX_FACTS:]
+
+    open_items = plan.get("subquestions") if isinstance(plan, dict) else None
+    if isinstance(open_items, list):
+        for item in open_items[:6]:
+            s = _trim_text(item, 180)
+            if s:
+                context["open_items"].append({"item": s, "at": datetime.now(timezone.utc).isoformat()})
+    context["open_items"] = context["open_items"][-CHATDOC_CONTEXT_MAX_FACTS:]
+    return context
 
 
 
@@ -1085,7 +1303,13 @@ async def upload_document(
             "file_name": filename,
             "page_count": page_count,
             "created_at": datetime.utcnow().isoformat(),
+            "ingest": {
+                "mime_type": content_type,
+                "size_bytes": len(content),
+                "nlp_metadata": _trim_json_like(nlp_info.get("metadata") if isinstance(nlp_info, dict) else {}, max_items=12, max_depth=2),
+            },
         }
+        doc_session["agent_context"] = _base_agent_context(doc_session)
         await store_doc_session(user_id, doc_session_id, doc_session)
 
         return DocumentUploadResponse(
@@ -1203,6 +1427,15 @@ async def query_document(
         # Historial corto desde Redis
         history = await get_doc_history(user_id, doc_session_id)
 
+        # Contexto estructurado persistente para coordinación multi-agente
+        agent_context = _normalize_agent_context(doc_session)
+        agent_context, hitl_required = _apply_hitl_and_client_context(
+            agent_context,
+            hitl_feedback=body.hitl_feedback,
+            client_context=body.client_context,
+        )
+        history_for_agents = _build_orchestrator_history(history, agent_context)
+
         # -------------------------
         # 2) Detección base de modo
         # -------------------------
@@ -1236,7 +1469,7 @@ async def query_document(
             doc_plan = await run_sync_kwargs(
                 doc_crew_orchestrator.plan_doc_query,
                 user_prompt=prompt,
-                history=history,
+                history=history_for_agents,
                 mode=mode,
                 doc_meta=doc_meta_for_planner,
                 access_token=access_token,
@@ -1321,7 +1554,7 @@ async def query_document(
                 doc_crew_orchestrator.run_doc_chat,
                 user_prompt=prompt,
                 doc_context="",
-                history=history,
+                history=history_for_agents,
                 mode=mode,
                 doc_meta={
                     "file_name": doc_session.get("file_name"),
@@ -1349,6 +1582,18 @@ async def query_document(
             DOC_CHAT_ERRORS.inc()
             logger.exception("[chatdoc/query] Error ejecutando DocumentCrewOrchestrator: %s", e)
             raise HTTPException(status_code=500, detail="Error generando la respuesta a partir del documento.")
+
+        agent_context = _update_agent_context_after_response(
+            agent_context,
+            mode=mode,
+            normalized_prompt=normalized_prompt,
+            response_text=response_text,
+            plan=doc_plan,
+        )
+
+        doc_session["agent_context"] = agent_context
+        doc_session["last_interaction_at"] = datetime.now(timezone.utc).isoformat()
+        await store_doc_session(user_id, doc_session_id, doc_session)
 
         # -------------------------
         # 6) Persistencia async en background (no bloquea request)
@@ -1438,6 +1683,12 @@ async def query_document(
             "summary_profile": summary_profile,
             "query_type": query_type,
             "timestamp": now_utc.isoformat(),
+            "hitl_required": hitl_required,
+            "agent_context_snapshot": {
+                "version": agent_context.get("version"),
+                "conversation_state": agent_context.get("conversation_state"),
+                "open_items": (agent_context.get("open_items") or [])[-5:],
+            },
         }
         await append_doc_history(user_id, doc_session_id, history_entry)
 
@@ -1460,6 +1711,8 @@ async def query_document(
             conversation_id=conversation.id,
             doc_session_id=doc_session_id,
             sources=[],
+            hitl_required=hitl_required,
+            context_version=agent_context.get("version"),
         )
 
     except HTTPException:
@@ -1468,6 +1721,28 @@ async def query_document(
         DOC_CHAT_ERRORS.inc()
         logger.exception("[chatdoc/query] Error inesperado: %s", e)
         raise HTTPException(status_code=500, detail="Error interno inesperado en chat_document.")
+
+
+@app.get("/document/context/{doc_session_id}", response_model=DocumentContextResponse)
+async def get_document_context(
+    doc_session_id: str,
+    auth: dict = Depends(get_current_auth_chatdoc),
+):
+    user_id = auth["user_id"]
+    doc_session = await get_doc_session(user_id, doc_session_id)
+    if not doc_session:
+        raise HTTPException(status_code=404, detail="Sesión de documento no encontrada o expirada.")
+
+    agent_context = _normalize_agent_context(doc_session)
+    doc_session["agent_context"] = agent_context
+    await store_doc_session(user_id, doc_session_id, doc_session)
+
+    return DocumentContextResponse(
+        doc_session_id=doc_session_id,
+        conversation_id=doc_session.get("conversation_id"),
+        context_version=agent_context.get("version") or CHATDOC_AGENT_CONTEXT_VERSION,
+        context=agent_context,
+    )
 
 if __name__ == "__main__":
     import uvicorn
