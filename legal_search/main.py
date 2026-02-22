@@ -781,6 +781,12 @@ async def web_search_query(
     top_k = body.top_k or default_top_k
     max_iters = max(1, body.max_iters or default_max_iters)
 
+    # Límite duro de rendimiento para legal_search: 1 iteración máxima.
+    # Se aplica siempre (aunque el cliente/env pidan más) para mantener
+    # latencia predecible en escenarios multiusuario concurrentes.
+    LEGALSEARCH_MAX_ITERS_HARD_LIMIT = 1
+    max_iters = min(max_iters, LEGALSEARCH_MAX_ITERS_HARD_LIMIT)
+
     # --- Session Redis ---
     search_session_id = body.search_session_id or uuid.uuid4().hex
     try:
@@ -862,9 +868,7 @@ async def web_search_query(
     user_context = context_bundle.get("context") or ""
     context_files = context_bundle.get("files") or []
 
-    complexity_markers = ("decreto", "reglamento", "compliance", "sanción", "litigio", "auditoría")
-    if not body.max_iters and (user_context or any(k in prompt.lower() for k in complexity_markers)):
-        max_iters = min(5, max_iters + 1)
+    # Nota: no escalar iteraciones por complejidad; se mantiene límite duro = 1.
 
     # --- Orquestación CrewAI (LEGAL) ---
     crew_start = perf_counter()

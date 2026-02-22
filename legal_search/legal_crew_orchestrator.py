@@ -47,6 +47,9 @@ class LegalSearchCrewOrchestrator:
       - Los agentes NO tienen tools; el control de acceso se hace en MCP por token/rol.
     """
 
+    MAX_QUERIES_PER_RUN = 2
+    MAX_ITERS_PER_RUN = 1
+
     def __init__(
         self,
         llm_legal_planner: Optional[LLM] = None,
@@ -1049,7 +1052,7 @@ class LegalSearchCrewOrchestrator:
         max_total_sources = max(6, max_total_sources)
 
         safe_top_k = max(1, min(8, int(top_k or 4)))
-        safe_max_iters = max(1, min(6, int(max_iters or 1)))
+        safe_max_iters = max(1, min(self.MAX_ITERS_PER_RUN, int(max_iters or 1)))
 
         agent_steps: List[Dict[str, Any]] = []
         all_tool_traces: List[Dict[str, Any]] = []
@@ -1069,7 +1072,7 @@ class LegalSearchCrewOrchestrator:
             planner_desc,
             expected_output=(
                 "Devuelve preferentemente JSON con keys: jurisdictions/topics/queries/source_priorities. "
-                "Si no puedes, devuelve 1 a 4 consultas, una por línea, sin comentarios."
+                "Si no puedes, devuelve 1 a 2 consultas, una por línea, sin comentarios."
             ),
         )
         agent_steps.append({"step": "planner", "duration": perf_counter() - t0})
@@ -1085,7 +1088,7 @@ class LegalSearchCrewOrchestrator:
                 continue
             seen_q.add(q)
             uniq_queries.append(q)
-        norm_queries = uniq_queries[:4]
+        norm_queries = uniq_queries[: self.MAX_QUERIES_PER_RUN]
 
         normalized_queries_acc: List[str] = list(norm_queries)
         all_sources: List[Dict[str, Any]] = []
@@ -1140,7 +1143,7 @@ class LegalSearchCrewOrchestrator:
                 analyst_desc,
                 expected_output=(
                     "Devuelve JSON: {\"decision\":\"BASTA\"} o {\"queries\":[\"q1\",\"q2\"]}. "
-                    "Si no JSON: nuevas consultas (1-3 líneas) o BASTA."
+                    "Si no JSON: nuevas consultas (1-2 líneas) o BASTA."
                 ),
             )
             agent_steps.append({"step": f"analyst_iter_{it+1}", "duration": perf_counter() - t_a})
@@ -1153,7 +1156,7 @@ class LegalSearchCrewOrchestrator:
                 break
 
             new_queries = [(q or "").strip() for q in (parsed.get("queries") or []) if (q or "").strip()]
-            new_queries = new_queries[:3]
+            new_queries = new_queries[: self.MAX_QUERIES_PER_RUN]
             used_set = set(normalized_queries_acc)
             new_queries = [q for q in new_queries if q not in used_set]
 
