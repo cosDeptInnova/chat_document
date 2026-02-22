@@ -159,6 +159,23 @@ CHATDOC_PLANNER_LIMITER = anyio.CapacityLimiter(CHATDOC_PLANNER_THREAD_LIMIT)
 
 T = TypeVar("T")
 
+
+def _compute_ingest_timeout_s(content_size_bytes: int) -> float:
+    """Calcula timeout adaptativo para ingesta según tamaño de archivo."""
+    try:
+        base_timeout = float(os.getenv("CHATDOC_NLP_INGEST_TIMEOUT_S", "600"))
+    except Exception:
+        base_timeout = 600.0
+
+    try:
+        max_timeout = float(os.getenv("CHATDOC_NLP_INGEST_TIMEOUT_MAX_S", "1800"))
+    except Exception:
+        max_timeout = 1800.0
+
+    mb = max(1.0, float(content_size_bytes) / (1024.0 * 1024.0))
+    adaptive_timeout = base_timeout + (mb * 15.0)
+    return max(60.0, min(max_timeout, adaptive_timeout))
+
 async def run_sync_kwargs(
     func: Callable[..., T],
     /,
@@ -419,6 +436,7 @@ async def nlp_ingest_document(
     filename: str,
     mime_type: str,
     user_id: int,
+    timeout_s: Optional[float] = None,
     access_token: Optional[str] = None,
     mcp_auth_token: Optional[str] = None,
 ) -> Dict[str, Any]:
@@ -439,10 +457,10 @@ async def nlp_ingest_document(
     # -------------------------------
     # Config
     # -------------------------------
-    try:
-        timeout = float(os.getenv("CHATDOC_NLP_INGEST_TIMEOUT_S", "600"))
-    except Exception:
-        timeout = 120.0
+    if timeout_s is not None and timeout_s > 0:
+        timeout = timeout_s
+    else:
+        timeout = _compute_ingest_timeout_s(len(content or b""))
 
     use_mcp_ingest = os.getenv("CHATDOC_USE_MCP_INGEST", "0").strip() == "1"
 
@@ -470,6 +488,8 @@ async def nlp_ingest_document(
         "metadata": {
             "filename": filename,
             "mime_type": mime_type,
+            "size_bytes": len(content or b""),
+            "ingest_profile": "chat_document",
         },
     }
 
@@ -545,13 +565,26 @@ async def nlp_ingest_document(
         timeout,
     )
 
+    async def _post_ingest(client: httpx.AsyncClient) -> httpx.Response:
+        return await client.post(
+            NLP_CHATDOC_INGEST_URL,
+            headers=headers or None,
+            json=payload_http,
+        )
+
     try:
         async with httpx.AsyncClient(timeout=timeout) as client:
-            resp = await client.post(
-                NLP_CHATDOC_INGEST_URL,
-                headers=headers or None,
-                json=payload_http,
-            )
+            resp = await _post_ingest(client)
+
+            if resp.status_code == 504:
+                retry_timeout = min(timeout * 1.5, timeout + 300.0)
+                logger.warning(
+                    "[nlp_ingest_document] NLP devolvió 504. Reintentando una vez con timeout=%.1fs filename=%s",
+                    retry_timeout,
+                    filename,
+                )
+                client.timeout = httpx.Timeout(retry_timeout)
+                resp = await _post_ingest(client)
     except httpx.ReadTimeout:
         logger.error(
             "[nlp_ingest_document] Timeout HTTP NLP ingest url=%s filename=%s user_id=%s timeout=%.1fs",
@@ -989,11 +1022,13 @@ async def upload_document(
         # ✅ Ingest protegido:
         #    - mcp_auth_token autentica el gateway MCP (si se usa MCP)
         #    - access_token viaja también en payload hacia NLP
+        ingest_timeout = _compute_ingest_timeout_s(len(content))
         nlp_info = await nlp_ingest_document(
             content=content,
             filename=filename,
             mime_type=content_type,
             user_id=user_id,
+            timeout_s=ingest_timeout,
             access_token=access_token,
             mcp_auth_token=access_token,
         )
@@ -1027,7 +1062,6 @@ async def upload_document(
         if stored_path.exists():
             stored_path = save_dir / f"{uuid.uuid4().hex}_{safe_name}"
 
-        stored_path = save_dir / filename
         with stored_path.open("wb") as dest:
             dest.write(content)
 
