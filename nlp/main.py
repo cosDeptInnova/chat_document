@@ -33,7 +33,11 @@ import threading
 from collections import OrderedDict
 
 from cosmos_nlp_v3 import DocumentIndexer
-from chatdoc_indexer import DocumentChatIndex
+from chatdoc_indexer import (
+    DocumentChatIndex,
+    set_embed_workload_context,
+    clear_embed_workload_context,
+)
 from rag_metrics import (
     RAG_HTTP_REQUESTS_TOTAL,
     RAG_HTTP_LATENCY_SECONDS,
@@ -2565,15 +2569,33 @@ async def chatdoc_ingest(
 
     raw_mb = float(len(raw_bytes or b"")) / (1024.0 * 1024.0)
     hinted_pages_for_timeout = int(hinted_page_count or metadata.get("page_count") or metadata.get("page_count_hint") or 0)
-    adaptive_timeout_s = build_timeout_base_s + (raw_mb * 8.0) + (hinted_pages_for_timeout * 2.5)
+    effective_pages_for_timeout = hinted_pages_for_timeout
+    if effective_pages_for_timeout <= 0 and (mime_type or "").lower() == "application/pdf":
+        try:
+            inferred_pages_by_size = int(raw_mb * float(os.getenv("CHATDOC_PDF_PAGES_PER_MB", "70")))
+        except Exception:
+            inferred_pages_by_size = int(raw_mb * 70.0)
+        effective_pages_for_timeout = max(effective_pages_for_timeout, inferred_pages_by_size)
+
+    try:
+        timeout_per_mb = float(os.getenv("CHATDOC_TIMEOUT_PER_MB_S", "14.0"))
+    except Exception:
+        timeout_per_mb = 14.0
+    try:
+        timeout_per_page = float(os.getenv("CHATDOC_TIMEOUT_PER_PAGE_S", "1.2"))
+    except Exception:
+        timeout_per_page = 1.2
+
+    adaptive_timeout_s = build_timeout_base_s + (raw_mb * timeout_per_mb) + (effective_pages_for_timeout * timeout_per_page)
     build_timeout_s = max(90.0, min(build_timeout_max_s, adaptive_timeout_s))
     logger.info(
-        "[/chatdoc/ingest] timeout_policy base=%.1fs adaptive=%.1fs final=%.1fs size_mb=%.2f hinted_pages=%s",
+        "[/chatdoc/ingest] timeout_policy base=%.1fs adaptive=%.1fs final=%.1fs size_mb=%.2f hinted_pages=%s effective_pages=%s",
         build_timeout_base_s,
         adaptive_timeout_s,
         build_timeout_s,
         raw_mb,
         hinted_pages_for_timeout or None,
+        effective_pages_for_timeout or None,
     )
 
     # -------------------------
@@ -2583,40 +2605,44 @@ async def chatdoc_ingest(
 
     def _build_index_sync() -> DocumentChatIndex:
         warm = _parse_bool(os.getenv("CHATDOC_WARM_EMBEDDINGS", "1"), True)
+        set_embed_workload_context(size_mb=raw_mb, hinted_pages=effective_pages_for_timeout)
 
-        if raw_bytes:
-            idx = DocumentChatIndex.from_bytes(
-                document_id=document_id,
-                raw_bytes=raw_bytes,
-                filename=filename,
-                mime_type=mime_type,
-                metadata=metadata,
-                language=CHATDOC_DEFAULT_LANGUAGE,
-            )
-        elif text:
-            idx = DocumentChatIndex(
-                document_id=document_id,
-                full_text=text,
-                metadata=metadata,
-                chunk_chars=CHATDOC_DEFAULT_CHUNK_CHARS,
-                chunk_overlap=CHATDOC_DEFAULT_CHUNK_OVERLAP,
-                language=CHATDOC_DEFAULT_LANGUAGE,
-            )
-            try:
-                idx.page_count = int(data.get("page_count") or metadata.get("page_count") or 0)
-            except Exception:
-                idx.page_count = 0
-            idx.metadata.setdefault("extraction_engine", "plain_text")
-        else:
-            raise ValueError("Debe proporcionar 'text' o 'content_base64' en /chatdoc/ingest.")
+        try:
+            if raw_bytes:
+                idx = DocumentChatIndex.from_bytes(
+                    document_id=document_id,
+                    raw_bytes=raw_bytes,
+                    filename=filename,
+                    mime_type=mime_type,
+                    metadata=metadata,
+                    language=CHATDOC_DEFAULT_LANGUAGE,
+                )
+            elif text:
+                idx = DocumentChatIndex(
+                    document_id=document_id,
+                    full_text=text,
+                    metadata=metadata,
+                    chunk_chars=CHATDOC_DEFAULT_CHUNK_CHARS,
+                    chunk_overlap=CHATDOC_DEFAULT_CHUNK_OVERLAP,
+                    language=CHATDOC_DEFAULT_LANGUAGE,
+                )
+                try:
+                    idx.page_count = int(data.get("page_count") or metadata.get("page_count") or 0)
+                except Exception:
+                    idx.page_count = 0
+                idx.metadata.setdefault("extraction_engine", "plain_text")
+            else:
+                raise ValueError("Debe proporcionar 'text' o 'content_base64' en /chatdoc/ingest.")
 
-        if warm:
-            try:
-                idx._ensure_embeddings()  # best-effort
-            except Exception as e:
-                logger.warning("[/chatdoc/ingest] warm embeddings failed doc_id=%s err=%s", document_id, e)
+            if warm:
+                try:
+                    idx._ensure_embeddings()  # best-effort
+                except Exception as e:
+                    logger.warning("[/chatdoc/ingest] warm embeddings failed doc_id=%s err=%s", document_id, e)
 
-        return idx
+            return idx
+        finally:
+            clear_embed_workload_context()
 
     try:
         # ingest_sem mantiene tu “rate limit” de ingesta

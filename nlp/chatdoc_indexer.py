@@ -43,6 +43,7 @@ import threading
 import torch
 import re
 from typing import Tuple
+from contextvars import ContextVar
 
 from rag_loader import (
     clean_text_impl,
@@ -89,6 +90,7 @@ E5_DOC_PREFIX = "passage: "
 _EMBED_INIT_LOCK = threading.RLock()
 _GLOBAL_EMBED_MODEL: Optional[SentenceTransformer] = None
 _GLOBAL_EMBED_DEVICE: Optional[torch.device] = None
+_EMBED_WORKLOAD_CTX: ContextVar[dict] = ContextVar("chatdoc_embed_workload", default={})
 
 CHATDOC_EMBED_FORCE_DEVICE = os.getenv("CHATDOC_EMBED_FORCE_DEVICE", "").strip()  # "cuda:0" | "cpu" | ""
 CHATDOC_EMBED_STICKY_DEVICE = os.getenv("CHATDOC_EMBED_STICKY_DEVICE", "1").strip() == "1"
@@ -739,9 +741,24 @@ def _get_embed_device() -> torch.device:
         return _GLOBAL_EMBED_DEVICE
 
     try:
-        min_free_mb = int(os.getenv("HF_EMBED_MIN_FREE_MB", "2048"))
+        min_free_mb_default = int(os.getenv("HF_EMBED_MIN_FREE_MB", "2048"))
     except Exception:
-        min_free_mb = 2048
+        min_free_mb_default = 2048
+
+    workload = _EMBED_WORKLOAD_CTX.get() or {}
+    size_mb = float(workload.get("size_mb") or 0.0)
+    hinted_pages = int(workload.get("hinted_pages") or 0)
+
+    large_doc_size_mb = float(os.getenv("CHATDOC_LARGE_DOC_SIZE_MB", "2.0"))
+    large_doc_pages = int(os.getenv("CHATDOC_LARGE_DOC_PAGES", "140"))
+    is_large_doc = (size_mb >= large_doc_size_mb) or (hinted_pages >= large_doc_pages)
+
+    try:
+        min_free_mb_large = int(os.getenv("HF_EMBED_MIN_FREE_MB_LARGE_DOC", "1024"))
+    except Exception:
+        min_free_mb_large = 1024
+
+    min_free_mb = min_free_mb_large if is_large_doc else min_free_mb_default
 
     if policy in ("gpu", "cuda", "force_gpu", "only_gpu"):
         try:
@@ -766,8 +783,32 @@ def _get_embed_device() -> torch.device:
     except Exception:
         best = torch.device("cpu")
 
+    if best.type == "cpu" and is_large_doc:
+        # Documento grande: degradar requisito de VRAM para intentar usar GPU si existe.
+        try:
+            very_low_mb = int(os.getenv("HF_EMBED_MIN_FREE_MB_FLOOR", "256"))
+        except Exception:
+            very_low_mb = 256
+        try:
+            best = gpu_manager.best_device(min_free_mb=max(128, very_low_mb))
+        except Exception:
+            pass
+
     _GLOBAL_EMBED_DEVICE = best
     return best
+
+
+def set_embed_workload_context(*, size_mb: float, hinted_pages: int = 0) -> None:
+    _EMBED_WORKLOAD_CTX.set(
+        {
+            "size_mb": float(size_mb or 0.0),
+            "hinted_pages": int(hinted_pages or 0),
+        }
+    )
+
+
+def clear_embed_workload_context() -> None:
+    _EMBED_WORKLOAD_CTX.set({})
 
 
 def _embedding_dim() -> int:
