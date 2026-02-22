@@ -96,7 +96,8 @@ CHATDOC_EMBED_FORCE_DEVICE = os.getenv("CHATDOC_EMBED_FORCE_DEVICE", "").strip()
 CHATDOC_EMBED_STICKY_DEVICE = os.getenv("CHATDOC_EMBED_STICKY_DEVICE", "1").strip() == "1"
 CHATDOC_CUDA_EMPTY_CACHE = os.getenv("CHATDOC_CUDA_EMPTY_CACHE", "0").strip() == "1"
 CHATDOC_EMBED_RELEASE_AFTER_CALL = os.getenv("CHATDOC_EMBED_RELEASE_AFTER_CALL", "0").strip() == "1"
-CHATDOC_EMBED_OOM_FALLBACK_CPU = os.getenv("CHATDOC_EMBED_OOM_FALLBACK_CPU", "1").strip() == "1"
+CHATDOC_EMBED_OOM_FALLBACK_CPU = os.getenv("CHATDOC_EMBED_OOM_FALLBACK_CPU", "0").strip() == "1"
+CHATDOC_EMBED_STRICT_GPU = os.getenv("CHATDOC_EMBED_STRICT_GPU", "1").strip() == "1"
 
 # Override de prefijos E5
 _ENV_E5 = os.getenv("CHATDOC_USE_E5_PREFIX", "").strip().lower()
@@ -715,7 +716,7 @@ def _get_embed_device() -> torch.device:
     """
     Política de device para embeddings (robusta):
     - Respeta CHATDOC_EMBED_FORCE_DEVICE si está.
-    - Añade CHATDOC_EMBED_DEVICE_POLICY: 'cpu' | 'gpu' | 'auto' (default auto)
+    - Añade CHATDOC_EMBED_DEVICE_POLICY: 'cpu' | 'gpu' | 'auto' (default gpu)
     - En auto: usa GPU sólo si hay suficiente VRAM libre; si no, CPU.
     - Actualiza _GLOBAL_EMBED_DEVICE para mantener consistencia.
     """
@@ -731,12 +732,17 @@ def _get_embed_device() -> torch.device:
             _GLOBAL_EMBED_DEVICE = torch.device("cpu")
             return _GLOBAL_EMBED_DEVICE
 
-    policy = os.getenv("CHATDOC_EMBED_DEVICE_POLICY", "auto").strip().lower()
+    policy = os.getenv("CHATDOC_EMBED_DEVICE_POLICY", "gpu").strip().lower()
     if policy in ("cpu", "force_cpu", "only_cpu"):
         _GLOBAL_EMBED_DEVICE = torch.device("cpu")
         return _GLOBAL_EMBED_DEVICE
 
     if not torch.cuda.is_available():
+        if CHATDOC_EMBED_STRICT_GPU and policy in ("gpu", "cuda", "force_gpu", "only_gpu"):
+            raise RuntimeError(
+                "[chatdoc/embed] CHATDOC_EMBED_STRICT_GPU=1 requiere CUDA, "
+                "pero torch.cuda.is_available()=False."
+            )
         _GLOBAL_EMBED_DEVICE = torch.device("cpu")
         return _GLOBAL_EMBED_DEVICE
 
@@ -765,6 +771,11 @@ def _get_embed_device() -> torch.device:
             best = gpu_manager.best_device(min_free_mb=min_free_mb)
         except Exception:
             best = torch.device("cpu")
+        if CHATDOC_EMBED_STRICT_GPU and best.type != "cuda":
+            raise RuntimeError(
+                "[chatdoc/embed] CHATDOC_EMBED_STRICT_GPU=1 requiere GPU para embeddings, "
+                f"pero no se encontró dispositivo CUDA elegible (min_free_mb={min_free_mb})."
+            )
         _GLOBAL_EMBED_DEVICE = best
         return best
 
@@ -1330,6 +1341,7 @@ class DocumentChatIndex:
         """
         Embeddings robustos multiusuario (producción):
         - Política de device por env: CHATDOC_EMBED_DEVICE_POLICY=cpu|gpu|auto y/o CHATDOC_EMBED_FORCE_DEVICE
+        - Por defecto opera en GPU (CHATDOC_EMBED_DEVICE_POLICY=gpu, strict_gpu=1)
         - Semáforo independiente CPU/GPU (estabiliza p95 y evita oversubscription)
         - Prefijo E5 si aplica
         - Backoff batch en OOM y fallback a CPU opcional
@@ -1436,6 +1448,11 @@ class DocumentChatIndex:
 
         acquired = chosen_sem.acquire(timeout=sem_timeout)
         if not acquired:
+            if CHATDOC_EMBED_STRICT_GPU and prefer.type == "cuda":
+                raise RuntimeError(
+                    "[chatdoc/embed] semaphore timeout en cola GPU con modo estricto activo; "
+                    "no se permite fallback a CPU."
+                )
             # No bloquear p95: fallback a CPU inmediato
             logger.warning("[chatdoc/embed] semaphore timeout (%.1fs) -> fallback CPU", sem_timeout)
             vecs = _encode("cpu", bs0)
@@ -1455,7 +1472,7 @@ class DocumentChatIndex:
                         self.sbert_model,
                         prefer_device=prefer,
                         min_free_mb=min_free_mb,
-                        fallback_to_cpu=True,
+                        fallback_to_cpu=(not CHATDOC_EMBED_STRICT_GPU),
                         pool="embed",
                     ) as dev:
 
