@@ -2353,18 +2353,22 @@ async def chatdoc_ingest(
     if ingest_sem is None:
         # fallback razonable si no estuviera definido en tu módulo
         try:
-            cap = int(os.getenv("CHATDOC_INGEST_CONCURRENCY", "1"))
+            cap = int(os.getenv("CHATDOC_INGEST_CONCURRENCY", str(CHATDOC_INGEST_CONCURRENCY)))
         except Exception:
             cap = 1
         cap = max(1, cap)
         ingest_sem = asyncio.Semaphore(cap)
         globals()["CHATDOC_INGEST_SEMAPHORE"] = ingest_sem
 
-    # Timeout defensivo para build
+    # Timeout defensivo para build (base + adaptativo por tamaño/páginas)
     try:
-        build_timeout_s = float(os.getenv("CHATDOC_INGEST_BUILD_TIMEOUT_S", "300"))
+        build_timeout_base_s = float(os.getenv("CHATDOC_INGEST_BUILD_TIMEOUT_S", "300"))
     except Exception:
-        build_timeout_s = 300.0
+        build_timeout_base_s = 300.0
+    try:
+        build_timeout_max_s = float(os.getenv("CHATDOC_INGEST_BUILD_TIMEOUT_MAX_S", "1800"))
+    except Exception:
+        build_timeout_max_s = 1800.0
 
     # -------------------------
     # 1) Parse JSON
@@ -2559,6 +2563,19 @@ async def chatdoc_ingest(
 
         logger.info("[/chatdoc/ingest] decoded bytes=%d doc_id=%s", len(raw_bytes), document_id)
 
+    raw_mb = float(len(raw_bytes or b"")) / (1024.0 * 1024.0)
+    hinted_pages_for_timeout = int(hinted_page_count or metadata.get("page_count") or metadata.get("page_count_hint") or 0)
+    adaptive_timeout_s = build_timeout_base_s + (raw_mb * 8.0) + (hinted_pages_for_timeout * 2.5)
+    build_timeout_s = max(90.0, min(build_timeout_max_s, adaptive_timeout_s))
+    logger.info(
+        "[/chatdoc/ingest] timeout_policy base=%.1fs adaptive=%.1fs final=%.1fs size_mb=%.2f hinted_pages=%s",
+        build_timeout_base_s,
+        adaptive_timeout_s,
+        build_timeout_s,
+        raw_mb,
+        hinted_pages_for_timeout or None,
+    )
+
     # -------------------------
     # 6) Construcción índice (FUERA del event loop + limitado)
     # -------------------------
@@ -2613,7 +2630,15 @@ async def chatdoc_ingest(
     except asyncio.TimeoutError:
         logger.error("[/chatdoc/ingest] TIMEOUT construyendo índice doc_id=%s timeout=%.1fs", document_id, build_timeout_s)
         _chatdoc_emit_error(endpoint_lbl, kind="timeout", t0=t0, status_sem="error")
-        return JSONResponse(status_code=504, content={"error": "Timeout construyendo el índice del documento."})
+        return JSONResponse(
+            status_code=504,
+            content={
+                "error": "Timeout construyendo el índice del documento.",
+                "document_id": document_id,
+                "timeout_s": build_timeout_s,
+                "retryable": True,
+            },
+        )
     except Exception as e:
         logger.error("[/chatdoc/ingest] Error construyendo DocumentChatIndex doc_id=%s: %s", document_id, e)
         logger.error(traceback.format_exc())
