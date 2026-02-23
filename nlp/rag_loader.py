@@ -550,6 +550,22 @@ def load_and_fragment_files_impl(indexer, files: List[str]):
     documents: List[str] = []
     doc_names: List[str] = []
 
+    def _canon_safe(value: Any) -> str:
+        """
+        Canonicaliza texto usando indexer._canon cuando exista;
+        fallback local robusto para no romper ingesta.
+        """
+        try:
+            return str(indexer._canon(str(value or "")))
+        except Exception:
+            try:
+                import unicodedata
+                txt = str(value or "").strip().lower()
+                txt = "".join(c for c in unicodedata.normalize("NFD", txt) if unicodedata.category(c) != "Mn")
+                return " ".join(txt.split())
+            except Exception:
+                return str(value or "").strip().lower()
+
     def _normalize_meta_record(idx: int) -> None:
         """
         Backward-compatible metadata normalization for every generated chunk.
@@ -575,13 +591,23 @@ def load_and_fragment_files_impl(indexer, files: List[str]):
 
         if "sheet" in meta and "sheet_canon" not in meta:
             try:
-                meta["sheet_canon"] = _canon(str(meta.get("sheet") or ""))
+                meta["sheet_canon"] = _canon_safe(str(meta.get("sheet") or ""))
             except Exception:
                 pass
 
         if "table_id" in meta and "table_id_canon" not in meta:
             try:
-                meta["table_id_canon"] = _canon(str(meta.get("table_id") or ""))
+                meta["table_id_canon"] = _canon_safe(str(meta.get("table_id") or ""))
+            except Exception:
+                pass
+
+        if "table_id" in meta and "table_slug" not in meta:
+            try:
+                user_scope = str(getattr(indexer, "user_id", "global") or "global")
+                src = str(meta.get("source_path") or source_file_name or dname or "")
+                source_digest = hashlib.sha1(src.encode("utf-8", errors="ignore")).hexdigest()[:12]
+                slug_base = f"u{user_scope}__{source_digest}__{meta.get('sheet') or meta.get('table_id') or ''}"
+                meta["table_slug"] = _canon_safe(slug_base).replace(" ", "_")[:160] or f"u{user_scope}__{source_digest}"
             except Exception:
                 pass
 
@@ -724,6 +750,9 @@ def load_and_fragment_files_impl(indexer, files: List[str]):
 
                         return meta_extra
 
+                    user_scope = str(getattr(indexer, "user_id", "global") or "global")
+                    source_digest = hashlib.sha1(path.encode("utf-8", errors="ignore")).hexdigest()[:12]
+
                     for sheet in wb.worksheets:
                         print(f"(load)     Worksheet: {sheet.title}", flush=True)
                         try:
@@ -748,6 +777,11 @@ def load_and_fragment_files_impl(indexer, files: List[str]):
 
                         sheet_rows_for_df: List[Dict[str, Any]] = []
 
+                        table_id = f"{basename}::{sheet.title}"
+                        table_id_canon = _canon_safe(str(table_id))
+                        table_slug = f"u{user_scope}__{source_digest}__{sheet.title}".replace("::", "__")
+                        table_slug = _canon_safe(table_slug).replace(" ", "_")[:160] or f"u{user_scope}__{source_digest}"
+
                         if EXCEL_INCLUDE_SHEET_MACRO:
                             macro_lines: List[str] = []
                             for r in rows_str[start_idx:]:
@@ -770,11 +804,15 @@ def load_and_fragment_files_impl(indexer, files: List[str]):
                                     doc_names.append(f"{basename}::{sheet.title}::macro#{chunk_idx}")
                                     indexer._metas.append({
                                         "sheet": sheet.title,
-                                        "sheet_canon": _canon(str(sheet.title)),
+                                        "sheet_canon": _canon_safe(str(sheet.title)),
                                         "row_idx": None,
                                         "headers": headers,
                                         "source_path": path,
+                                        "source_file_name": basename,
                                         "backend": "excel_macro",
+                                        "table_id": table_id,
+                                        "table_id_canon": table_id_canon,
+                                        "table_slug": table_slug,
                                     })
                                 chunk_buf = []
                                 cur = 0
@@ -820,14 +858,20 @@ def load_and_fragment_files_impl(indexer, files: List[str]):
                             except Exception:
                                 row_signature = ""
 
+                            row_id = f"{table_slug}::r{ridx}"
                             meta = {
                                 "sheet": sheet.title,
-                                "sheet_canon": _canon(str(sheet.title)),
+                                "sheet_canon": _canon_safe(str(sheet.title)),
                                 "row_idx": ridx,
+                                "row_id": row_id,
                                 "headers": headers,
                                 "row_kv": row_kv,
                                 "source_path": path,
+                                "source_file_name": basename,
                                 "backend": "excel_row",
+                                "table_id": table_id,
+                                "table_id_canon": table_id_canon,
+                                "table_slug": table_slug,
                             }
                             if row_signature:
                                 meta["row_signature"] = row_signature
@@ -848,19 +892,21 @@ def load_and_fragment_files_impl(indexer, files: List[str]):
                         # Cache tabular + perfil por hoja
                         if pd_available and table_cache_root is not None and sheet_rows_for_df:
                             try:
-                                table_id = f"{basename}::{sheet.title}"
-                                slug = table_id.replace("::", "__")
-                                table_cache_path = table_cache_root / f"{slug}.parquet"
+                                table_cache_path = table_cache_root / f"{table_slug}.parquet"
+                                tmp_table_cache_path = table_cache_root / f".{table_slug}.parquet.tmp"
 
                                 df = pd.DataFrame(sheet_rows_for_df)
-                                df.to_parquet(table_cache_path)
+                                df.to_parquet(tmp_table_cache_path)
+                                tmp_table_cache_path.replace(table_cache_path)
 
                                 profile = build_table_profile(table_id, df)
-                                profile_path = table_cache_root / f"{slug}_profile.json"
-                                profile_path.write_text(
+                                profile_path = table_cache_root / f"{table_slug}_profile.json"
+                                tmp_profile_path = table_cache_root / f".{table_slug}_profile.json.tmp"
+                                tmp_profile_path.write_text(
                                     json.dumps(profile, ensure_ascii=False, indent=2),
                                     encoding="utf-8",
                                 )
+                                tmp_profile_path.replace(profile_path)
 
                                 #  Propagar table_id/cache_path a las metas de la hoja por rango (sin lista gigante)
                                 sheet_meta_end = len(indexer._metas)
@@ -868,7 +914,8 @@ def load_and_fragment_files_impl(indexer, files: List[str]):
                                     try:
                                         m = indexer._metas[mi]
                                         m["table_id"] = table_id
-                                        m["table_id_canon"] = _canon(str(table_id))
+                                        m["table_id_canon"] = table_id_canon
+                                        m["table_slug"] = table_slug
                                         m["table_cache_path"] = str(table_cache_path)
                                     except Exception:
                                         pass
@@ -878,13 +925,15 @@ def load_and_fragment_files_impl(indexer, files: List[str]):
                                 doc_names.append(f"{basename}::{sheet.title}::profile")
                                 indexer._metas.append({
                                     "sheet": sheet.title,
-                                    "sheet_canon": _canon(str(sheet.title)),
+                                    "sheet_canon": _canon_safe(str(sheet.title)),
                                     "row_idx": None,
                                     "headers": headers,
                                     "source_path": path,
+                                    "source_file_name": basename,
                                     "backend": "excel_profile",
                                     "table_id": table_id,
-                                    "table_id_canon": _canon(str(table_id)),
+                                    "table_id_canon": table_id_canon,
+                                    "table_slug": table_slug,
                                     "table_cache_path": str(table_cache_path),
                                     "profile_path": str(profile_path),
                                 })
