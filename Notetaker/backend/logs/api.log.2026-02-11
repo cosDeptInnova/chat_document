@@ -1,0 +1,539 @@
+2026-02-11 09:24:59,759 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.17.0.1
+2026-02-11 09:24:59,766 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.007s
+2026-02-11 09:25:00,213 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.17.0.1
+2026-02-11 09:25:00,218 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.005s
+2026-02-11 09:25:00,219 - app.main - INFO - 📥 GET /api/security/ssl/certificate - Client: 172.17.0.1
+2026-02-11 09:25:00,226 - app.main - INFO - ✅ GET /api/security/ssl/certificate - Status: 200 - Time: 0.007s
+2026-02-11 09:25:00,388 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.17.0.1
+2026-02-11 09:25:00,389 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.17.0.1
+2026-02-11 09:25:00,392 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.004s
+2026-02-11 09:25:00,396 - app.api.routes.meetings - INFO - 🔍 [FILTRO] upcoming_only=True: ahora UTC naive=2026-02-11 08:25:00.396165, filtrando reuniones >= 2026-02-11 08:25:00.396165
+2026-02-11 09:25:00,404 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.17.0.1
+2026-02-11 09:25:00,405 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.015s
+2026-02-11 09:25:00,421 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.017s
+2026-02-11 09:25:03,382 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.17.0.1
+2026-02-11 09:25:03,405 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.17.0.1
+2026-02-11 09:25:03,406 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.023s
+2026-02-11 09:25:03,410 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.005s
+2026-02-11 09:25:05,573 - app.main - INFO - 📥 GET /api/meetings/0a58ce8a-8137-4c5a-ab44-b46a3601c637 - Client: 172.17.0.1
+2026-02-11 09:25:05,574 - app.main - INFO - 📥 GET /api/meetings/0a58ce8a-8137-4c5a-ab44-b46a3601c637/access - Client: 172.17.0.1
+2026-02-11 09:25:05,640 - app.api.routes.meetings - INFO - [VEXA CHECK] Reunion 0a58ce8a-8137-4c5a-ab44-b46a3601c637: status=completed, recall_bot_id=a8a50e09-7432-4302-b121-a27d9c847de8, scheduled_end_time=2026-02-03 09:30:00, has_segments=False, has_raw_json=True
+2026-02-11 09:25:05,640 - app.api.routes.meetings - INFO - [VEXA CHECK] Reunion 0a58ce8a-8137-4c5a-ab44-b46a3601c637: Ya es FINAL y tiene datos, omitiendo chequeo Vexa
+2026-02-11 09:25:05,646 - app.main - INFO - ✅ GET /api/meetings/0a58ce8a-8137-4c5a-ab44-b46a3601c637/access - Status: 200 - Time: 0.072s
+2026-02-11 09:25:05,647 - app.main - INFO - ✅ GET /api/meetings/0a58ce8a-8137-4c5a-ab44-b46a3601c637 - Status: 200 - Time: 0.074s
+2026-02-11 09:25:05,648 - app.main - INFO - 📥 GET /api/meetings/0a58ce8a-8137-4c5a-ab44-b46a3601c637/transcription - Client: 172.17.0.1
+2026-02-11 09:25:05,648 - app.main - INFO - 📥 GET /api/meetings/0a58ce8a-8137-4c5a-ab44-b46a3601c637/summary - Client: 172.17.0.1
+2026-02-11 09:25:05,649 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.17.0.1
+2026-02-11 09:25:05,700 - app.api.routes.meetings - INFO - Reunion 0a58ce8a-8137-4c5a-ab44-b46a3601c637: Devolviendo raw_transcript_json al frontend para procesamiento
+2026-02-11 09:25:06,004 - app.main - INFO - ✅ GET /api/meetings/0a58ce8a-8137-4c5a-ab44-b46a3601c637/transcription - Status: 200 - Time: 0.356s
+2026-02-11 09:25:06,005 - app.main - INFO - ✅ GET /api/meetings/0a58ce8a-8137-4c5a-ab44-b46a3601c637/summary - Status: 200 - Time: 0.356s
+2026-02-11 09:25:06,005 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.356s
+2026-02-11 09:25:06,174 - app.main - INFO - 📥 GET /api/meetings/0a58ce8a-8137-4c5a-ab44-b46a3601c637/summary - Client: 172.17.0.1
+2026-02-11 09:25:06,184 - app.main - INFO - ✅ GET /api/meetings/0a58ce8a-8137-4c5a-ab44-b46a3601c637/summary - Status: 200 - Time: 0.010s
+2026-02-11 09:45:07,914 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 09:45:07,919 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Sin cooldown previo - usuario=eldiaz@cosgs.com, webhook_procesado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 09:45:07,919 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.005s
+2026-02-11 09:45:08,091 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 09:45:08,094 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Sin cooldown previo - usuario=eldiaz@cosgs.com, webhook_procesado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 09:45:08,094 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Debounce activado - usuario=eldiaz@cosgs.com, debounce=5s, webhook_reprogramado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 09:45:08,095 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 09:45:13,182 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=eldiaz@cosgs.com, task_id=53db96f9-b680-4984-9612-31d4ad5b98e4, debounce=5s, timestamp=2026-02-11T08:45:13.182077, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 09:45:33,652 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 09:45:33,655 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=eldiaz@cosgs.com, ultimo_sync_hace=20.5s, cooldown=30s, webhook_descartado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 09:45:33,656 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 09:45:34,629 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 09:45:34,632 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=eldiaz@cosgs.com, ultimo_sync_hace=21.5s, cooldown=30s, webhook_descartado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 09:45:34,633 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 09:45:38,013 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 09:45:38,016 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=eldiaz@cosgs.com, ultimo_sync_hace=24.8s, cooldown=30s, webhook_descartado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 09:45:38,017 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 09:45:41,820 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 09:45:41,823 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=eldiaz@cosgs.com, ultimo_sync_hace=28.6s, cooldown=30s, webhook_descartado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 09:45:41,824 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 09:45:43,369 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 09:45:43,372 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.003s
+2026-02-11 09:45:43,968 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 09:45:43,971 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Debounce activado - usuario=eldiaz@cosgs.com, debounce=5s, webhook_reprogramado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 09:45:43,972 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 09:45:44,433 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 09:45:44,436 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Debounce activado - usuario=eldiaz@cosgs.com, debounce=5s, webhook_reprogramado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 09:45:44,436 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 09:45:49,445 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=eldiaz@cosgs.com, task_id=72222eb2-ebb0-4bbe-bafd-12d587bbc845, debounce=5s, timestamp=2026-02-11T08:45:49.445309, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 09:45:52,229 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 09:45:52,233 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=eldiaz@cosgs.com, ultimo_sync_hace=2.8s, cooldown=30s, webhook_descartado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 09:45:52,233 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 09:46:02,085 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 09:46:02,088 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=eldiaz@cosgs.com, ultimo_sync_hace=12.6s, cooldown=30s, webhook_descartado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 09:46:02,089 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 09:46:14,907 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 09:46:14,910 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=eldiaz@cosgs.com, ultimo_sync_hace=25.5s, cooldown=30s, webhook_descartado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 09:46:14,910 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 09:47:44,407 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 09:47:44,410 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.003s
+2026-02-11 09:47:49,414 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=eldiaz@cosgs.com, task_id=2ccb6398-9647-4c16-bc90-a8bcd2d91d85, debounce=5s, timestamp=2026-02-11T08:47:49.413768, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 12:01:19,739 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 12:01:19,743 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Sin cooldown previo - usuario=fdescartin@cosgs.com, webhook_procesado=true, subscription_ids=['a013c121-ae93-45a2-ab2b-37ee332002e8']
+2026-02-11 12:01:19,743 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 12:01:24,758 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=fdescartin@cosgs.com, task_id=77211ad4-78e6-4b1e-95cd-0f98bea7edfe, debounce=5s, timestamp=2026-02-11T11:01:24.758660, subscription_ids=['a013c121-ae93-45a2-ab2b-37ee332002e8']
+2026-02-11 12:30:57,593 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 12:30:57,596 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 12:31:02,608 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=fdescartin@cosgs.com, task_id=237e7bfa-45b6-4f31-92c4-4d50d953a345, debounce=5s, timestamp=2026-02-11T11:31:02.608495, subscription_ids=['a013c121-ae93-45a2-ab2b-37ee332002e8']
+2026-02-11 12:31:56,070 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 12:31:56,075 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 12:32:01,084 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=fdescartin@cosgs.com, task_id=88841120-0259-4ec6-a98a-2dcf6439a4b3, debounce=5s, timestamp=2026-02-11T11:32:01.084435, subscription_ids=['a013c121-ae93-45a2-ab2b-37ee332002e8']
+2026-02-11 13:01:00,471 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 13:01:00,476 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 13:01:05,481 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=fdescartin@cosgs.com, task_id=b24b4e93-80fa-4762-b24a-01d8abfa27b9, debounce=5s, timestamp=2026-02-11T12:01:05.481197, subscription_ids=['a013c121-ae93-45a2-ab2b-37ee332002e8']
+2026-02-11 13:05:02,872 - app.main - INFO - 📥 GET /api/meetings/42394ddc-ba4b-42c3-8dea-b8a613b783aa/transcription - Client: 127.0.0.1
+2026-02-11 13:05:02,909 - app.main - INFO - ✅ GET /api/meetings/42394ddc-ba4b-42c3-8dea-b8a613b783aa/transcription - Status: 200 - Time: 0.037s
+2026-02-11 13:20:51,863 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 13:20:51,867 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 13:20:52,029 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 13:20:52,032 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Debounce activado - usuario=fdescartin@cosgs.com, debounce=5s, webhook_reprogramado=true, subscription_ids=['a013c121-ae93-45a2-ab2b-37ee332002e8']
+2026-02-11 13:20:52,032 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.003s
+2026-02-11 13:20:52,960 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 13:20:52,964 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 13:20:53,445 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 13:20:53,448 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Debounce activado - usuario=eldiaz@cosgs.com, debounce=5s, webhook_reprogramado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 13:20:53,449 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.003s
+2026-02-11 13:20:57,063 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=fdescartin@cosgs.com, task_id=7c626b63-c60b-4857-8bc6-21ce0e4168b8, debounce=5s, timestamp=2026-02-11T12:20:57.063288, subscription_ids=['a013c121-ae93-45a2-ab2b-37ee332002e8']
+2026-02-11 13:20:58,452 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=eldiaz@cosgs.com, task_id=4405d914-03f0-49eb-b78c-998d155dee2b, debounce=5s, timestamp=2026-02-11T12:20:58.452178, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 13:21:35,353 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 13:21:35,357 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 13:21:36,277 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 13:21:36,281 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Debounce activado - usuario=fdescartin@cosgs.com, debounce=5s, webhook_reprogramado=true, subscription_ids=['a013c121-ae93-45a2-ab2b-37ee332002e8']
+2026-02-11 13:21:36,281 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 13:21:36,523 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 13:21:36,526 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Debounce activado - usuario=fdescartin@cosgs.com, debounce=5s, webhook_reprogramado=true, subscription_ids=['a013c121-ae93-45a2-ab2b-37ee332002e8']
+2026-02-11 13:21:36,527 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 13:21:41,540 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=fdescartin@cosgs.com, task_id=35b9984f-340d-47ec-a3ee-b38e4da9034e, debounce=5s, timestamp=2026-02-11T12:21:41.540001, subscription_ids=['a013c121-ae93-45a2-ab2b-37ee332002e8']
+2026-02-11 13:21:43,617 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 13:21:43,620 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 13:21:44,471 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 13:21:44,475 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Debounce activado - usuario=eldiaz@cosgs.com, debounce=5s, webhook_reprogramado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 13:21:44,475 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 13:21:44,680 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 13:21:44,683 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Debounce activado - usuario=eldiaz@cosgs.com, debounce=5s, webhook_reprogramado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 13:21:44,684 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 13:21:44,885 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 13:21:44,888 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Debounce activado - usuario=eldiaz@cosgs.com, debounce=5s, webhook_reprogramado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 13:21:44,889 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 13:21:49,887 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=eldiaz@cosgs.com, task_id=12f1efd5-d606-4f64-9fcd-74c802898df9, debounce=5s, timestamp=2026-02-11T12:21:49.887940, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 13:21:51,103 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 13:21:51,106 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=fdescartin@cosgs.com, ultimo_sync_hace=9.6s, cooldown=30s, webhook_descartado=true, subscription_ids=['a013c121-ae93-45a2-ab2b-37ee332002e8']
+2026-02-11 13:21:51,106 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 13:21:59,570 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 13:21:59,573 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=eldiaz@cosgs.com, ultimo_sync_hace=9.7s, cooldown=30s, webhook_descartado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 13:21:59,573 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 13:23:36,170 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 13:23:36,173 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 13:23:41,165 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=fdescartin@cosgs.com, task_id=0d208245-823b-4a86-988e-cdf5f826497e, debounce=5s, timestamp=2026-02-11T12:23:41.165798, subscription_ids=['a013c121-ae93-45a2-ab2b-37ee332002e8']
+2026-02-11 13:23:44,729 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 13:23:44,734 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 13:23:49,724 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=eldiaz@cosgs.com, task_id=4c2469db-8f40-4cac-a68c-2cdc934bbd10, debounce=5s, timestamp=2026-02-11T12:23:49.724119, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 13:28:55,718 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 13:28:55,721 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 13:29:00,695 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=eldiaz@cosgs.com, task_id=d4e16710-ea03-43c3-91c6-e64f20165fc0, debounce=5s, timestamp=2026-02-11T12:29:00.695394, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 13:42:02,831 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 13:42:02,835 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 13:42:07,842 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=eldiaz@cosgs.com, task_id=64dfeb1f-d406-4496-878f-b9067bf43a8e, debounce=5s, timestamp=2026-02-11T12:42:07.842924, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 13:42:43,689 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 13:42:43,693 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 13:42:44,986 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 13:42:44,989 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Debounce activado - usuario=eldiaz@cosgs.com, debounce=5s, webhook_reprogramado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 13:42:44,990 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 13:42:49,996 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=eldiaz@cosgs.com, task_id=d3c02b21-a548-4b16-9a87-5b90c460dc6b, debounce=5s, timestamp=2026-02-11T12:42:49.996126, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 13:42:55,940 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 13:42:55,944 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=eldiaz@cosgs.com, ultimo_sync_hace=5.9s, cooldown=30s, webhook_descartado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 13:42:55,944 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 13:43:00,129 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 13:43:00,133 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=eldiaz@cosgs.com, ultimo_sync_hace=10.1s, cooldown=30s, webhook_descartado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 13:43:00,133 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.005s
+2026-02-11 13:43:58,867 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 13:43:58,871 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 13:43:59,233 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 13:43:59,236 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.003s
+2026-02-11 13:44:03,871 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=fdescartin@cosgs.com, task_id=610dd4fc-810f-4282-8360-d9b602f99ba0, debounce=5s, timestamp=2026-02-11T12:44:03.871446, subscription_ids=['a013c121-ae93-45a2-ab2b-37ee332002e8']
+2026-02-11 13:44:04,253 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=eldiaz@cosgs.com, task_id=1d40132f-3173-4f23-a48b-6aacfe691d9a, debounce=5s, timestamp=2026-02-11T12:44:04.253888, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 13:44:44,418 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 13:44:44,422 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 13:44:49,440 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=eldiaz@cosgs.com, task_id=28074a25-7828-419a-a5b5-cea30f30682b, debounce=5s, timestamp=2026-02-11T12:44:49.440907, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 13:45:52,612 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 13:45:52,615 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.003s
+2026-02-11 13:45:57,614 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=eldiaz@cosgs.com, task_id=ab5de6ba-95c6-47b4-9ef7-0c04a69b25a6, debounce=5s, timestamp=2026-02-11T12:45:57.614191, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 13:46:43,698 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 13:46:43,702 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 13:46:45,075 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 13:46:45,079 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Debounce activado - usuario=eldiaz@cosgs.com, debounce=5s, webhook_reprogramado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 13:46:45,079 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 13:46:50,096 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=eldiaz@cosgs.com, task_id=21596589-f05f-467e-89f7-db422639fae9, debounce=5s, timestamp=2026-02-11T12:46:50.096453, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 13:47:01,373 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 13:47:01,376 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=eldiaz@cosgs.com, ultimo_sync_hace=11.3s, cooldown=30s, webhook_descartado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 13:47:01,377 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 13:48:45,338 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 13:48:45,342 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 13:48:50,333 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=eldiaz@cosgs.com, task_id=b7b85d08-4b0a-4fb6-9d4a-b189b95bcb74, debounce=5s, timestamp=2026-02-11T12:48:50.333725, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 13:50:34,506 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 13:50:34,510 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 13:50:34,666 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 13:50:34,669 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Debounce activado - usuario=fdescartin@cosgs.com, debounce=5s, webhook_reprogramado=true, subscription_ids=['a013c121-ae93-45a2-ab2b-37ee332002e8']
+2026-02-11 13:50:34,669 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.003s
+2026-02-11 13:50:35,408 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 13:50:35,411 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Debounce activado - usuario=fdescartin@cosgs.com, debounce=5s, webhook_reprogramado=true, subscription_ids=['a013c121-ae93-45a2-ab2b-37ee332002e8']
+2026-02-11 13:50:35,411 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 13:50:40,419 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=fdescartin@cosgs.com, task_id=6c386447-2635-40b4-928c-33cd5f5d2077, debounce=5s, timestamp=2026-02-11T12:50:40.419933, subscription_ids=['a013c121-ae93-45a2-ab2b-37ee332002e8']
+2026-02-11 13:50:49,578 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 13:50:49,581 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=fdescartin@cosgs.com, ultimo_sync_hace=9.2s, cooldown=30s, webhook_descartado=true, subscription_ids=['a013c121-ae93-45a2-ab2b-37ee332002e8']
+2026-02-11 13:50:49,582 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 13:51:28,063 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 13:51:28,068 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 13:51:28,127 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 13:51:28,130 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.003s
+2026-02-11 13:51:33,053 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=fdescartin@cosgs.com, task_id=a2d94e5d-3bf0-4a6e-bdcc-e9bbcb05906d, debounce=5s, timestamp=2026-02-11T12:51:33.053081, subscription_ids=['a013c121-ae93-45a2-ab2b-37ee332002e8']
+2026-02-11 13:51:33,133 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=eldiaz@cosgs.com, task_id=64c9b5b2-02d2-4bd2-bef4-9368464072f9, debounce=5s, timestamp=2026-02-11T12:51:33.133487, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 13:51:43,593 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 13:51:43,597 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=fdescartin@cosgs.com, ultimo_sync_hace=10.5s, cooldown=30s, webhook_descartado=true, subscription_ids=['a013c121-ae93-45a2-ab2b-37ee332002e8']
+2026-02-11 13:51:43,597 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 13:58:54,241 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.17.0.1
+2026-02-11 13:58:54,244 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.004s
+2026-02-11 13:58:54,646 - app.main - INFO - 📥 GET /api/security/ssl/certificate - Client: 172.17.0.1
+2026-02-11 13:58:54,652 - app.main - INFO - ✅ GET /api/security/ssl/certificate - Status: 200 - Time: 0.006s
+2026-02-11 13:58:54,667 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.17.0.1
+2026-02-11 13:58:54,668 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.17.0.1
+2026-02-11 13:58:54,670 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.003s
+2026-02-11 13:58:54,673 - app.api.routes.meetings - INFO - 🔍 [FILTRO] upcoming_only=True: ahora UTC naive=2026-02-11 12:58:54.673972, filtrando reuniones >= 2026-02-11 12:58:54.673972
+2026-02-11 13:58:54,686 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.019s
+2026-02-11 13:58:54,688 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.17.0.1
+2026-02-11 13:58:54,705 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.017s
+2026-02-11 13:58:54,718 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.17.0.1
+2026-02-11 13:58:54,721 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.002s
+2026-02-11 13:58:56,806 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.17.0.1
+2026-02-11 13:58:56,807 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.17.0.1
+2026-02-11 13:58:56,824 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.019s
+2026-02-11 13:58:56,825 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.018s
+2026-02-11 13:59:01,104 - app.main - INFO - 📥 GET /api/meetings/42394ddc-ba4b-42c3-8dea-b8a613b783aa - Client: 172.17.0.1
+2026-02-11 13:59:01,106 - app.main - INFO - 📥 GET /api/meetings/42394ddc-ba4b-42c3-8dea-b8a613b783aa/access - Client: 172.17.0.1
+2026-02-11 13:59:01,106 - app.main - INFO - 📥 GET /api/meetings/42394ddc-ba4b-42c3-8dea-b8a613b783aa/transcription - Client: 172.17.0.1
+2026-02-11 13:59:01,108 - app.main - INFO - 📥 GET /api/meetings/42394ddc-ba4b-42c3-8dea-b8a613b783aa/summary - Client: 172.17.0.1
+2026-02-11 13:59:01,122 - app.api.routes.meetings - INFO - [VEXA CHECK] Reunion 42394ddc-ba4b-42c3-8dea-b8a613b783aa: status=completed, recall_bot_id=35039235511544, scheduled_end_time=2026-02-11 12:00:00, has_segments=True, has_raw_json=True
+2026-02-11 13:59:01,122 - app.api.routes.meetings - INFO - [VEXA CHECK] Reunion 42394ddc-ba4b-42c3-8dea-b8a613b783aa: Ya es FINAL y tiene datos, omitiendo chequeo Vexa
+2026-02-11 13:59:01,162 - app.main - INFO - ✅ GET /api/meetings/42394ddc-ba4b-42c3-8dea-b8a613b783aa - Status: 200 - Time: 0.058s
+2026-02-11 13:59:01,162 - app.main - INFO - ✅ GET /api/meetings/42394ddc-ba4b-42c3-8dea-b8a613b783aa/access - Status: 200 - Time: 0.057s
+2026-02-11 13:59:01,163 - app.main - INFO - ✅ GET /api/meetings/42394ddc-ba4b-42c3-8dea-b8a613b783aa/transcription - Status: 200 - Time: 0.057s
+2026-02-11 13:59:01,240 - app.main - INFO - ✅ GET /api/meetings/42394ddc-ba4b-42c3-8dea-b8a613b783aa/summary - Status: 200 - Time: 0.132s
+2026-02-11 13:59:01,240 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.17.0.1
+2026-02-11 13:59:01,248 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.007s
+2026-02-11 13:59:01,375 - app.main - INFO - 📥 GET /api/meetings/42394ddc-ba4b-42c3-8dea-b8a613b783aa/summary - Client: 172.17.0.1
+2026-02-11 13:59:01,386 - app.main - INFO - ✅ GET /api/meetings/42394ddc-ba4b-42c3-8dea-b8a613b783aa/summary - Status: 200 - Time: 0.011s
+2026-02-11 14:26:53,654 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.17.0.1
+2026-02-11 14:26:53,658 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.004s
+2026-02-11 14:26:53,965 - app.main - INFO - 📥 GET /api/security/ssl/certificate - Client: 172.17.0.1
+2026-02-11 14:26:53,971 - app.main - INFO - ✅ GET /api/security/ssl/certificate - Status: 200 - Time: 0.006s
+2026-02-11 14:26:53,972 - app.main - INFO - 📥 GET /api/meetings/42394ddc-ba4b-42c3-8dea-b8a613b783aa - Client: 172.17.0.1
+2026-02-11 14:26:53,972 - app.main - INFO - 📥 GET /api/meetings/42394ddc-ba4b-42c3-8dea-b8a613b783aa/access - Client: 172.17.0.1
+2026-02-11 14:26:53,986 - app.api.routes.meetings - INFO - [VEXA CHECK] Reunion 42394ddc-ba4b-42c3-8dea-b8a613b783aa: status=completed, recall_bot_id=35039235511544, scheduled_end_time=2026-02-11 12:00:00, has_segments=True, has_raw_json=True
+2026-02-11 14:26:53,987 - app.api.routes.meetings - INFO - [VEXA CHECK] Reunion 42394ddc-ba4b-42c3-8dea-b8a613b783aa: Ya es FINAL y tiene datos, omitiendo chequeo Vexa
+2026-02-11 14:26:53,995 - app.main - INFO - ✅ GET /api/meetings/42394ddc-ba4b-42c3-8dea-b8a613b783aa - Status: 200 - Time: 0.023s
+2026-02-11 14:26:53,996 - app.main - INFO - ✅ GET /api/meetings/42394ddc-ba4b-42c3-8dea-b8a613b783aa/access - Status: 200 - Time: 0.024s
+2026-02-11 14:26:53,997 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.17.0.1
+2026-02-11 14:26:53,997 - app.main - INFO - 📥 GET /api/meetings/42394ddc-ba4b-42c3-8dea-b8a613b783aa/transcription - Client: 172.17.0.1
+2026-02-11 14:26:53,997 - app.main - INFO - 📥 GET /api/meetings/42394ddc-ba4b-42c3-8dea-b8a613b783aa/summary - Client: 172.17.0.1
+2026-02-11 14:26:54,105 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.108s
+2026-02-11 14:26:54,105 - app.main - INFO - ✅ GET /api/meetings/42394ddc-ba4b-42c3-8dea-b8a613b783aa/transcription - Status: 200 - Time: 0.108s
+2026-02-11 14:26:54,106 - app.main - INFO - ✅ GET /api/meetings/42394ddc-ba4b-42c3-8dea-b8a613b783aa/summary - Status: 200 - Time: 0.109s
+2026-02-11 14:26:54,202 - app.main - INFO - 📥 GET /api/meetings/42394ddc-ba4b-42c3-8dea-b8a613b783aa/summary - Client: 172.17.0.1
+2026-02-11 14:26:54,210 - app.main - INFO - ✅ GET /api/meetings/42394ddc-ba4b-42c3-8dea-b8a613b783aa/summary - Status: 200 - Time: 0.009s
+2026-02-11 14:31:06,192 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:31:06,196 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.005s
+2026-02-11 14:31:06,803 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:31:06,807 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Debounce activado - usuario=eldiaz@cosgs.com, debounce=5s, webhook_reprogramado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:31:06,808 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.005s
+2026-02-11 14:31:07,794 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:31:07,799 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Debounce activado - usuario=eldiaz@cosgs.com, debounce=5s, webhook_reprogramado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:31:07,799 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.005s
+2026-02-11 14:31:12,807 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=eldiaz@cosgs.com, task_id=019063f1-0798-4e4f-8112-13a99584a082, debounce=5s, timestamp=2026-02-11T13:31:12.807253, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:31:29,469 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:31:29,473 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=eldiaz@cosgs.com, ultimo_sync_hace=16.7s, cooldown=30s, webhook_descartado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:31:29,474 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.005s
+2026-02-11 14:31:34,254 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:31:34,257 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=eldiaz@cosgs.com, ultimo_sync_hace=21.5s, cooldown=30s, webhook_descartado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:31:34,258 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 14:31:34,653 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:31:34,656 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=eldiaz@cosgs.com, ultimo_sync_hace=21.8s, cooldown=30s, webhook_descartado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:31:34,657 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 14:31:35,148 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:31:35,151 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=eldiaz@cosgs.com, ultimo_sync_hace=22.3s, cooldown=30s, webhook_descartado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:31:35,151 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 14:31:35,662 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:31:35,665 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=eldiaz@cosgs.com, ultimo_sync_hace=22.9s, cooldown=30s, webhook_descartado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:31:35,666 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 14:31:35,853 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:31:35,858 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=eldiaz@cosgs.com, ultimo_sync_hace=23.1s, cooldown=30s, webhook_descartado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:31:35,858 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.005s
+2026-02-11 14:31:36,039 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:31:36,043 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=eldiaz@cosgs.com, ultimo_sync_hace=23.2s, cooldown=30s, webhook_descartado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:31:36,043 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 14:31:36,283 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:31:36,286 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=eldiaz@cosgs.com, ultimo_sync_hace=23.5s, cooldown=30s, webhook_descartado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:31:36,287 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.003s
+2026-02-11 14:31:51,741 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:31:51,744 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 14:31:56,758 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=eldiaz@cosgs.com, task_id=a5841367-2de1-4fe0-a7e7-7f4c92d2d81b, debounce=5s, timestamp=2026-02-11T13:31:56.758722, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:33:13,378 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:33:13,381 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 14:33:18,374 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=eldiaz@cosgs.com, task_id=646ff16b-5140-4cb4-aab4-613e1772018d, debounce=5s, timestamp=2026-02-11T13:33:18.374325, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:33:19,322 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:33:19,325 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=eldiaz@cosgs.com, ultimo_sync_hace=1.0s, cooldown=30s, webhook_descartado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:33:19,325 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 14:33:19,729 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:33:19,732 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=eldiaz@cosgs.com, ultimo_sync_hace=1.4s, cooldown=30s, webhook_descartado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:33:19,733 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 14:33:20,128 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:33:20,131 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=eldiaz@cosgs.com, ultimo_sync_hace=1.8s, cooldown=30s, webhook_descartado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:33:20,132 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 14:33:20,371 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:33:20,374 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=eldiaz@cosgs.com, ultimo_sync_hace=2.0s, cooldown=30s, webhook_descartado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:33:20,374 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.003s
+2026-02-11 14:33:20,636 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:33:20,640 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=eldiaz@cosgs.com, ultimo_sync_hace=2.3s, cooldown=30s, webhook_descartado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:33:20,640 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 14:33:21,306 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:33:21,309 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=eldiaz@cosgs.com, ultimo_sync_hace=2.9s, cooldown=30s, webhook_descartado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:33:21,310 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 14:33:21,569 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:33:21,572 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=eldiaz@cosgs.com, ultimo_sync_hace=3.2s, cooldown=30s, webhook_descartado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:33:21,572 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.003s
+2026-02-11 14:33:21,754 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:33:21,757 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=eldiaz@cosgs.com, ultimo_sync_hace=3.4s, cooldown=30s, webhook_descartado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:33:21,757 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.003s
+2026-02-11 14:33:35,325 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:33:35,329 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=eldiaz@cosgs.com, ultimo_sync_hace=17.0s, cooldown=30s, webhook_descartado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:33:35,329 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.005s
+2026-02-11 14:33:35,957 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:33:35,960 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=eldiaz@cosgs.com, ultimo_sync_hace=17.6s, cooldown=30s, webhook_descartado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:33:35,961 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 14:33:48,888 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:33:48,891 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.003s
+2026-02-11 14:33:49,139 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:33:49,141 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Debounce activado - usuario=eldiaz@cosgs.com, debounce=5s, webhook_reprogramado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:33:49,142 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.003s
+2026-02-11 14:33:49,620 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:33:49,623 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Debounce activado - usuario=eldiaz@cosgs.com, debounce=5s, webhook_reprogramado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:33:49,623 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.003s
+2026-02-11 14:33:50,397 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:33:50,400 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Debounce activado - usuario=eldiaz@cosgs.com, debounce=5s, webhook_reprogramado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:33:50,401 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.003s
+2026-02-11 14:33:54,926 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:33:54,929 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Debounce activado - usuario=eldiaz@cosgs.com, debounce=5s, webhook_reprogramado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:33:54,930 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 14:33:55,627 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:33:55,630 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Debounce activado - usuario=eldiaz@cosgs.com, debounce=5s, webhook_reprogramado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:33:55,630 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 14:33:56,477 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:33:56,480 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Debounce activado - usuario=eldiaz@cosgs.com, debounce=5s, webhook_reprogramado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:33:56,480 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 14:34:01,492 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=eldiaz@cosgs.com, task_id=2fd11c25-b0f3-415f-81c7-8825d27bd3e8, debounce=5s, timestamp=2026-02-11T13:34:01.492698, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:34:07,749 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:34:07,753 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=eldiaz@cosgs.com, ultimo_sync_hace=6.3s, cooldown=30s, webhook_descartado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:34:07,753 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 14:34:23,657 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:34:23,660 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=eldiaz@cosgs.com, ultimo_sync_hace=22.2s, cooldown=30s, webhook_descartado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:34:23,661 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 14:34:58,397 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:34:58,401 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 14:34:59,614 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:34:59,618 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Debounce activado - usuario=eldiaz@cosgs.com, debounce=5s, webhook_reprogramado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:34:59,618 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 14:35:04,619 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=eldiaz@cosgs.com, task_id=e909c2b2-aeea-4e91-8eab-7398366566aa, debounce=5s, timestamp=2026-02-11T13:35:04.619986, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:35:19,885 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:35:19,889 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=eldiaz@cosgs.com, ultimo_sync_hace=15.3s, cooldown=30s, webhook_descartado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:35:19,889 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 14:35:56,140 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:35:56,144 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 14:35:59,124 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:35:59,128 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Debounce activado - usuario=eldiaz@cosgs.com, debounce=5s, webhook_reprogramado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:35:59,128 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 14:35:59,665 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:35:59,669 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Debounce activado - usuario=eldiaz@cosgs.com, debounce=5s, webhook_reprogramado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:35:59,669 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 14:36:04,674 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=eldiaz@cosgs.com, task_id=94bfa8ca-e2a0-427e-ba4e-8813d7234d51, debounce=5s, timestamp=2026-02-11T13:36:04.674109, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:36:10,127 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:36:10,130 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=eldiaz@cosgs.com, ultimo_sync_hace=5.5s, cooldown=30s, webhook_descartado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:36:10,130 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.003s
+2026-02-11 14:36:11,282 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:36:11,285 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=eldiaz@cosgs.com, ultimo_sync_hace=6.6s, cooldown=30s, webhook_descartado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:36:11,285 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 14:36:25,033 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:36:25,036 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=eldiaz@cosgs.com, ultimo_sync_hace=20.4s, cooldown=30s, webhook_descartado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:36:25,037 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 14:36:25,531 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:36:25,534 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=eldiaz@cosgs.com, ultimo_sync_hace=20.9s, cooldown=30s, webhook_descartado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:36:25,534 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 14:36:26,253 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:36:26,257 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=eldiaz@cosgs.com, ultimo_sync_hace=21.6s, cooldown=30s, webhook_descartado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:36:26,257 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 14:36:28,057 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:36:28,061 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 14:36:33,060 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=fdescartin@cosgs.com, task_id=c3173deb-0c78-41ff-a468-9aaac3169012, debounce=5s, timestamp=2026-02-11T13:36:33.060153, subscription_ids=['a013c121-ae93-45a2-ab2b-37ee332002e8']
+2026-02-11 14:36:41,890 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:36:41,893 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 14:36:46,901 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=eldiaz@cosgs.com, task_id=c205cc89-ed42-4577-bbdd-07821ce6b472, debounce=5s, timestamp=2026-02-11T13:36:46.901247, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:36:58,733 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:36:58,737 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=eldiaz@cosgs.com, ultimo_sync_hace=11.8s, cooldown=30s, webhook_descartado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:36:58,737 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 14:36:59,354 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:36:59,357 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=eldiaz@cosgs.com, ultimo_sync_hace=12.5s, cooldown=30s, webhook_descartado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:36:59,357 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.003s
+2026-02-11 14:37:00,458 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:37:00,462 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=fdescartin@cosgs.com, ultimo_sync_hace=27.4s, cooldown=30s, webhook_descartado=true, subscription_ids=['a013c121-ae93-45a2-ab2b-37ee332002e8']
+2026-02-11 14:37:00,462 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 14:37:35,504 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:37:35,508 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 14:37:40,510 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=fdescartin@cosgs.com, task_id=0a37ef5c-2592-4392-9a2c-eb85b2ab921e, debounce=5s, timestamp=2026-02-11T13:37:40.510212, subscription_ids=['a013c121-ae93-45a2-ab2b-37ee332002e8']
+2026-02-11 14:37:51,196 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:37:51,199 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.003s
+2026-02-11 14:37:51,741 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:37:51,744 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Debounce activado - usuario=eldiaz@cosgs.com, debounce=5s, webhook_reprogramado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:37:51,745 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 14:37:52,790 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:37:52,793 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Debounce activado - usuario=eldiaz@cosgs.com, debounce=5s, webhook_reprogramado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:37:52,794 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 14:37:55,166 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:37:55,170 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=fdescartin@cosgs.com, ultimo_sync_hace=14.7s, cooldown=30s, webhook_descartado=true, subscription_ids=['a013c121-ae93-45a2-ab2b-37ee332002e8']
+2026-02-11 14:37:55,170 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 14:37:57,811 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=eldiaz@cosgs.com, task_id=d10f3426-c953-492f-89d8-2b860e6dd773, debounce=5s, timestamp=2026-02-11T13:37:57.811455, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:38:27,245 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:38:27,249 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=eldiaz@cosgs.com, ultimo_sync_hace=29.4s, cooldown=30s, webhook_descartado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:38:27,250 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 14:38:35,494 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:38:35,497 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 14:38:40,504 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=fdescartin@cosgs.com, task_id=01f112cd-ae18-40b8-bb36-129d64953669, debounce=5s, timestamp=2026-02-11T13:38:40.504676, subscription_ids=['a013c121-ae93-45a2-ab2b-37ee332002e8']
+2026-02-11 14:39:36,704 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:39:36,709 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 14:39:41,710 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=fdescartin@cosgs.com, task_id=4a891e42-17dc-41b3-adc1-74fa2eaf584d, debounce=5s, timestamp=2026-02-11T13:39:41.710150, subscription_ids=['a013c121-ae93-45a2-ab2b-37ee332002e8']
+2026-02-11 14:40:18,630 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:40:18,634 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 14:40:23,637 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=eldiaz@cosgs.com, task_id=2aa3e43c-bc44-4a09-9a0c-3b6521c55faa, debounce=5s, timestamp=2026-02-11T13:40:23.637117, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:41:13,875 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:41:13,878 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 14:41:18,877 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=eldiaz@cosgs.com, task_id=8ac8e483-a9a2-4c22-9124-db6e6beb2830, debounce=5s, timestamp=2026-02-11T13:41:18.877640, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 14:43:19,318 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 14:43:19,321 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.003s
+2026-02-11 14:43:24,342 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=eldiaz@cosgs.com, task_id=3ee0c283-6e39-44d8-b8e2-28e588083230, debounce=5s, timestamp=2026-02-11T13:43:24.342316, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 15:07:02,504 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 15:07:02,509 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.005s
+2026-02-11 15:07:07,510 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=eldiaz@cosgs.com, task_id=a78ee134-4afb-4064-aab3-9afd7ef70143, debounce=5s, timestamp=2026-02-11T14:07:07.510562, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 15:07:43,803 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 15:07:43,806 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.003s
+2026-02-11 15:07:48,795 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=eldiaz@cosgs.com, task_id=f7acc8da-27a2-4d9f-ad38-bb44f42916d8, debounce=5s, timestamp=2026-02-11T14:07:48.795627, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 15:09:45,618 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 15:09:45,621 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 15:09:50,632 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=eldiaz@cosgs.com, task_id=36a8e067-0217-4206-a200-000ba7807498, debounce=5s, timestamp=2026-02-11T14:09:50.632273, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 15:17:07,430 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 15:17:07,434 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 15:17:12,434 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=fdescartin@cosgs.com, task_id=42cfa148-b5ae-484f-bdfb-138e089fdf0d, debounce=5s, timestamp=2026-02-11T14:17:12.434685, subscription_ids=['a013c121-ae93-45a2-ab2b-37ee332002e8']
+2026-02-11 15:17:19,715 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 15:17:19,719 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 15:17:21,472 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 15:17:21,475 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=fdescartin@cosgs.com, ultimo_sync_hace=9.0s, cooldown=30s, webhook_descartado=true, subscription_ids=['a013c121-ae93-45a2-ab2b-37ee332002e8']
+2026-02-11 15:17:21,475 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 15:17:24,731 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=eldiaz@cosgs.com, task_id=1d3ed54a-915a-4494-8d90-6dbc4b1c8e80, debounce=5s, timestamp=2026-02-11T14:17:24.731978, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 15:17:25,923 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 15:17:25,927 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=eldiaz@cosgs.com, ultimo_sync_hace=1.2s, cooldown=30s, webhook_descartado=true, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 15:17:25,927 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 15:17:28,443 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 15:17:28,447 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=fdescartin@cosgs.com, ultimo_sync_hace=16.0s, cooldown=30s, webhook_descartado=true, subscription_ids=['a013c121-ae93-45a2-ab2b-37ee332002e8']
+2026-02-11 15:17:28,447 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 15:17:33,000 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 15:17:33,004 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=fdescartin@cosgs.com, ultimo_sync_hace=20.6s, cooldown=30s, webhook_descartado=true, subscription_ids=['a013c121-ae93-45a2-ab2b-37ee332002e8']
+2026-02-11 15:17:33,004 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 15:18:13,779 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 15:18:13,782 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.003s
+2026-02-11 15:18:18,783 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=eldiaz@cosgs.com, task_id=8f3b1836-fabd-4168-b4b5-6e99cba95a24, debounce=5s, timestamp=2026-02-11T14:18:18.783113, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 15:20:19,590 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 15:20:19,594 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 15:20:24,611 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=eldiaz@cosgs.com, task_id=9a2187d0-5e5a-41d5-8b3a-49a878d7c8f8, debounce=5s, timestamp=2026-02-11T14:20:24.611031, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 15:29:52,354 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 15:29:52,358 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 15:29:57,360 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=eldiaz@cosgs.com, task_id=e7af1932-cca4-42dd-ad9b-7c88e25eb265, debounce=5s, timestamp=2026-02-11T14:29:57.360103, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 15:30:43,846 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 15:30:43,849 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.003s
+2026-02-11 15:30:48,859 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=eldiaz@cosgs.com, task_id=8af28b6f-ff69-4b86-9008-a4db0131d532, debounce=5s, timestamp=2026-02-11T14:30:48.859843, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 15:32:44,479 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 15:32:44,483 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 15:32:49,499 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=eldiaz@cosgs.com, task_id=a772af36-30c5-4e8e-b432-5c2a3b82e26a, debounce=5s, timestamp=2026-02-11T14:32:49.499454, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 15:34:49,230 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 15:34:49,233 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.003s
+2026-02-11 15:34:54,227 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=eldiaz@cosgs.com, task_id=db9b5ca5-b8c8-48a9-9f19-e1f9b4eff662, debounce=5s, timestamp=2026-02-11T14:34:54.227530, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 15:35:44,005 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 15:35:44,007 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.003s
+2026-02-11 15:35:49,015 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=eldiaz@cosgs.com, task_id=83e99174-91da-4d40-bdb0-6c967886cfa5, debounce=5s, timestamp=2026-02-11T14:35:49.015615, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 15:36:48,967 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 15:36:48,971 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 15:36:53,965 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=fdescartin@cosgs.com, task_id=dd897bd1-b1ef-498a-b6fa-5922d963f596, debounce=5s, timestamp=2026-02-11T14:36:53.965638, subscription_ids=['a013c121-ae93-45a2-ab2b-37ee332002e8']
+2026-02-11 15:37:44,885 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 15:37:44,889 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 15:37:49,898 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=eldiaz@cosgs.com, task_id=eac859c0-4069-4bad-9de8-acdd0bf2ae22, debounce=5s, timestamp=2026-02-11T14:37:49.898046, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 15:38:58,721 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 15:38:58,725 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 15:39:03,738 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=eldiaz@cosgs.com, task_id=ae9a3f77-d819-48ed-838e-349766ee2c13, debounce=5s, timestamp=2026-02-11T14:39:03.738657, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 15:39:43,967 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 15:39:43,971 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 15:39:48,986 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=eldiaz@cosgs.com, task_id=14ca219e-e6b1-4b41-910c-bf30581e04b6, debounce=5s, timestamp=2026-02-11T14:39:48.986972, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 15:41:44,719 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 15:41:44,723 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 15:41:49,750 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=eldiaz@cosgs.com, task_id=f6ac62f4-405c-452f-ab41-644358bf455c, debounce=5s, timestamp=2026-02-11T14:41:49.750704, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 15:51:12,023 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.17.0.1
+2026-02-11 15:51:12,080 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.057s
+2026-02-11 15:51:12,081 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.17.0.1
+2026-02-11 15:51:12,084 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.003s
+2026-02-11 15:51:37,615 - app.main - INFO - 📥 GET /api/meetings/54e1cdc4-c3bd-424e-9934-4cd9af19ed7f - Client: 172.17.0.1
+2026-02-11 15:51:37,621 - app.api.routes.meetings - INFO - [VEXA CHECK] Reunion 54e1cdc4-c3bd-424e-9934-4cd9af19ed7f: status=completed, recall_bot_id=34549659317480, scheduled_end_time=2026-02-10 15:30:00, has_segments=False, has_raw_json=False
+2026-02-11 15:51:37,621 - app.api.routes.meetings - INFO - [VEXA CHECK] Reunion 54e1cdc4-c3bd-424e-9934-4cd9af19ed7f: Verificando VEXA (COMPLETED sin datos)
+2026-02-11 15:51:37,622 - app.api.routes.meetings - INFO - Verificando estado en VEXA para reunion 54e1cdc4-c3bd-424e-9934-4cd9af19ed7f (reason: COMPLETED pero sin segmentos ni JSON crudo, native_id=34549659317480)
+2026-02-11 15:51:37,967 - httpx - INFO - HTTP Request: GET http://172.29.14.10:8056/meetings?platform=teams&native_meeting_id=34549659317480 "HTTP/1.1 200 OK"
+2026-02-11 15:51:37,968 - app.api.routes.meetings - INFO - Reunion 54e1cdc4-c3bd-424e-9934-4cd9af19ed7f: Estado en VEXA = completed (local = completed)
+2026-02-11 15:51:38,306 - httpx - INFO - HTTP Request: GET http://172.29.14.10:8056/transcripts/teams/34549659317480 "HTTP/1.1 200 OK"
+2026-02-11 15:51:38,307 - app.api.routes.meetings - INFO - Reunion 54e1cdc4-c3bd-424e-9934-4cd9af19ed7f: Respuesta de VEXA get_transcript: tipo=dict, keys=['id', 'platform', 'native_meeting_id', 'constructed_meeting_url', 'status', 'start_time', 'end_time', 'segments']
+2026-02-11 15:51:38,307 - app.api.routes.meetings - INFO - Reunion 54e1cdc4-c3bd-424e-9934-4cd9af19ed7f: VEXA transcript response details: status=completed, start_time=None, end_time=2026-02-10T15:02:23.166291, segments_count=0
+2026-02-11 15:51:38,307 - app.api.routes.meetings - INFO - Reunion 54e1cdc4-c3bd-424e-9934-4cd9af19ed7f: data['segments'] raw: tipo=list, valor=[]
+2026-02-11 15:51:38,307 - app.api.routes.meetings - INFO - Reunion 54e1cdc4-c3bd-424e-9934-4cd9af19ed7f: Segmentos extraidos de respuesta VEXA: tipo=list, cantidad=0
+2026-02-11 15:51:38,307 - app.api.routes.meetings - INFO - Reunion 54e1cdc4-c3bd-424e-9934-4cd9af19ed7f: Completada en VEXA pero sin segmentos aun, marcando como COMPLETED
+2026-02-11 15:51:38,311 - app.main - INFO - 📥 GET /api/meetings/54e1cdc4-c3bd-424e-9934-4cd9af19ed7f/access - Client: 172.17.0.1
+2026-02-11 15:51:38,312 - app.main - INFO - ✅ GET /api/meetings/54e1cdc4-c3bd-424e-9934-4cd9af19ed7f - Status: 200 - Time: 0.697s
+2026-02-11 15:51:38,319 - app.main - INFO - 📥 GET /api/meetings/54e1cdc4-c3bd-424e-9934-4cd9af19ed7f/transcription - Client: 172.17.0.1
+2026-02-11 15:51:38,319 - app.main - INFO - 📥 GET /api/meetings/54e1cdc4-c3bd-424e-9934-4cd9af19ed7f/summary - Client: 172.17.0.1
+2026-02-11 15:51:38,321 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.17.0.1
+2026-02-11 15:51:38,323 - app.main - INFO - ✅ GET /api/meetings/54e1cdc4-c3bd-424e-9934-4cd9af19ed7f/access - Status: 200 - Time: 0.013s
+2026-02-11 15:51:38,335 - app.main - INFO - ✅ GET /api/meetings/54e1cdc4-c3bd-424e-9934-4cd9af19ed7f/transcription - Status: 200 - Time: 0.015s
+2026-02-11 15:51:38,335 - app.main - INFO - ✅ GET /api/meetings/54e1cdc4-c3bd-424e-9934-4cd9af19ed7f/summary - Status: 200 - Time: 0.016s
+2026-02-11 15:51:38,335 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.014s
+2026-02-11 15:51:54,425 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.17.0.1
+2026-02-11 15:51:54,425 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.17.0.1
+2026-02-11 15:51:54,484 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.059s
+2026-02-11 15:51:54,485 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.059s
+2026-02-11 15:57:28,460 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 15:57:28,464 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 15:57:28,565 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 15:57:28,569 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 15:57:33,484 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=fdescartin@cosgs.com, task_id=dcecf329-20ee-40fb-bd05-b4aadb85e5d3, debounce=5s, timestamp=2026-02-11T14:57:33.484744, subscription_ids=['a013c121-ae93-45a2-ab2b-37ee332002e8']
+2026-02-11 15:57:33,580 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=eldiaz@cosgs.com, task_id=3cbe5790-48d8-44eb-b4bd-a9e46ca235d3, debounce=5s, timestamp=2026-02-11T14:57:33.580977, subscription_ids=['eb083159-a740-40aa-abc1-3ed537d25d63']
+2026-02-11 18:38:49,557 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 18:38:49,561 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 18:38:54,569 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=fdescartin@cosgs.com, task_id=8aabf0ae-ea70-4d19-90d7-f58cc3b20a04, debounce=5s, timestamp=2026-02-11T17:38:54.569128, subscription_ids=['a013c121-ae93-45a2-ab2b-37ee332002e8']
+2026-02-11 18:39:07,261 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-11 18:39:07,264 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Cooldown activo - usuario=fdescartin@cosgs.com, ultimo_sync_hace=12.7s, cooldown=30s, webhook_descartado=true, subscription_ids=['a013c121-ae93-45a2-ab2b-37ee332002e8']
+2026-02-11 18:39:07,265 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.004s
+2026-02-11 20:52:09,398 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.17.0.1
+2026-02-11 20:52:09,402 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.004s
+2026-02-11 20:52:10,286 - app.main - INFO - 📥 GET /api/security/ssl/certificate - Client: 172.17.0.1
+2026-02-11 20:52:10,292 - app.main - INFO - ✅ GET /api/security/ssl/certificate - Status: 200 - Time: 0.006s
+2026-02-11 20:52:10,293 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.17.0.1
+2026-02-11 20:52:10,299 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.006s
+2026-02-11 20:52:10,299 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.17.0.1
+2026-02-11 20:52:10,301 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.17.0.1
+2026-02-11 20:52:10,326 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.027s
+2026-02-11 20:52:10,329 - app.api.routes.meetings - INFO - 🔍 [FILTRO] upcoming_only=True: ahora UTC naive=2026-02-11 19:52:10.329720, filtrando reuniones >= 2026-02-11 19:52:10.329720
+2026-02-11 20:52:10,341 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.041s
+2026-02-11 20:52:10,343 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.17.0.1
+2026-02-11 20:52:10,348 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.004s

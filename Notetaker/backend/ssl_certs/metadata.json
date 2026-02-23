@@ -1,0 +1,17 @@
+{
+  "imported_by": "fdescartin@cosgs.com",
+  "imported_at": "2026-01-29T15:44:58.490976",
+  "certificate_info": {
+    "subject_name": "*.cosgs.com",
+    "subject_alternative_names": [
+      "*.cosgs.com",
+      "cosgs.com"
+    ],
+    "issuer_name": "<Name(C=ES,O=Soluciones Corporativas IP SL,CN=Don Dominio RSA DV SSL CA 2)>",
+    "valid_from": "2026-01-02T00:00:00",
+    "valid_to": "2027-02-02T23:59:59",
+    "signature_algorithm": "sha256WithRSAEncryption",
+    "key_algorithm": "_RSA",
+    "key_size": 2048
+  }
+}

@@ -1,0 +1,1276 @@
+{
+	"info": {
+		"_postman_id": "cosmos-notetaker-api",
+		"name": "Cosmos Notetaker API",
+		"description": "Colección completa de endpoints de la API de Cosmos Notetaker para transcripción y análisis de reuniones Teams",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Health & Root",
+			"item": [
+				{
+					"name": "Root - Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/",
+							"host": ["{{base_url}}"],
+							"path": [""]
+						},
+						"description": "Endpoint de health check básico que devuelve el estado de la API"
+					}
+				},
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/health",
+							"host": ["{{base_url}}"],
+							"path": ["health"]
+						},
+						"description": "Endpoint de verificación de salud del servidor"
+					}
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login OAuth",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/auth/login",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "login"]
+						},
+						"description": "Inicia el flujo de autenticación OAuth2 con Google/Microsoft"
+					}
+				},
+				{
+					"name": "OAuth Callback",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/auth/callback?code=:code&state=:state",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "callback"],
+							"query": [
+								{
+									"key": "code",
+									"value": ":code"
+								},
+								{
+									"key": "state",
+									"value": ":state"
+								}
+							]
+						},
+						"description": "Callback de OAuth2 después de la autenticación"
+					}
+				},
+				{
+					"name": "Simple Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"usuario@ejemplo.com\",\n  \"password\": \"contraseña\",\n  \"display_name\": \"Nombre Usuario\",\n  \"remember_me\": false\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/simple-login",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "simple-login"]
+						},
+						"description": "Login simplificado por email y contraseña sin OAuth"
+					}
+				},
+				{
+					"name": "Get Auth Status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/auth/status",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "status"]
+						},
+						"description": "Obtiene el estado de autenticación del usuario actual"
+					}
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/auth/logout",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "logout"]
+						},
+						"description": "Cierra la sesión del usuario actual"
+					}
+				},
+				{
+					"name": "Get Current User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/auth/me",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "me"]
+						},
+						"description": "Obtiene la información del usuario autenticado actual"
+					}
+				},
+				{
+					"name": "Forgot Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"usuario@ejemplo.com\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/forgot-password",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "forgot-password"]
+						},
+						"description": "Solicita un email de recuperación de contraseña"
+					}
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"token\": \"token_de_reset\",\n  \"new_password\": \"nueva_contraseña\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/reset-password",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "reset-password"]
+						},
+						"description": "Restablece la contraseña usando el token recibido por email"
+					}
+				},
+				{
+					"name": "Change Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"current_password\": \"contraseña_actual\",\n  \"new_password\": \"nueva_contraseña\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/change-password",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "change-password"]
+						},
+						"description": "Cambia la contraseña del usuario autenticado"
+					}
+				},
+				{
+					"name": "Set Initial Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"usuario@ejemplo.com\",\n  \"password\": \"contraseña_inicial\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/set-initial-password",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "set-initial-password"]
+						},
+						"description": "Establece la contraseña inicial para un usuario nuevo"
+					}
+				},
+				{
+					"name": "Heartbeat",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"usuario@ejemplo.com\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/heartbeat",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "heartbeat"]
+						},
+						"description": "Envía un heartbeat para indicar que el usuario está activo"
+					}
+				},
+				{
+					"name": "Admin - Reset User Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"usuario@ejemplo.com\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/admin/reset-password",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "admin", "reset-password"]
+						},
+						"description": "Administrador: Resetea la contraseña de un usuario y envía email"
+					}
+				},
+				{
+					"name": "Admin - Create User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"nuevo@ejemplo.com\",\n  \"password\": \"contraseña\",\n  \"display_name\": \"Nombre Usuario\",\n  \"license_type\": \"premium\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/admin/create-user",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "admin", "create-user"]
+						},
+						"description": "Administrador: Crea un nuevo usuario en el sistema"
+					}
+				},
+				{
+					"name": "Admin - List Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/auth/users/list",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "users", "list"]
+						},
+						"description": "Administrador: Lista todos los usuarios del sistema"
+					}
+				},
+				{
+					"name": "Update Current User",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"display_name\": \"Nuevo Nombre\",\n  \"email\": \"nuevo@ejemplo.com\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/users/me",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "users", "me"]
+						},
+						"description": "Actualiza la información del usuario autenticado actual"
+					}
+				},
+				{
+					"name": "Update User by ID",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"display_name\": \"Nuevo Nombre\",\n  \"email\": \"nuevo@ejemplo.com\",\n  \"license_type\": \"premium\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/users/:user_id",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "users", ":user_id"],
+							"variable": [
+								{
+									"key": "user_id",
+									"value": ""
+								}
+							]
+						},
+						"description": "Administrador: Actualiza la información de un usuario específico"
+					}
+				}
+			]
+		},
+		{
+			"name": "Meetings",
+			"item": [
+				{
+					"name": "Create Meeting",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Reunión de prueba\",\n  \"scheduled_start_time\": \"2024-01-20T10:00:00Z\",\n  \"scheduled_end_time\": \"2024-01-20T11:00:00Z\",\n  \"meeting_url\": \"https://teams.microsoft.com/...\",\n  \"organizer_email\": \"organizador@ejemplo.com\",\n  \"organizer_name\": \"Nombre Organizador\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/meetings/create",
+							"host": ["{{base_url}}"],
+							"path": ["api", "meetings", "create"]
+						},
+						"description": "Crea una nueva reunión manualmente en el sistema"
+					}
+				},
+				{
+					"name": "List Meetings",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/meetings/list?user_email=:email&status=:status&upcoming_only=:upcoming",
+							"host": ["{{base_url}}"],
+							"path": ["api", "meetings", "list"],
+							"query": [
+								{
+									"key": "user_email",
+									"value": ":email",
+									"description": "Filtrar por email del usuario"
+								},
+								{
+									"key": "status",
+									"value": ":status",
+									"description": "Filtrar por estado (scheduled, in_progress, completed, cancelled)"
+								},
+								{
+									"key": "upcoming_only",
+									"value": ":upcoming",
+									"description": "Solo reuniones futuras (true/false)"
+								}
+							]
+						},
+						"description": "Lista todas las reuniones con filtros opcionales"
+					}
+				},
+				{
+					"name": "Get Meeting",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/meetings/:meeting_id",
+							"host": ["{{base_url}}"],
+							"path": ["api", "meetings", ":meeting_id"],
+							"variable": [
+								{
+									"key": "meeting_id",
+									"value": ""
+								}
+							]
+						},
+						"description": "Obtiene los detalles completos de una reunión específica"
+					}
+				},
+				{
+					"name": "Delete Meeting",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/meetings/:meeting_id?user_email=:email",
+							"host": ["{{base_url}}"],
+							"path": ["api", "meetings", ":meeting_id"],
+							"query": [
+								{
+									"key": "user_email",
+									"value": ":email"
+								}
+							],
+							"variable": [
+								{
+									"key": "meeting_id",
+									"value": ""
+								}
+							]
+						},
+						"description": "Elimina una reunión del sistema"
+					}
+				},
+				{
+					"name": "Grant Meeting Access",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_email\": \"usuario@ejemplo.com\",\n  \"can_view_transcript\": true,\n  \"can_view_audio\": true,\n  \"can_view_video\": false\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/meetings/:meeting_id/access",
+							"host": ["{{base_url}}"],
+							"path": ["api", "meetings", ":meeting_id", "access"],
+							"variable": [
+								{
+									"key": "meeting_id",
+									"value": ""
+								}
+							]
+						},
+						"description": "Otorga acceso a un usuario para ver una reunión específica"
+					}
+				},
+				{
+					"name": "List Meeting Access",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/meetings/:meeting_id/access",
+							"host": ["{{base_url}}"],
+							"path": ["api", "meetings", ":meeting_id", "access"],
+							"variable": [
+								{
+									"key": "meeting_id",
+									"value": ""
+								}
+							]
+						},
+						"description": "Lista todos los usuarios con acceso a una reunión"
+					}
+				},
+				{
+					"name": "Revoke Meeting Access",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/meetings/:meeting_id/access/:user_id",
+							"host": ["{{base_url}}"],
+							"path": ["api", "meetings", ":meeting_id", "access", ":user_id"],
+							"variable": [
+								{
+									"key": "meeting_id",
+									"value": ""
+								},
+								{
+									"key": "user_id",
+									"value": ""
+								}
+							]
+						},
+						"description": "Revoca el acceso de un usuario a una reunión"
+					}
+				},
+				{
+					"name": "Send Summary Email",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"recipients\": [\"usuario1@ejemplo.com\", \"usuario2@ejemplo.com\"],\n  \"subject\": \"Resumen de Reunión\",\n  \"cc\": [\"cc@ejemplo.com\"]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/meetings/:meeting_id/send-summary-email",
+							"host": ["{{base_url}}"],
+							"path": ["api", "meetings", ":meeting_id", "send-summary-email"],
+							"variable": [
+								{
+									"key": "meeting_id",
+									"value": ""
+								}
+							]
+						},
+						"description": "Envía un email con el resumen de la reunión a los destinatarios especificados"
+					}
+				},
+				{
+					"name": "Get Cosmos JSON",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/meetings/:meeting_id/cosmos-json",
+							"host": ["{{base_url}}"],
+							"path": ["api", "meetings", ":meeting_id", "cosmos-json"],
+							"variable": [
+								{
+									"key": "meeting_id",
+									"value": ""
+								}
+							]
+						},
+						"description": "Obtiene el JSON completo de la respuesta de Cosmos para una reunión (útil para debugging)"
+					}
+				},
+				{
+					"name": "Regenerate Summary",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/meetings/:meeting_id/regenerate-summary?user_email=:email",
+							"host": ["{{base_url}}"],
+							"path": ["api", "meetings", ":meeting_id", "regenerate-summary"],
+							"query": [
+								{
+									"key": "user_email",
+									"value": ":email"
+								}
+							],
+							"variable": [
+								{
+									"key": "meeting_id",
+									"value": ""
+								}
+							]
+						},
+						"description": "Fuerza la regeneración del resumen de IA para una reunión específica"
+					}
+				},
+				{
+					"name": "Join Bot Now",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"meeting_id\": \"meeting_id_aqui\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/meetings/join-bot-now",
+							"host": ["{{base_url}}"],
+							"path": ["api", "meetings", "join-bot-now"]
+						},
+						"description": "Une un bot de Recall a una reunión inmediatamente"
+					}
+				},
+				{
+					"name": "Test Join Bot",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/meetings/:meeting_id/test-join-bot",
+							"host": ["{{base_url}}"],
+							"path": ["api", "meetings", ":meeting_id", "test-join-bot"],
+							"variable": [
+								{
+									"key": "meeting_id",
+									"value": ""
+								}
+							]
+						},
+						"description": "Prueba unir un bot a una reunión (endpoint de testing)"
+					}
+				},
+				{
+					"name": "Sync Celery",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"meeting_ids\": [\"id1\", \"id2\"]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/meetings/sync-celery",
+							"host": ["{{base_url}}"],
+							"path": ["api", "meetings", "sync-celery"]
+						},
+						"description": "Sincroniza tareas de Celery para reuniones específicas"
+					}
+				}
+			]
+		},
+		{
+			"name": "Recall & Transcripts",
+			"item": [
+				{
+					"name": "Join Meeting with Recall",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"meeting_id\": \"meeting_id_aqui\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/recall/bot/join-meeting",
+							"host": ["{{base_url}}"],
+							"path": ["api", "recall", "bot", "join-meeting"]
+						},
+						"description": "Crea un bot de Recall.ai para una reunión existente usando la URL de Teams almacenada"
+					}
+				},
+				{
+					"name": "Get Bot Status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/recall/bot/:bot_id/status",
+							"host": ["{{base_url}}"],
+							"path": ["api", "recall", "bot", ":bot_id", "status"],
+							"variable": [
+								{
+									"key": "bot_id",
+									"value": ""
+								}
+							]
+						},
+						"description": "Obtiene el estado actual de un bot de Recall"
+					}
+				},
+				{
+					"name": "Stop Bot",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/recall/bot/:bot_id/stop",
+							"host": ["{{base_url}}"],
+							"path": ["api", "recall", "bot", ":bot_id", "stop"],
+							"variable": [
+								{
+									"key": "bot_id",
+									"value": ""
+								}
+							]
+						},
+						"description": "Detiene un bot de Recall activo"
+					}
+				},
+				{
+					"name": "Get Bot Transcript",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/recall/bot/:bot_id/transcript",
+							"host": ["{{base_url}}"],
+							"path": ["api", "recall", "bot", ":bot_id", "transcript"],
+							"variable": [
+								{
+									"key": "bot_id",
+									"value": ""
+								}
+							]
+						},
+						"description": "Obtiene la transcripción generada por un bot de Recall"
+					}
+				},
+				{
+					"name": "Delete Bot",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/recall/bot/:bot_id/delete",
+							"host": ["{{base_url}}"],
+							"path": ["api", "recall", "bot", ":bot_id", "delete"],
+							"variable": [
+								{
+									"key": "bot_id",
+									"value": ""
+								}
+							]
+						},
+						"description": "Elimina un bot de Recall del sistema"
+					}
+				},
+				{
+					"name": "Delete Recording",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/recall/recording/:recording_id/delete",
+							"host": ["{{base_url}}"],
+							"path": ["api", "recall", "recording", ":recording_id", "delete"],
+							"variable": [
+								{
+									"key": "recording_id",
+									"value": ""
+								}
+							]
+						},
+						"description": "Elimina una grabación de Recall del sistema"
+					}
+				},
+				{
+					"name": "Get Meeting Transcription",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/meetings/:meeting_id/transcription?user_email=:email",
+							"host": ["{{base_url}}"],
+							"path": ["api", "meetings", ":meeting_id", "transcription"],
+							"query": [
+								{
+									"key": "user_email",
+									"value": ":email"
+								}
+							],
+							"variable": [
+								{
+									"key": "meeting_id",
+									"value": ""
+								}
+							]
+						},
+						"description": "Obtiene la transcripción completa de una reunión con segmentos"
+					}
+				},
+				{
+					"name": "Get Meeting Summary",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/meetings/:meeting_id/summary",
+							"host": ["{{base_url}}"],
+							"path": ["api", "meetings", ":meeting_id", "summary"],
+							"variable": [
+								{
+									"key": "meeting_id",
+									"value": ""
+								}
+							]
+						},
+						"description": "Obtiene el resumen e insights de una reunión generados por IA"
+					}
+				},
+				{
+					"name": "Get Meeting Audio",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/meetings/:meeting_id/audio?user_email=:email",
+							"host": ["{{base_url}}"],
+							"path": ["api", "meetings", ":meeting_id", "audio"],
+							"query": [
+								{
+									"key": "user_email",
+									"value": ":email"
+								}
+							],
+							"variable": [
+								{
+									"key": "meeting_id",
+									"value": ""
+								}
+							]
+						},
+						"description": "Obtiene el archivo de audio de una reunión (soporta byte-range requests)"
+					}
+				},
+				{
+					"name": "Get Meeting Video",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/meetings/:meeting_id/video?user_email=:email",
+							"host": ["{{base_url}}"],
+							"path": ["api", "meetings", ":meeting_id", "video"],
+							"query": [
+								{
+									"key": "user_email",
+									"value": ":email"
+								}
+							],
+							"variable": [
+								{
+									"key": "meeting_id",
+									"value": ""
+								}
+							]
+						},
+						"description": "Obtiene el archivo de video de una reunión (soporta byte-range requests)"
+					}
+				},
+				{
+					"name": "Reprocess Transcript",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/meetings/:meeting_id/reprocess-transcript",
+							"host": ["{{base_url}}"],
+							"path": ["api", "meetings", ":meeting_id", "reprocess-transcript"],
+							"variable": [
+								{
+									"key": "meeting_id",
+									"value": ""
+								}
+							]
+						},
+						"description": "Reprocesa la transcripción de una reunión"
+					}
+				},
+				{
+					"name": "Reprocess Summaries",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"meeting_ids\": [\"id1\", \"id2\"],\n  \"force\": false\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/meetings/reprocess-summaries",
+							"host": ["{{base_url}}"],
+							"path": ["api", "meetings", "reprocess-summaries"]
+						},
+						"description": "Reprocesa los resúmenes de IA para múltiples reuniones"
+					}
+				}
+			]
+		},
+		{
+			"name": "Analytics",
+			"item": [
+				{
+					"name": "Get User Analytics",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/analytics/user?user_email=:email&start_date=:start&end_date=:end",
+							"host": ["{{base_url}}"],
+							"path": ["api", "analytics", "user"],
+							"query": [
+								{
+									"key": "user_email",
+									"value": ":email",
+									"description": "Email del usuario"
+								},
+								{
+									"key": "start_date",
+									"value": ":start",
+									"description": "Fecha de inicio (YYYY-MM-DD)"
+								},
+								{
+									"key": "end_date",
+									"value": ":end",
+									"description": "Fecha de fin (YYYY-MM-DD)"
+								}
+							]
+						},
+						"description": "Obtiene métricas personales del usuario: participación, calidad de reuniones, etc."
+					}
+				},
+				{
+					"name": "Get User Analytics History",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/analytics/user/history?user_email=:email&months=:months",
+							"host": ["{{base_url}}"],
+							"path": ["api", "analytics", "user", "history"],
+							"query": [
+								{
+									"key": "user_email",
+									"value": ":email",
+									"description": "Email del usuario"
+								},
+								{
+									"key": "months",
+									"value": ":months",
+									"description": "Número de meses de historia (default: 6)"
+								}
+							]
+						},
+						"description": "Obtiene el historial de métricas del usuario por mes"
+					}
+				}
+			]
+		},
+		{
+			"name": "Integrations",
+			"item": [
+				{
+					"name": "Get Integration Status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/integrations/status?user_email=:email",
+							"host": ["{{base_url}}"],
+							"path": ["api", "integrations", "status"],
+							"query": [
+								{
+									"key": "user_email",
+									"value": ":email"
+								}
+							]
+						},
+						"description": "Obtiene el estado de las integraciones de calendario del usuario (Google/Outlook)"
+					}
+				},
+				{
+					"name": "Start OAuth Flow",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/integrations/oauth/start/:provider?user_email=:email",
+							"host": ["{{base_url}}"],
+							"path": ["api", "integrations", "oauth", "start", ":provider"],
+							"query": [
+								{
+									"key": "user_email",
+									"value": ":email"
+								}
+							],
+							"variable": [
+								{
+									"key": "provider",
+									"value": "google",
+									"description": "google o outlook"
+								}
+							]
+						},
+						"description": "Inicia el flujo OAuth para conectar un calendario (Google o Outlook)"
+					}
+				},
+				{
+					"name": "OAuth Callback",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/integrations/oauth/callback/:provider?code=:code&state=:state",
+							"host": ["{{base_url}}"],
+							"path": ["api", "integrations", "oauth", "callback", ":provider"],
+							"query": [
+								{
+									"key": "code",
+									"value": ":code"
+								},
+								{
+									"key": "state",
+									"value": ":state"
+								}
+							],
+							"variable": [
+								{
+									"key": "provider",
+									"value": "google",
+									"description": "google o outlook"
+								}
+							]
+						},
+						"description": "Callback de OAuth después de la autenticación del calendario"
+					}
+				},
+				{
+					"name": "Disconnect Integration",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/integrations/disconnect/:provider?user_email=:email",
+							"host": ["{{base_url}}"],
+							"path": ["api", "integrations", "disconnect", ":provider"],
+							"query": [
+								{
+									"key": "user_email",
+									"value": ":email"
+								}
+							],
+							"variable": [
+								{
+									"key": "provider",
+									"value": "google",
+									"description": "google o outlook"
+								}
+							]
+						},
+						"description": "Desconecta la integración de calendario del usuario"
+					}
+				},
+				{
+					"name": "Get Calendar Events",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/integrations/calendar/events?user_email=:email&start_date=:start&end_date=:end&provider=:provider",
+							"host": ["{{base_url}}"],
+							"path": ["api", "integrations", "calendar", "events"],
+							"query": [
+								{
+									"key": "user_email",
+									"value": ":email"
+								},
+								{
+									"key": "start_date",
+									"value": ":start"
+								},
+								{
+									"key": "end_date",
+									"value": ":end"
+								},
+								{
+									"key": "provider",
+									"value": ":provider",
+									"description": "google o outlook"
+								}
+							]
+						},
+						"description": "Obtiene los eventos del calendario del usuario desde Google Calendar o Outlook"
+					}
+				},
+				{
+					"name": "Get Calendars",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/integrations/calendar/calendars?user_email=:email&provider=:provider",
+							"host": ["{{base_url}}"],
+							"path": ["api", "integrations", "calendar", "calendars"],
+							"query": [
+								{
+									"key": "user_email",
+									"value": ":email"
+								},
+								{
+									"key": "provider",
+									"value": ":provider",
+									"description": "google o outlook"
+								}
+							]
+						},
+						"description": "Obtiene la lista de calendarios disponibles del usuario"
+					}
+				},
+				{
+					"name": "Sync Calendar",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_email\": \"usuario@ejemplo.com\",\n  \"provider\": \"google\",\n  \"calendar_ids\": [\"cal1\", \"cal2\"],\n  \"sync_past_days\": 30,\n  \"sync_future_days\": 90\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/integrations/calendar/sync",
+							"host": ["{{base_url}}"],
+							"path": ["api", "integrations", "calendar", "sync"]
+						},
+						"description": "Sincroniza eventos de calendario y crea reuniones automáticamente"
+					}
+				},
+				{
+					"name": "Enable Push Notifications",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_email\": \"usuario@ejemplo.com\",\n  \"provider\": \"google\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/integrations/calendar/enable-push-notifications",
+							"host": ["{{base_url}}"],
+							"path": ["api", "integrations", "calendar", "enable-push-notifications"]
+						},
+						"description": "Habilita las notificaciones push de Google Calendar para sincronización en tiempo real"
+					}
+				}
+			]
+		},
+		{
+			"name": "Webhooks",
+			"item": [
+				{
+					"name": "Recall Webhook",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"event\": \"bot.started\",\n  \"bot_id\": \"bot_id\",\n  \"recording_id\": \"recording_id\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/webhook/recall",
+							"host": ["{{base_url}}"],
+							"path": ["webhook", "recall"]
+						},
+						"description": "Webhook para recibir eventos de Recall.ai (bot.started, bot.stopped, recording.ready, etc.)"
+					}
+				},
+				{
+					"name": "Google Calendar Webhook (POST)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"channel_id\": \"channel_id\",\n  \"resource_id\": \"resource_id\",\n  \"resource_state\": \"sync\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/integrations/webhook/google-calendar",
+							"host": ["{{base_url}}"],
+							"path": ["api", "integrations", "webhook", "google-calendar"]
+						},
+						"description": "Webhook POST para recibir notificaciones push de Google Calendar"
+					}
+				},
+				{
+					"name": "Google Calendar Webhook (GET)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/integrations/webhook/google-calendar",
+							"host": ["{{base_url}}"],
+							"path": ["api", "integrations", "webhook", "google-calendar"]
+						},
+						"description": "Webhook GET para verificación de Google Calendar (retorna challenge)"
+					}
+				}
+			]
+		},
+		{
+			"name": "Static",
+			"item": [
+				{
+					"name": "Get Bot Avatar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/bot-avatar",
+							"host": ["{{base_url}}"],
+							"path": ["api", "bot-avatar"]
+						},
+						"description": "Obtiene la imagen del avatar del bot"
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://172.29.14.14:7000",
+			"type": "string"
+		}
+	]
+}

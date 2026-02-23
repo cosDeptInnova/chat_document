@@ -1,0 +1,54 @@
+# FastAPI y servidor
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+python-multipart==0.0.6
+
+# Database
+sqlalchemy==2.0.23
+alembic==1.12.1
+psycopg2-binary==2.9.9
+
+# Redis
+redis==5.0.1
+
+# Celery para tareas programadas
+celery==5.3.4
+
+# Scheduler para tareas periodicas independientes de Celery
+APScheduler==3.10.4
+
+# OAuth
+msal==1.34.0
+httpx==0.25.2
+pyjwt>=2.8.0  # Para decodificar ID tokens
+requests==2.31.0  # Para Microsoft Graph API (envío de emails)
+
+# Google Calendar API
+google-auth==2.23.4
+google-auth-oauthlib==1.1.0
+google-api-python-client==2.108.0
+
+# Browser Automation
+playwright==1.40.0
+
+# Audio Processing
+deepgram-sdk==3.2.7
+websockets==12.0
+
+# Config y Utils
+pydantic==2.5.0
+pydantic-settings==2.1.0
+python-dotenv==1.0.0
+email-validator==2.3.0  # Requerido para EmailStr en Pydantic
+bcrypt==4.1.2  # Para hash de contraseñas
+
+# Storage
+boto3==1.29.7  # Para S3 (opcional)
+
+# Testing
+pytest==7.4.3
+pytest-asyncio==0.21.1
+
+# SSL/Certificates
+cryptography==41.0.7
+

@@ -1,0 +1,12 @@
+2026-02-07 14:48:38,276 - celery.worker.consumer.connection - INFO - Connected to redis://localhost:6380/0
+2026-02-07 14:48:38,281 - celery.worker.consumer.mingle - INFO - mingle: searching for neighbors
+2026-02-07 14:48:39,302 - celery.worker.consumer.mingle - INFO - mingle: all alone
+2026-02-07 16:46:29,485 - celery.worker.strategy - INFO - Task app.tasks.summary_tasks.process_meeting_summary[66de123c-eec7-49fd-a31b-eb0ac037c337] received
+2026-02-07 16:46:48,590 - celery.worker.strategy - INFO - Task app.tasks.summary_tasks.process_meeting_summary[632f482d-0167-43ff-b798-0067382f4063] received
+2026-02-07 16:47:23,467 - celery.worker.strategy - INFO - Task app.tasks.summary_tasks.process_meeting_summary[b3300125-0ee3-49ac-af25-472f85e31df8] received
+2026-02-07 22:01:37,767 - celery.worker.strategy - INFO - Task app.tasks.summary_tasks.process_meeting_summary[6811b559-03fa-41d0-bd90-584188c411ea] received
+2026-02-08 19:26:47,014 - celery.worker.strategy - INFO - Task app.tasks.calendar_tasks.run_calendar_sync_for_user[4d09601d-4893-4bc1-b575-f214261c8771] received
+2026-02-08 19:26:48,472 - celery.worker.strategy - INFO - Task app.tasks.meeting_tasks.join_bot_to_meeting[081d46f1-671f-4313-b09f-78a544ac9206] received
+2026-02-08 19:26:48,483 - celery.worker.strategy - INFO - Task app.tasks.meeting_tasks.join_bot_to_meeting[03e431fb-6589-4c87-8649-38adf6b741bf] received
+2026-02-08 19:28:24,624 - celery.worker.strategy - INFO - Task app.tasks.meeting_tasks.join_bot_to_meeting[ca0a7118-1270-48ba-83f9-0f7dc8eab84d] received
+2026-02-08 19:28:46,089 - celery.worker.strategy - INFO - Task app.tasks.calendar_tasks.run_calendar_sync_for_user[66235d8b-b42a-4916-9563-27a4b4c447c3] received

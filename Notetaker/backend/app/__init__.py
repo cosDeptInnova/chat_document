@@ -1,0 +1,2 @@
+"""Cosmos Notetaker Backend Application."""
+

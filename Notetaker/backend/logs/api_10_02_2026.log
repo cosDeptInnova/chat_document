@@ -1,0 +1,342 @@
+2026-02-10 09:59:41,103 - app.main - INFO - [API] Logging a fichero activo: C:\Casos de Uso\notetaker2.0\backend\logs\api_10_02_2026.log
+2026-02-10 09:59:41,300 - app.main - INFO - ✅ Tablas de base de datos creadas/verificadas
+2026-02-10 10:00:16,870 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.18.0.1
+2026-02-10 10:00:16,876 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Sin cooldown previo - usuario=fdescartin@cosgs.com, webhook_procesado=true, subscription_ids=['a013c121-ae93-45a2-ab2b-37ee332002e8']
+2026-02-10 10:00:16,877 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 202 - Time: 0.007s
+2026-02-10 10:00:21,959 - app.api.routes.integrations - INFO - [WEBHOOK_OUTLOOK] Tarea Celery encolada - usuario=fdescartin@cosgs.com, task_id=950ea026-d117-4281-b0b6-5ce039f25829, debounce=5s, timestamp=2026-02-10T09:00:21.959135, subscription_ids=['a013c121-ae93-45a2-ab2b-37ee332002e8']
+2026-02-10 10:00:30,693 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.18.0.1
+2026-02-10 10:00:30,698 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.006s
+2026-02-10 10:00:30,699 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.18.0.1
+2026-02-10 10:00:30,759 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.060s
+2026-02-10 10:00:31,019 - app.main - INFO - 📥 GET /api/security/ssl/certificate - Client: 172.18.0.1
+2026-02-10 10:00:31,029 - app.main - INFO - ✅ GET /api/security/ssl/certificate - Status: 200 - Time: 0.010s
+2026-02-10 10:00:31,032 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.18.0.1
+2026-02-10 10:00:31,032 - app.main - INFO - 📥 GET /api/analytics/user/history - Client: 172.18.0.1
+2026-02-10 10:00:31,032 - app.main - INFO - 📥 GET /api/analytics/user - Client: 172.18.0.1
+2026-02-10 10:00:31,033 - app.main - INFO - 📥 GET /api/analytics/user/history - Client: 172.18.0.1
+2026-02-10 10:00:31,033 - app.main - INFO - 📥 GET /api/analytics/user - Client: 172.18.0.1
+2026-02-10 10:00:31,034 - app.main - INFO - 📥 GET /api/security/ssl/certificate - Client: 172.18.0.1
+2026-02-10 10:00:31,034 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.18.0.1
+2026-02-10 10:00:32,385 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 1.353s
+2026-02-10 10:00:32,385 - app.main - INFO - ✅ GET /api/analytics/user/history - Status: 200 - Time: 1.354s
+2026-02-10 10:00:32,386 - app.main - INFO - ✅ GET /api/analytics/user - Status: 200 - Time: 1.354s
+2026-02-10 10:00:32,386 - app.main - INFO - ✅ GET /api/analytics/user/history - Status: 200 - Time: 1.354s
+2026-02-10 10:00:32,386 - app.main - INFO - ✅ GET /api/analytics/user - Status: 200 - Time: 1.353s
+2026-02-10 10:00:32,387 - app.main - INFO - ✅ GET /api/security/ssl/certificate - Status: 200 - Time: 1.353s
+2026-02-10 10:00:32,388 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 1.354s
+2026-02-10 10:01:02,499 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.18.0.1
+2026-02-10 10:01:02,502 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.003s
+2026-02-10 10:01:02,504 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.18.0.1
+2026-02-10 10:01:02,508 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.003s
+2026-02-10 10:01:02,598 - app.main - INFO - 📥 GET /api/security/ssl/certificate - Client: 172.18.0.1
+2026-02-10 10:01:02,599 - app.main - INFO - 📥 GET /api/analytics/user - Client: 172.18.0.1
+2026-02-10 10:01:02,605 - app.main - INFO - ✅ GET /api/security/ssl/certificate - Status: 200 - Time: 0.007s
+2026-02-10 10:01:02,880 - app.main - INFO - ✅ GET /api/analytics/user - Status: 200 - Time: 0.281s
+2026-02-10 10:01:02,884 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.18.0.1
+2026-02-10 10:01:02,884 - app.main - INFO - 📥 GET /api/security/ssl/certificate - Client: 172.18.0.1
+2026-02-10 10:01:02,885 - app.main - INFO - 📥 GET /api/analytics/user/history - Client: 172.18.0.1
+2026-02-10 10:01:02,886 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.18.0.1
+2026-02-10 10:01:02,886 - app.main - INFO - 📥 GET /api/analytics/user/history - Client: 172.18.0.1
+2026-02-10 10:01:02,887 - app.main - INFO - 📥 GET /api/analytics/user - Client: 172.18.0.1
+2026-02-10 10:01:03,591 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.707s
+2026-02-10 10:01:03,592 - app.main - INFO - ✅ GET /api/security/ssl/certificate - Status: 200 - Time: 0.708s
+2026-02-10 10:01:03,593 - app.main - INFO - ✅ GET /api/analytics/user/history - Status: 200 - Time: 0.707s
+2026-02-10 10:01:03,593 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.707s
+2026-02-10 10:01:03,593 - app.main - INFO - ✅ GET /api/analytics/user/history - Status: 200 - Time: 0.707s
+2026-02-10 10:01:03,593 - app.main - INFO - ✅ GET /api/analytics/user - Status: 200 - Time: 0.707s
+2026-02-10 10:08:32,205 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.18.0.1
+2026-02-10 10:08:32,209 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.004s
+2026-02-10 10:08:32,210 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.18.0.1
+2026-02-10 10:08:32,214 - app.api.routes.meetings - INFO - 🔍 [FILTRO] upcoming_only=True: ahora UTC naive=2026-02-10 09:08:32.214890, filtrando reuniones >= 2026-02-10 09:08:32.214890
+2026-02-10 10:08:32,225 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.015s
+2026-02-10 10:08:32,263 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.18.0.1
+2026-02-10 10:08:32,267 - app.api.routes.meetings - INFO - 🔍 [FILTRO] upcoming_only=True: ahora UTC naive=2026-02-10 09:08:32.267639, filtrando reuniones >= 2026-02-10 09:08:32.267639
+2026-02-10 10:08:32,275 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.012s
+2026-02-10 10:08:44,683 - app.main - INFO - 📥 GET /api/integrations/status - Client: 172.18.0.1
+2026-02-10 10:08:44,690 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.18.0.1
+2026-02-10 10:08:44,692 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.003s
+2026-02-10 10:08:44,882 - httpx - INFO - HTTP Request: GET https://graph.microsoft.com/v1.0/me "HTTP/1.1 200 OK"
+2026-02-10 10:08:44,883 - app.main - INFO - ✅ GET /api/integrations/status - Status: 200 - Time: 0.200s
+2026-02-10 10:08:44,919 - app.main - INFO - 📥 GET /api/integrations/status - Client: 172.18.0.1
+2026-02-10 10:08:45,058 - httpx - INFO - HTTP Request: GET https://graph.microsoft.com/v1.0/me "HTTP/1.1 200 OK"
+2026-02-10 10:08:45,058 - app.main - INFO - ✅ GET /api/integrations/status - Status: 200 - Time: 0.139s
+2026-02-10 10:08:47,787 - app.main - INFO - 📥 POST /api/integrations/calendar/sync - Client: 172.18.0.1
+2026-02-10 10:08:47,789 - app.api.routes.integrations - INFO - Suscripcion Outlook por expirar para fdescartin@cosgs.com, renovando...
+2026-02-10 10:08:48,263 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.18.0.1
+2026-02-10 10:08:48,264 - app.api.routes.integrations - INFO - Webhook Outlook: validacion (validationToken)
+2026-02-10 10:08:48,264 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 200 - Time: 0.001s
+2026-02-10 10:08:48,552 - httpx - INFO - HTTP Request: PATCH https://graph.microsoft.com/v1.0/subscriptions/a013c121-ae93-45a2-ab2b-37ee332002e8 "HTTP/1.1 200 OK"
+2026-02-10 10:08:48,553 - app.services.outlook_calendar_service - INFO - Suscripcion Outlook renovada: id=a013c121-ae93-45a2-ab2b-37ee332002e8, expiration=2026-02-12T09:08:47Z
+2026-02-10 10:08:48,571 - app.api.routes.integrations - INFO - Suscripcion Outlook renovada para fdescartin@cosgs.com
+2026-02-10 10:08:48,949 - httpx - INFO - HTTP Request: GET https://graph.microsoft.com/v1.0/me/calendar/calendarView?startDateTime=2026-02-10T09%3A08%3A48.571820%2B00%3A00&endDateTime=2026-03-12T09%3A08%3A48.571820%2B00%3A00&%24top=100&%24orderby=start%2FdateTime "HTTP/1.1 200 OK"
+2026-02-10 10:08:48,953 - app.services.outlook_calendar_service - INFO - Outlook calendarView: 17 instancias (recurrentes expandidas) en el rango
+2026-02-10 10:08:48,963 - app.services.calendar_sync_service - INFO - Reunión actualizada desde Outlook Calendar: https://teams.microsoft.com/l/meetup-join/19%3ameeting_OTk5ZjIxNzAtZTFhYy00OWIzLTg1NDYtZDlhMWRmZGY0NTBi%40thread.v2/0?context=%7b%22Tid%22%3a%22e0b4b780-6188-44ad-a603-f87d1bf174f4%22%2c%22Oid%22%3a%228e7b37fa-a2c1-41ea-b882-77366dd1d91c%22%7d
+2026-02-10 10:08:48,966 - app.services.calendar_sync_service - INFO - Reunión actualizada desde Outlook Calendar: https://teams.microsoft.com/meet/31063419371935?p=irrhsvDgQL2D21awgQ
+2026-02-10 10:08:48,971 - app.services.calendar_sync_service - INFO - Reunión actualizada desde Outlook Calendar: https://teams.microsoft.com/meet/35039235511544?p=EoaPulZIDi5e6kZs57
+2026-02-10 10:08:48,975 - app.services.calendar_sync_service - INFO - Reunión actualizada desde Outlook Calendar: https://teams.microsoft.com/meet/32317670013069?p=x7dEpJzxtyp8KMycew
+2026-02-10 10:08:48,979 - app.services.calendar_sync_service - INFO - Reunión actualizada desde Outlook Calendar: https://teams.microsoft.com/l/meetup-join/19%3ameeting_OTk5ZjIxNzAtZTFhYy00OWIzLTg1NDYtZDlhMWRmZGY0NTBi%40thread.v2/0?context=%7b%22Tid%22%3a%22e0b4b780-6188-44ad-a603-f87d1bf174f4%22%2c%22Oid%22%3a%228e7b37fa-a2c1-41ea-b882-77366dd1d91c%22%7d
+2026-02-10 10:08:48,982 - app.services.calendar_sync_service - INFO - Reunión actualizada desde Outlook Calendar: https://teams.microsoft.com/l/meetup-join/19%3ameeting_OTk5ZjIxNzAtZTFhYy00OWIzLTg1NDYtZDlhMWRmZGY0NTBi%40thread.v2/0?context=%7b%22Tid%22%3a%22e0b4b780-6188-44ad-a603-f87d1bf174f4%22%2c%22Oid%22%3a%228e7b37fa-a2c1-41ea-b882-77366dd1d91c%22%7d
+2026-02-10 10:08:48,986 - app.services.calendar_sync_service - INFO - Reunión actualizada desde Outlook Calendar: https://teams.microsoft.com/l/meetup-join/19%3ameeting_OTk5ZjIxNzAtZTFhYy00OWIzLTg1NDYtZDlhMWRmZGY0NTBi%40thread.v2/0?context=%7b%22Tid%22%3a%22e0b4b780-6188-44ad-a603-f87d1bf174f4%22%2c%22Oid%22%3a%228e7b37fa-a2c1-41ea-b882-77366dd1d91c%22%7d
+2026-02-10 10:08:48,990 - app.services.calendar_sync_service - INFO - Reunión actualizada desde Outlook Calendar: https://teams.microsoft.com/l/meetup-join/19%3ameeting_OTk5ZjIxNzAtZTFhYy00OWIzLTg1NDYtZDlhMWRmZGY0NTBi%40thread.v2/0?context=%7b%22Tid%22%3a%22e0b4b780-6188-44ad-a603-f87d1bf174f4%22%2c%22Oid%22%3a%228e7b37fa-a2c1-41ea-b882-77366dd1d91c%22%7d
+2026-02-10 10:08:48,991 - app.services.calendar_sync_service - INFO - Outlook sync: 9 eventos omitidos sin URL de reunión, 0 sin start válido; 8 reuniones procesadas
+2026-02-10 10:08:49,000 - app.main - INFO - ✅ POST /api/integrations/calendar/sync - Status: 200 - Time: 1.214s
+2026-02-10 10:08:51,757 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.18.0.1
+2026-02-10 10:08:51,762 - app.api.routes.meetings - INFO - 🔍 [FILTRO] upcoming_only=True: ahora UTC naive=2026-02-10 09:08:51.762059, filtrando reuniones >= 2026-02-10 09:08:51.762059
+2026-02-10 10:08:51,770 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.013s
+2026-02-10 10:08:51,771 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.18.0.1
+2026-02-10 10:08:51,775 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.005s
+2026-02-10 10:08:51,807 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.18.0.1
+2026-02-10 10:08:51,812 - app.api.routes.meetings - INFO - 🔍 [FILTRO] upcoming_only=True: ahora UTC naive=2026-02-10 09:08:51.812924, filtrando reuniones >= 2026-02-10 09:08:51.812924
+2026-02-10 10:08:51,825 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.018s
+2026-02-10 10:09:08,566 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.18.0.1
+2026-02-10 10:09:08,570 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.004s
+2026-02-10 10:09:08,571 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.18.0.1
+2026-02-10 10:09:08,629 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.058s
+2026-02-10 10:09:08,665 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.18.0.1
+2026-02-10 10:09:08,717 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.052s
+2026-02-10 10:10:05,637 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.18.0.1
+2026-02-10 10:10:05,641 - app.api.routes.meetings - INFO - 🔍 [FILTRO] upcoming_only=True: ahora UTC naive=2026-02-10 09:10:05.641884, filtrando reuniones >= 2026-02-10 09:10:05.641884
+2026-02-10 10:10:05,649 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.18.0.1
+2026-02-10 10:10:05,650 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.013s
+2026-02-10 10:10:05,654 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.004s
+2026-02-10 10:10:05,689 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.18.0.1
+2026-02-10 10:10:05,694 - app.api.routes.meetings - INFO - 🔍 [FILTRO] upcoming_only=True: ahora UTC naive=2026-02-10 09:10:05.694857, filtrando reuniones >= 2026-02-10 09:10:05.694857
+2026-02-10 10:10:05,703 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.014s
+2026-02-10 10:10:35,681 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.18.0.1
+2026-02-10 10:10:35,684 - app.api.routes.meetings - INFO - 🔍 [FILTRO] upcoming_only=True: ahora UTC naive=2026-02-10 09:10:35.684941, filtrando reuniones >= 2026-02-10 09:10:35.684941
+2026-02-10 10:10:35,693 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.012s
+2026-02-10 10:10:35,694 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.18.0.1
+2026-02-10 10:10:35,695 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.18.0.1
+2026-02-10 10:10:35,713 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.019s
+2026-02-10 10:10:35,714 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.020s
+2026-02-10 10:10:35,732 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.18.0.1
+2026-02-10 10:10:35,735 - app.api.routes.meetings - INFO - 🔍 [FILTRO] upcoming_only=True: ahora UTC naive=2026-02-10 09:10:35.735255, filtrando reuniones >= 2026-02-10 09:10:35.735255
+2026-02-10 10:10:35,743 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.011s
+2026-02-10 10:10:35,749 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.18.0.1
+2026-02-10 10:10:35,763 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.014s
+2026-02-10 10:10:46,170 - app.main - INFO - 📥 GET /api/meetings/2ecb3227-af9c-4167-aa2e-20851caafd1c - Client: 172.18.0.1
+2026-02-10 10:10:46,180 - app.api.routes.meetings - INFO - [VEXA CHECK] Reunion 2ecb3227-af9c-4167-aa2e-20851caafd1c: status=pending, recall_bot_id=None, scheduled_end_time=2026-02-10 09:30:00, has_segments=False, has_raw_json=False
+2026-02-10 10:10:46,180 - app.api.routes.meetings - INFO - [VEXA CHECK] Reunion 2ecb3227-af9c-4167-aa2e-20851caafd1c: Sin recall_bot_id, no se puede verificar VEXA
+2026-02-10 10:10:46,182 - app.main - INFO - ✅ GET /api/meetings/2ecb3227-af9c-4167-aa2e-20851caafd1c - Status: 200 - Time: 0.011s
+2026-02-10 10:10:46,183 - app.main - INFO - 📥 GET /api/meetings/2ecb3227-af9c-4167-aa2e-20851caafd1c/access - Client: 172.18.0.1
+2026-02-10 10:10:46,183 - app.main - INFO - 📥 GET /api/meetings/2ecb3227-af9c-4167-aa2e-20851caafd1c/transcription - Client: 172.18.0.1
+2026-02-10 10:10:46,187 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.18.0.1
+2026-02-10 10:10:46,204 - app.main - INFO - 📥 GET /api/meetings/2ecb3227-af9c-4167-aa2e-20851caafd1c/summary - Client: 172.18.0.1
+2026-02-10 10:10:46,205 - app.main - INFO - ✅ GET /api/meetings/2ecb3227-af9c-4167-aa2e-20851caafd1c/access - Status: 200 - Time: 0.022s
+2026-02-10 10:10:46,206 - app.main - INFO - ✅ GET /api/meetings/2ecb3227-af9c-4167-aa2e-20851caafd1c/transcription - Status: 200 - Time: 0.023s
+2026-02-10 10:10:46,211 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.025s
+2026-02-10 10:10:46,213 - app.main - INFO - ✅ GET /api/meetings/2ecb3227-af9c-4167-aa2e-20851caafd1c/summary - Status: 200 - Time: 0.008s
+2026-02-10 10:10:46,224 - app.main - INFO - 📥 GET /api/meetings/2ecb3227-af9c-4167-aa2e-20851caafd1c - Client: 172.18.0.1
+2026-02-10 10:10:46,229 - app.api.routes.meetings - INFO - [VEXA CHECK] Reunion 2ecb3227-af9c-4167-aa2e-20851caafd1c: status=pending, recall_bot_id=None, scheduled_end_time=2026-02-10 09:30:00, has_segments=False, has_raw_json=False
+2026-02-10 10:10:46,229 - app.api.routes.meetings - INFO - [VEXA CHECK] Reunion 2ecb3227-af9c-4167-aa2e-20851caafd1c: Sin recall_bot_id, no se puede verificar VEXA
+2026-02-10 10:10:46,231 - app.main - INFO - ✅ GET /api/meetings/2ecb3227-af9c-4167-aa2e-20851caafd1c - Status: 200 - Time: 0.007s
+2026-02-10 10:10:46,246 - app.main - INFO - 📥 GET /api/meetings/2ecb3227-af9c-4167-aa2e-20851caafd1c/access - Client: 172.18.0.1
+2026-02-10 10:10:46,247 - app.main - INFO - 📥 GET /api/meetings/2ecb3227-af9c-4167-aa2e-20851caafd1c/transcription - Client: 172.18.0.1
+2026-02-10 10:10:46,260 - app.main - INFO - ✅ GET /api/meetings/2ecb3227-af9c-4167-aa2e-20851caafd1c/transcription - Status: 200 - Time: 0.013s
+2026-02-10 10:10:46,260 - app.main - INFO - ✅ GET /api/meetings/2ecb3227-af9c-4167-aa2e-20851caafd1c/access - Status: 200 - Time: 0.014s
+2026-02-10 10:10:46,261 - app.main - INFO - 📥 GET /api/meetings/2ecb3227-af9c-4167-aa2e-20851caafd1c/summary - Client: 172.18.0.1
+2026-02-10 10:10:46,265 - app.main - INFO - ✅ GET /api/meetings/2ecb3227-af9c-4167-aa2e-20851caafd1c/summary - Status: 200 - Time: 0.005s
+2026-02-10 10:10:46,307 - app.main - INFO - 📥 GET /api/meetings/2ecb3227-af9c-4167-aa2e-20851caafd1c/summary - Client: 172.18.0.1
+2026-02-10 10:10:46,311 - app.main - INFO - ✅ GET /api/meetings/2ecb3227-af9c-4167-aa2e-20851caafd1c/summary - Status: 200 - Time: 0.003s
+2026-02-10 10:10:46,344 - app.main - INFO - 📥 GET /api/meetings/2ecb3227-af9c-4167-aa2e-20851caafd1c/summary - Client: 172.18.0.1
+2026-02-10 10:10:46,347 - app.main - INFO - ✅ GET /api/meetings/2ecb3227-af9c-4167-aa2e-20851caafd1c/summary - Status: 200 - Time: 0.003s
+2026-02-10 10:10:52,614 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.18.0.1
+2026-02-10 10:10:52,619 - app.api.routes.meetings - INFO - 🔍 [FILTRO] upcoming_only=True: ahora UTC naive=2026-02-10 09:10:52.619218, filtrando reuniones >= 2026-02-10 09:10:52.619218
+2026-02-10 10:10:52,627 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.013s
+2026-02-10 10:10:52,628 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.18.0.1
+2026-02-10 10:10:52,631 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.004s
+2026-02-10 10:10:52,668 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.18.0.1
+2026-02-10 10:10:52,672 - app.api.routes.meetings - INFO - 🔍 [FILTRO] upcoming_only=True: ahora UTC naive=2026-02-10 09:10:52.671725, filtrando reuniones >= 2026-02-10 09:10:52.671725
+2026-02-10 10:10:52,679 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.011s
+2026-02-10 10:10:54,122 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.18.0.1
+2026-02-10 10:10:54,123 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.18.0.1
+2026-02-10 10:10:54,138 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.016s
+2026-02-10 10:10:54,139 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.016s
+2026-02-10 10:11:05,291 - app.main - INFO - 📥 GET /api/meetings/2ecb3227-af9c-4167-aa2e-20851caafd1c - Client: 172.18.0.1
+2026-02-10 10:11:05,296 - app.api.routes.meetings - INFO - [VEXA CHECK] Reunion 2ecb3227-af9c-4167-aa2e-20851caafd1c: status=pending, recall_bot_id=None, scheduled_end_time=2026-02-10 09:30:00, has_segments=False, has_raw_json=False
+2026-02-10 10:11:05,296 - app.api.routes.meetings - INFO - [VEXA CHECK] Reunion 2ecb3227-af9c-4167-aa2e-20851caafd1c: Sin recall_bot_id, no se puede verificar VEXA
+2026-02-10 10:11:05,298 - app.main - INFO - ✅ GET /api/meetings/2ecb3227-af9c-4167-aa2e-20851caafd1c - Status: 200 - Time: 0.007s
+2026-02-10 10:11:05,300 - app.main - INFO - 📥 GET /api/meetings/2ecb3227-af9c-4167-aa2e-20851caafd1c/transcription - Client: 172.18.0.1
+2026-02-10 10:11:05,301 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.18.0.1
+2026-02-10 10:11:05,301 - app.main - INFO - 📥 GET /api/meetings/2ecb3227-af9c-4167-aa2e-20851caafd1c/access - Client: 172.18.0.1
+2026-02-10 10:11:05,302 - app.main - INFO - 📥 GET /api/meetings/2ecb3227-af9c-4167-aa2e-20851caafd1c/summary - Client: 172.18.0.1
+2026-02-10 10:11:05,322 - app.main - INFO - ✅ GET /api/meetings/2ecb3227-af9c-4167-aa2e-20851caafd1c/transcription - Status: 200 - Time: 0.022s
+2026-02-10 10:11:05,322 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.021s
+2026-02-10 10:11:05,323 - app.main - INFO - ✅ GET /api/meetings/2ecb3227-af9c-4167-aa2e-20851caafd1c/access - Status: 200 - Time: 0.022s
+2026-02-10 10:11:05,323 - app.main - INFO - ✅ GET /api/meetings/2ecb3227-af9c-4167-aa2e-20851caafd1c/summary - Status: 200 - Time: 0.021s
+2026-02-10 10:11:05,336 - app.main - INFO - 📥 GET /api/meetings/2ecb3227-af9c-4167-aa2e-20851caafd1c - Client: 172.18.0.1
+2026-02-10 10:11:05,339 - app.api.routes.meetings - INFO - [VEXA CHECK] Reunion 2ecb3227-af9c-4167-aa2e-20851caafd1c: status=pending, recall_bot_id=None, scheduled_end_time=2026-02-10 09:30:00, has_segments=False, has_raw_json=False
+2026-02-10 10:11:05,339 - app.api.routes.meetings - INFO - [VEXA CHECK] Reunion 2ecb3227-af9c-4167-aa2e-20851caafd1c: Sin recall_bot_id, no se puede verificar VEXA
+2026-02-10 10:11:05,341 - app.main - INFO - ✅ GET /api/meetings/2ecb3227-af9c-4167-aa2e-20851caafd1c - Status: 200 - Time: 0.005s
+2026-02-10 10:11:05,361 - app.main - INFO - 📥 GET /api/meetings/2ecb3227-af9c-4167-aa2e-20851caafd1c/transcription - Client: 172.18.0.1
+2026-02-10 10:11:05,362 - app.main - INFO - 📥 GET /api/meetings/2ecb3227-af9c-4167-aa2e-20851caafd1c/access - Client: 172.18.0.1
+2026-02-10 10:11:05,363 - app.main - INFO - 📥 GET /api/meetings/2ecb3227-af9c-4167-aa2e-20851caafd1c/summary - Client: 172.18.0.1
+2026-02-10 10:11:05,374 - app.main - INFO - ✅ GET /api/meetings/2ecb3227-af9c-4167-aa2e-20851caafd1c/transcription - Status: 200 - Time: 0.012s
+2026-02-10 10:11:05,376 - app.main - INFO - ✅ GET /api/meetings/2ecb3227-af9c-4167-aa2e-20851caafd1c/access - Status: 200 - Time: 0.014s
+2026-02-10 10:11:05,377 - app.main - INFO - ✅ GET /api/meetings/2ecb3227-af9c-4167-aa2e-20851caafd1c/summary - Status: 200 - Time: 0.013s
+2026-02-10 10:11:05,412 - app.main - INFO - 📥 GET /api/meetings/2ecb3227-af9c-4167-aa2e-20851caafd1c/summary - Client: 172.18.0.1
+2026-02-10 10:11:05,415 - app.main - INFO - ✅ GET /api/meetings/2ecb3227-af9c-4167-aa2e-20851caafd1c/summary - Status: 200 - Time: 0.003s
+2026-02-10 10:11:05,448 - app.main - INFO - 📥 GET /api/meetings/2ecb3227-af9c-4167-aa2e-20851caafd1c/summary - Client: 172.18.0.1
+2026-02-10 10:11:05,451 - app.main - INFO - ✅ GET /api/meetings/2ecb3227-af9c-4167-aa2e-20851caafd1c/summary - Status: 200 - Time: 0.003s
+2026-02-10 10:11:14,285 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.18.0.1
+2026-02-10 10:11:14,289 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.004s
+2026-02-10 10:11:14,326 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.18.0.1
+2026-02-10 10:11:14,329 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.003s
+2026-02-10 10:11:14,705 - app.main - INFO - 📥 GET /api/security/ssl/certificate - Client: 172.18.0.1
+2026-02-10 10:11:14,711 - app.main - INFO - ✅ GET /api/security/ssl/certificate - Status: 200 - Time: 0.007s
+2026-02-10 10:11:14,712 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.18.0.1
+2026-02-10 10:11:14,713 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.18.0.1
+2026-02-10 10:11:14,733 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.18.0.1
+2026-02-10 10:11:14,736 - app.api.routes.meetings - INFO - 🔍 [FILTRO] upcoming_only=True: ahora UTC naive=2026-02-10 09:11:14.736831, filtrando reuniones >= 2026-02-10 09:11:14.736831
+2026-02-10 10:11:14,745 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.033s
+2026-02-10 10:11:14,745 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.032s
+2026-02-10 10:11:14,750 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.016s
+2026-02-10 10:11:14,757 - app.main - INFO - 📥 GET /api/security/ssl/certificate - Client: 172.18.0.1
+2026-02-10 10:11:14,763 - app.main - INFO - ✅ GET /api/security/ssl/certificate - Status: 200 - Time: 0.006s
+2026-02-10 10:11:14,785 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.18.0.1
+2026-02-10 10:11:14,799 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.014s
+2026-02-10 10:11:14,800 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.18.0.1
+2026-02-10 10:11:14,800 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.18.0.1
+2026-02-10 10:11:14,807 - app.api.routes.meetings - INFO - 🔍 [FILTRO] upcoming_only=True: ahora UTC naive=2026-02-10 09:11:14.807089, filtrando reuniones >= 2026-02-10 09:11:14.807089
+2026-02-10 10:11:14,815 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.014s
+2026-02-10 10:11:14,815 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.015s
+2026-02-10 10:11:39,702 - app.main - INFO - 📥 POST /api/meetings/create - Client: 172.18.0.1
+2026-02-10 10:11:39,709 - app.api.routes.meetings - INFO - Reutilizando reunión existente 2a1a8adc-9f1a-4cf8-a355-0cf210cfeb94 para URL https://teams.microsoft.com/l/meetup-join/19%3ameeting_OTk5ZjIxNzAtZTFhYy00OWIzLTg1NDYtZDlhMWRmZGY0NTBi%40thread.v2/0?context=%7b%22Tid%22%3a%22e0b4b780-6188-44ad-a603-f87d1bf174f4%22%2c%22Oid%22%3a%228e7b37fa-a2c1-41ea-b882-77366dd1d91c%22%7d y usuario fdescartin@cosgs.com
+2026-02-10 10:11:39,710 - app.api.routes.meetings - INFO - Actualizando permisos de acceso para usuario fdescartin@cosgs.com (licencia: basic) en meeting 2a1a8adc-9f1a-4cf8-a355-0cf210cfeb94
+2026-02-10 10:11:39,716 - app.api.routes.meetings - INFO - 🔄 Reutilizando bot existente de otra reunión con la misma URL: reunión 2a1a8adc-9f1a-4cf8-a355-0cf210cfeb94 reutilizará bot_id=22bb0f71-8fa8-413d-a3e7-e7ca331d5a6d de reunión 77a9cd29-9ace-4809-ae3c-a0f6e1fa09c2 (URL: https://teams.microsoft.com/l/meetup-join/19%3ameeting_OTk5ZjIxNzAtZTFhYy00OWIzLTg1NDYtZDlhMWRmZGY0NTBi%40thread.v2/0?context=%7b%22Tid%22%3a%22e0b4b780-6188-44ad-a603-f87d1bf174f4%22%2c%22Oid%22%3a%228e7b37fa-a2c1-41ea-b882-77366dd1d91c%22%7d)
+2026-02-10 10:11:39,721 - app.api.routes.meetings - INFO - ✅ Reunión 2a1a8adc-9f1a-4cf8-a355-0cf210cfeb94 actualizada para usar bot compartido (bot_id=22bb0f71-8fa8-413d-a3e7-e7ca331d5a6d)
+2026-02-10 10:11:39,723 - app.main - INFO - ✅ POST /api/meetings/create - Status: 200 - Time: 0.021s
+2026-02-10 10:11:39,764 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.18.0.1
+2026-02-10 10:11:39,767 - app.api.routes.meetings - INFO - 🔍 [FILTRO] upcoming_only=True: ahora UTC naive=2026-02-10 09:11:39.767824, filtrando reuniones >= 2026-02-10 09:11:39.767824
+2026-02-10 10:11:39,776 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.011s
+2026-02-10 10:11:39,776 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.18.0.1
+2026-02-10 10:11:39,792 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.015s
+2026-02-10 10:11:44,733 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.18.0.1
+2026-02-10 10:11:44,733 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.18.0.1
+2026-02-10 10:11:44,739 - app.api.routes.meetings - INFO - 🔍 [FILTRO] upcoming_only=True: ahora UTC naive=2026-02-10 09:11:44.739178, filtrando reuniones >= 2026-02-10 09:11:44.739178
+2026-02-10 10:11:44,748 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.015s
+2026-02-10 10:11:44,749 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.016s
+2026-02-10 10:11:44,789 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.18.0.1
+2026-02-10 10:11:44,792 - app.api.routes.meetings - INFO - 🔍 [FILTRO] upcoming_only=True: ahora UTC naive=2026-02-10 09:11:44.792967, filtrando reuniones >= 2026-02-10 09:11:44.792967
+2026-02-10 10:11:44,800 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.011s
+2026-02-10 10:11:52,865 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.18.0.1
+2026-02-10 10:11:52,866 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.18.0.1
+2026-02-10 10:11:52,882 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.015s
+2026-02-10 10:11:52,882 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.017s
+2026-02-10 10:11:56,145 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.18.0.1
+2026-02-10 10:11:56,145 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.18.0.1
+2026-02-10 10:11:56,149 - app.api.routes.meetings - INFO - 🔍 [FILTRO] upcoming_only=True: ahora UTC naive=2026-02-10 09:11:56.149999, filtrando reuniones >= 2026-02-10 09:11:56.149999
+2026-02-10 10:11:56,159 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.014s
+2026-02-10 10:11:56,159 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.014s
+2026-02-10 10:11:58,414 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.18.0.1
+2026-02-10 10:11:58,415 - app.main - INFO - 📥 GET /api/security/ssl/certificate - Client: 172.18.0.1
+2026-02-10 10:11:58,423 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.008s
+2026-02-10 10:11:58,423 - app.main - INFO - ✅ GET /api/security/ssl/certificate - Status: 200 - Time: 0.008s
+2026-02-10 10:11:58,461 - app.main - INFO - 📥 GET /api/security/ssl/certificate - Client: 172.18.0.1
+2026-02-10 10:11:58,466 - app.main - INFO - ✅ GET /api/security/ssl/certificate - Status: 200 - Time: 0.005s
+2026-02-10 10:12:02,252 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.18.0.1
+2026-02-10 10:12:02,252 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.18.0.1
+2026-02-10 10:12:02,305 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.053s
+2026-02-10 10:12:02,306 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.054s
+2026-02-10 10:12:02,341 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.18.0.1
+2026-02-10 10:12:02,391 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.050s
+2026-02-10 10:13:04,219 - app.main - INFO - 📥 DELETE /api/meetings/2ecb3227-af9c-4167-aa2e-20851caafd1c - Client: 172.18.0.1
+2026-02-10 10:13:04,226 - app.api.routes.meetings - INFO - 🔐 Admin fdescartin@cosgs.com intentando borrar reunión 2ecb3227-af9c-4167-aa2e-20851caafd1c (status=pending, delete_content=True)
+2026-02-10 10:13:04,283 - app.api.routes.meetings - INFO - 🔍 [DELETE] Admin borrando reunión 2ecb3227-af9c-4167-aa2e-20851caafd1c. Hay 6 otras reuniones con la misma URL. Total accesos en todas las reuniones con esta URL: 20
+2026-02-10 10:13:07,433 - app.api.routes.meetings - INFO - ℹ️ [DELETE] No se encontraron tareas Celery para cancelar en reunión 2ecb3227-af9c-4167-aa2e-20851caafd1c
+2026-02-10 10:13:07,435 - app.api.routes.meetings - INFO - 🚫 [DELETE] Tarea Celery específica cancelada - task_id: b9db99bb-6767-408c-beb7-72449f78353d, reunión: 2ecb3227-af9c-4167-aa2e-20851caafd1c
+2026-02-10 10:13:07,435 - app.api.routes.meetings - INFO - [DELETE] No se cancela el bot VEXA para reunion 2ecb3227-af9c-4167-aa2e-20851caafd1c (hay 20 usuarios con misma URL)
+2026-02-10 10:13:07,435 - app.api.routes.meetings - INFO - 🗑️ [DELETE] Iniciando HARD DELETE de reunión 2ecb3227-af9c-4167-aa2e-20851caafd1c por admin fdescartin@cosgs.com
+2026-02-10 10:13:07,435 - app.api.routes.meetings - INFO - 📋 [DELETE] Información de la reunión a borrar:
+2026-02-10 10:13:07,436 - app.api.routes.meetings - INFO -    - ID: 2ecb3227-af9c-4167-aa2e-20851caafd1c
+2026-02-10 10:13:07,436 - app.api.routes.meetings - INFO -    - Título: Seguimiento semanal proyectos Innovación (IA-RPA) [En persona]
+2026-02-10 10:13:07,436 - app.api.routes.meetings - INFO -    - URL: https://teams.microsoft.com/l/meetup-join/19%3ameeting_OTk5ZjIxNzAtZTFhYy00OWIzLTg1NDYtZDlhMWRmZGY0NTBi%40thread.v2/0?context=%7b%22Tid%22%3a%22e0b4b780-6188-44ad-a603-f87d1bf174f4%22%2c%22Oid%22%3a%228e7b37fa-a2c1-41ea-b882-77366dd1d91c%22%7d
+2026-02-10 10:13:07,436 - app.api.routes.meetings - INFO -    - Estado: pending
+2026-02-10 10:13:07,436 - app.api.routes.meetings - INFO -    - Audio file path: None
+2026-02-10 10:13:07,437 - app.api.routes.meetings - INFO -    - Video file path: None
+2026-02-10 10:13:07,437 - app.api.routes.meetings - INFO -    - Storage type: local
+2026-02-10 10:13:07,437 - app.api.routes.meetings - INFO -    - Recall bot ID: None
+2026-02-10 10:13:07,439 - app.api.routes.meetings - INFO - ℹ️ [DELETE] No se encontró transcripción para esta reunión
+2026-02-10 10:13:07,439 - app.api.routes.meetings - INFO - ℹ️ [DELETE] No hay archivo de audio asociado a esta reunión
+2026-02-10 10:13:07,439 - app.api.routes.meetings - INFO - ℹ️ [DELETE] No hay archivo de video asociado a esta reunión
+2026-02-10 10:13:07,440 - app.api.routes.meetings - INFO - ℹ️ [DELETE] No se encontró summary para esta reunión
+2026-02-10 10:13:07,441 - app.api.routes.meetings - INFO - 👥 [DELETE] Accesos a borrar: 3
+2026-02-10 10:13:07,443 - app.api.routes.meetings - INFO -    🗑️ [DELETE] Borrando acceso - User ID: 8684f6b8-3a52-4040-a8a0-e7112a5545e9, Meeting ID: 2ecb3227-af9c-4167-aa2e-20851caafd1c
+2026-02-10 10:13:07,443 - app.api.routes.meetings - INFO -    🗑️ [DELETE] Borrando acceso - User ID: d83844fc-f535-4f98-867e-3c26f79c1bec, Meeting ID: 2ecb3227-af9c-4167-aa2e-20851caafd1c
+2026-02-10 10:13:07,443 - app.api.routes.meetings - INFO -    🗑️ [DELETE] Borrando acceso - User ID: cc2f6977-1ba9-4803-bc06-52c384ef2b42, Meeting ID: 2ecb3227-af9c-4167-aa2e-20851caafd1c
+2026-02-10 10:13:07,446 - app.api.routes.meetings - INFO - ✅ [DELETE] 3 accesos borrados de la BD
+2026-02-10 10:13:07,462 - app.api.routes.meetings - INFO - ✅ [DELETE] Reunión 2ecb3227-af9c-4167-aa2e-20851caafd1c borrada completamente de la BD (HARD DELETE)
+2026-02-10 10:13:07,462 - app.api.routes.meetings - INFO - 🎯 [DELETE] HARD DELETE completado para reunión 2ecb3227-af9c-4167-aa2e-20851caafd1c por admin fdescartin@cosgs.com
+2026-02-10 10:13:07,463 - app.main - INFO - ✅ DELETE /api/meetings/2ecb3227-af9c-4167-aa2e-20851caafd1c - Status: 200 - Time: 3.244s
+2026-02-10 10:13:07,504 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.18.0.1
+2026-02-10 10:13:07,554 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.050s
+2026-02-10 10:13:09,599 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.18.0.1
+2026-02-10 10:13:09,604 - app.api.routes.meetings - INFO - 🔍 [FILTRO] upcoming_only=True: ahora UTC naive=2026-02-10 09:13:09.604857, filtrando reuniones >= 2026-02-10 09:13:09.604857
+2026-02-10 10:13:09,613 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.014s
+2026-02-10 10:13:09,614 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.18.0.1
+2026-02-10 10:13:09,619 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.005s
+2026-02-10 10:13:09,654 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.18.0.1
+2026-02-10 10:13:09,658 - app.api.routes.meetings - INFO - 🔍 [FILTRO] upcoming_only=True: ahora UTC naive=2026-02-10 09:13:09.658735, filtrando reuniones >= 2026-02-10 09:13:09.658735
+2026-02-10 10:13:09,666 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.012s
+2026-02-10 10:13:12,084 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.18.0.1
+2026-02-10 10:13:12,085 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.18.0.1
+2026-02-10 10:13:12,091 - app.api.routes.meetings - INFO - 🔍 [FILTRO] upcoming_only=True: ahora UTC naive=2026-02-10 09:13:12.090907, filtrando reuniones >= 2026-02-10 09:13:12.090907
+2026-02-10 10:13:12,107 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.18.0.1
+2026-02-10 10:13:12,107 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.023s
+2026-02-10 10:13:12,112 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.027s
+2026-02-10 10:13:12,116 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.009s
+2026-02-10 10:13:12,152 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.18.0.1
+2026-02-10 10:13:12,153 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.18.0.1
+2026-02-10 10:13:12,157 - app.api.routes.meetings - INFO - 🔍 [FILTRO] upcoming_only=True: ahora UTC naive=2026-02-10 09:13:12.156661, filtrando reuniones >= 2026-02-10 09:13:12.156661
+2026-02-10 10:13:12,177 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.025s
+2026-02-10 10:13:12,177 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.024s
+2026-02-10 10:14:13,229 - app.main - INFO - 📥 POST /api/meetings/create - Client: 172.18.0.1
+2026-02-10 10:14:13,235 - app.api.routes.meetings - INFO - Reutilizando reunión existente 2a1a8adc-9f1a-4cf8-a355-0cf210cfeb94 para URL https://teams.microsoft.com/l/meetup-join/19%3ameeting_OTk5ZjIxNzAtZTFhYy00OWIzLTg1NDYtZDlhMWRmZGY0NTBi%40thread.v2/0?context=%7b%22Tid%22%3a%22e0b4b780-6188-44ad-a603-f87d1bf174f4%22%2c%22Oid%22%3a%228e7b37fa-a2c1-41ea-b882-77366dd1d91c%22%7d y usuario fdescartin@cosgs.com
+2026-02-10 10:14:13,236 - app.api.routes.meetings - INFO - Actualizando permisos de acceso para usuario fdescartin@cosgs.com (licencia: basic) en meeting 2a1a8adc-9f1a-4cf8-a355-0cf210cfeb94
+2026-02-10 10:14:13,238 - app.api.routes.meetings - INFO - ℹ️ Reunión existente 2a1a8adc-9f1a-4cf8-a355-0cf210cfeb94 ya tiene bot asignado (bot_id=22bb0f71-8fa8-413d-a3e7-e7ca331d5a6d), no se programa nueva tarea
+2026-02-10 10:14:13,240 - app.main - INFO - ✅ POST /api/meetings/create - Status: 200 - Time: 0.011s
+2026-02-10 10:14:13,281 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.18.0.1
+2026-02-10 10:14:13,282 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.18.0.1
+2026-02-10 10:14:13,287 - app.api.routes.meetings - INFO - 🔍 [FILTRO] upcoming_only=True: ahora UTC naive=2026-02-10 09:14:13.287370, filtrando reuniones >= 2026-02-10 09:14:13.287370
+2026-02-10 10:14:13,295 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.014s
+2026-02-10 10:14:13,309 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.027s
+2026-02-10 10:14:16,106 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.18.0.1
+2026-02-10 10:14:16,110 - app.api.routes.meetings - INFO - 🔍 [FILTRO] upcoming_only=True: ahora UTC naive=2026-02-10 09:14:16.110856, filtrando reuniones >= 2026-02-10 09:14:16.110856
+2026-02-10 10:14:16,118 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.012s
+2026-02-10 10:14:16,120 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.18.0.1
+2026-02-10 10:14:16,124 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.004s
+2026-02-10 10:14:16,156 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.18.0.1
+2026-02-10 10:14:16,160 - app.api.routes.meetings - INFO - 🔍 [FILTRO] upcoming_only=True: ahora UTC naive=2026-02-10 09:14:16.160215, filtrando reuniones >= 2026-02-10 09:14:16.160215
+2026-02-10 10:14:16,167 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.011s
+2026-02-10 10:30:57,782 - app.main - INFO - [API] Logging a fichero activo: C:\Casos de Uso\notetaker2.0\backend\logs\api_10_02_2026.log
+2026-02-10 10:30:57,970 - app.main - INFO - ✅ Tablas de base de datos creadas/verificadas
+2026-02-10 10:31:06,432 - app.main - INFO - 📥 GET /api/analytics/user - Client: 172.18.0.1
+2026-02-10 10:31:06,733 - app.main - INFO - 📥 GET /api/analytics/user/history - Client: 172.18.0.1
+2026-02-10 10:31:06,733 - app.main - INFO - ✅ GET /api/analytics/user - Status: 200 - Time: 0.301s
+2026-02-10 10:31:06,733 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.18.0.1
+2026-02-10 10:31:07,000 - app.main - INFO - ✅ GET /api/analytics/user/history - Status: 200 - Time: 0.268s
+2026-02-10 10:31:07,060 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.327s
+2026-02-10 10:31:07,062 - app.main - INFO - 📥 GET /api/analytics/user - Client: 172.18.0.1
+2026-02-10 10:31:07,338 - app.main - INFO - ✅ GET /api/analytics/user - Status: 200 - Time: 0.276s
+2026-02-10 10:31:07,339 - app.main - INFO - 📥 GET /api/analytics/user/history - Client: 172.18.0.1
+2026-02-10 10:31:07,532 - app.main - INFO - ✅ GET /api/analytics/user/history - Status: 200 - Time: 0.193s
+2026-02-10 10:31:16,987 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.18.0.1
+2026-02-10 10:31:16,990 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.004s
+2026-02-10 10:31:16,992 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.18.0.1
+2026-02-10 10:31:16,995 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.004s
+2026-02-10 10:31:17,293 - app.main - INFO - 📥 GET /api/analytics/user/history - Client: 172.18.0.1
+2026-02-10 10:31:17,294 - app.main - INFO - 📥 GET /api/security/ssl/certificate - Client: 172.18.0.1
+2026-02-10 10:31:17,498 - app.main - INFO - 📥 GET /api/analytics/user - Client: 172.18.0.1
+2026-02-10 10:31:17,499 - app.main - INFO - ✅ GET /api/analytics/user/history - Status: 200 - Time: 0.206s
+2026-02-10 10:31:17,507 - app.main - INFO - ✅ GET /api/security/ssl/certificate - Status: 200 - Time: 0.212s
+2026-02-10 10:31:17,509 - app.main - INFO - 📥 GET /api/analytics/user/history - Client: 172.18.0.1
+2026-02-10 10:31:17,509 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.18.0.1
+2026-02-10 10:31:17,510 - app.main - INFO - 📥 GET /api/security/ssl/certificate - Client: 172.18.0.1
+2026-02-10 10:31:17,510 - app.main - INFO - 📥 GET /api/analytics/user - Client: 172.18.0.1
+2026-02-10 10:31:17,510 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.18.0.1
+2026-02-10 10:31:17,792 - app.main - INFO - ✅ GET /api/analytics/user - Status: 200 - Time: 0.293s
+2026-02-10 10:31:18,501 - app.main - INFO - ✅ GET /api/analytics/user/history - Status: 200 - Time: 0.992s
+2026-02-10 10:31:18,501 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.992s
+2026-02-10 10:31:18,502 - app.main - INFO - ✅ GET /api/security/ssl/certificate - Status: 200 - Time: 0.992s
+2026-02-10 10:31:18,502 - app.main - INFO - ✅ GET /api/analytics/user - Status: 200 - Time: 0.992s
+2026-02-10 10:31:18,503 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.993s

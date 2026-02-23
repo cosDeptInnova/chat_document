@@ -1,0 +1,1165 @@
+2026-02-22 00:04:39,324 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 00:09:39 CET)" (scheduled at 2026-02-22 00:04:39.317717+01:00)
+2026-02-22 00:04:39,327 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 00:04:49,546 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 00:04:49,547 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 00:04:49,552 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 00:04:49,552 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 00:04:49,552 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 00:09:39 CET)" executed successfully
+2026-02-22 00:09:39,324 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 00:14:39 CET)" (scheduled at 2026-02-22 00:09:39.317717+01:00)
+2026-02-22 00:09:39,324 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 00:09:49,541 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 00:09:49,542 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 00:09:49,547 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 00:09:49,547 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 00:09:49,547 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 00:14:39 CET)" executed successfully
+2026-02-22 00:14:39,334 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 00:19:39 CET)" (scheduled at 2026-02-22 00:14:39.317717+01:00)
+2026-02-22 00:14:39,334 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 00:14:49,527 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 00:14:49,528 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 00:14:49,533 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 00:14:49,533 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 00:14:49,533 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 00:19:39 CET)" executed successfully
+2026-02-22 00:19:39,317 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 00:24:39 CET)" (scheduled at 2026-02-22 00:19:39.317717+01:00)
+2026-02-22 00:19:39,318 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 00:19:49,540 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 00:19:49,542 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 00:19:49,545 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 00:19:49,545 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 00:19:49,547 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 00:24:39 CET)" executed successfully
+2026-02-22 00:24:39,319 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 00:29:39 CET)" (scheduled at 2026-02-22 00:24:39.317717+01:00)
+2026-02-22 00:24:39,319 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 00:24:49,546 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 00:24:49,547 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 00:24:49,551 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 00:24:49,552 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 00:24:49,552 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 00:29:39 CET)" executed successfully
+2026-02-22 00:29:39,331 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 00:34:39 CET)" (scheduled at 2026-02-22 00:29:39.317717+01:00)
+2026-02-22 00:29:39,332 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 00:29:49,559 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 00:29:49,561 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 00:29:49,565 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 00:29:49,565 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 00:29:49,565 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 00:34:39 CET)" executed successfully
+2026-02-22 00:34:39,329 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 00:39:39 CET)" (scheduled at 2026-02-22 00:34:39.317717+01:00)
+2026-02-22 00:34:39,330 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 00:34:49,557 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 00:34:49,558 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 00:34:49,563 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 00:34:49,563 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 00:34:49,563 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 00:39:39 CET)" executed successfully
+2026-02-22 00:39:39,345 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 00:44:39 CET)" (scheduled at 2026-02-22 00:39:39.317717+01:00)
+2026-02-22 00:39:39,345 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 00:39:49,579 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 00:39:49,579 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 00:39:49,585 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 00:39:49,585 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 00:39:49,585 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 00:44:39 CET)" executed successfully
+2026-02-22 00:44:39,328 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 00:49:39 CET)" (scheduled at 2026-02-22 00:44:39.317717+01:00)
+2026-02-22 00:44:39,328 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 00:44:49,477 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 00:44:49,479 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 00:44:49,480 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 00:44:49,480 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 00:44:49,480 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 00:49:39 CET)" executed successfully
+2026-02-22 00:49:39,332 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 00:54:39 CET)" (scheduled at 2026-02-22 00:49:39.317717+01:00)
+2026-02-22 00:49:39,333 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 00:49:49,503 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 00:49:49,504 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 00:49:49,505 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 00:49:49,505 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 00:49:49,505 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 00:54:39 CET)" executed successfully
+2026-02-22 00:54:39,326 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 00:59:39 CET)" (scheduled at 2026-02-22 00:54:39.317717+01:00)
+2026-02-22 00:54:39,326 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 00:54:49,526 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 00:54:49,526 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 00:54:49,532 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 00:54:49,532 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 00:54:49,532 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 00:59:39 CET)" executed successfully
+2026-02-22 00:59:39,319 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 01:04:39 CET)" (scheduled at 2026-02-22 00:59:39.317717+01:00)
+2026-02-22 00:59:39,319 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 00:59:49,554 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 00:59:49,554 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 00:59:49,559 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 00:59:49,559 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 00:59:49,559 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 01:04:39 CET)" executed successfully
+2026-02-22 01:04:39,337 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 01:09:39 CET)" (scheduled at 2026-02-22 01:04:39.317717+01:00)
+2026-02-22 01:04:39,337 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 01:04:49,564 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 01:04:49,564 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 01:04:49,567 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 01:04:49,567 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 01:04:49,567 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 01:09:39 CET)" executed successfully
+2026-02-22 01:09:39,324 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 01:14:39 CET)" (scheduled at 2026-02-22 01:09:39.317717+01:00)
+2026-02-22 01:09:39,324 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 01:09:49,490 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 01:09:49,490 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 01:09:49,495 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 01:09:49,495 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 01:09:49,495 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 01:14:39 CET)" executed successfully
+2026-02-22 01:14:39,324 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 01:19:39 CET)" (scheduled at 2026-02-22 01:14:39.317717+01:00)
+2026-02-22 01:14:39,324 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 01:14:49,500 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 01:14:49,502 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 01:14:49,505 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 01:14:49,505 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 01:14:49,505 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 01:19:39 CET)" executed successfully
+2026-02-22 01:19:39,336 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 01:24:39 CET)" (scheduled at 2026-02-22 01:19:39.317717+01:00)
+2026-02-22 01:19:39,336 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 01:19:49,514 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 01:19:49,515 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 01:19:49,520 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 01:19:49,520 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 01:19:49,520 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 01:24:39 CET)" executed successfully
+2026-02-22 01:24:39,320 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 01:29:39 CET)" (scheduled at 2026-02-22 01:24:39.317717+01:00)
+2026-02-22 01:24:39,320 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 01:24:49,515 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 01:24:49,516 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 01:24:49,522 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 01:24:49,522 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 01:24:49,522 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 01:29:39 CET)" executed successfully
+2026-02-22 01:29:39,320 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 01:34:39 CET)" (scheduled at 2026-02-22 01:29:39.317717+01:00)
+2026-02-22 01:29:39,321 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 01:29:49,531 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 01:29:49,531 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 01:29:49,537 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 01:29:49,537 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 01:29:49,537 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 01:34:39 CET)" executed successfully
+2026-02-22 01:34:39,321 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 01:39:39 CET)" (scheduled at 2026-02-22 01:34:39.317717+01:00)
+2026-02-22 01:34:39,322 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 01:34:49,549 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 01:34:49,550 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 01:34:49,555 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 01:34:49,555 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 01:34:49,555 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 01:39:39 CET)" executed successfully
+2026-02-22 01:39:39,322 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 01:44:39 CET)" (scheduled at 2026-02-22 01:39:39.317717+01:00)
+2026-02-22 01:39:39,322 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 01:39:49,651 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 01:39:49,652 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 01:39:49,657 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 01:39:49,657 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 01:39:49,657 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 01:44:39 CET)" executed successfully
+2026-02-22 01:44:39,322 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 01:49:39 CET)" (scheduled at 2026-02-22 01:44:39.317717+01:00)
+2026-02-22 01:44:39,323 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 01:44:49,558 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 01:44:49,558 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 01:44:49,563 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 01:44:49,563 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 01:44:49,564 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 01:49:39 CET)" executed successfully
+2026-02-22 01:49:39,324 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 01:54:39 CET)" (scheduled at 2026-02-22 01:49:39.317717+01:00)
+2026-02-22 01:49:39,324 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 01:49:49,564 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 01:49:49,566 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 01:49:49,571 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 01:49:49,571 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 01:49:49,571 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 01:54:39 CET)" executed successfully
+2026-02-22 01:54:39,329 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 01:59:39 CET)" (scheduled at 2026-02-22 01:54:39.317717+01:00)
+2026-02-22 01:54:39,329 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 01:54:49,481 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 01:54:49,482 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 01:54:49,487 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 01:54:49,487 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 01:54:49,487 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 01:59:39 CET)" executed successfully
+2026-02-22 01:59:39,319 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 02:04:39 CET)" (scheduled at 2026-02-22 01:59:39.317717+01:00)
+2026-02-22 01:59:39,320 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 01:59:49,491 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 01:59:49,491 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 01:59:49,495 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 01:59:49,495 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 01:59:49,495 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 02:04:39 CET)" executed successfully
+2026-02-22 02:04:39,321 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 02:09:39 CET)" (scheduled at 2026-02-22 02:04:39.317717+01:00)
+2026-02-22 02:04:39,322 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 02:04:49,500 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 02:04:49,501 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 02:04:49,506 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 02:04:49,506 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 02:04:49,506 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 02:09:39 CET)" executed successfully
+2026-02-22 02:07:55,249 - app.main - INFO - 📥 POST /api/auth/sso-login - Client: 172.17.0.1
+2026-02-22 02:07:55,266 - app.utils.jwt_utils - INFO - Token generado para usuario rcarro@cosgs.com (user_id=cc2f6977-1ba9-4803-bc06-52c384ef2b42), expira en 30 días (remember_me=True)
+2026-02-22 02:07:55,267 - app.main - INFO - ✅ POST /api/auth/sso-login - Status: 200 - Time: 0.018s
+2026-02-22 02:07:55,299 - app.main - INFO - 📥 POST /api/auth/sso-login - Client: 172.17.0.1
+2026-02-22 02:07:55,305 - app.utils.jwt_utils - INFO - Token generado para usuario rcarro@cosgs.com (user_id=cc2f6977-1ba9-4803-bc06-52c384ef2b42), expira en 30 días (remember_me=True)
+2026-02-22 02:07:55,305 - app.main - INFO - ✅ POST /api/auth/sso-login - Status: 200 - Time: 0.006s
+2026-02-22 02:07:55,319 - app.main - INFO - 📥 GET /api/security/ssl/certificate - Client: 172.17.0.1
+2026-02-22 02:07:55,350 - app.main - INFO - ✅ GET /api/security/ssl/certificate - Status: 200 - Time: 0.031s
+2026-02-22 02:07:55,353 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.17.0.1
+2026-02-22 02:07:55,353 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.17.0.1
+2026-02-22 02:07:55,353 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.17.0.1
+2026-02-22 02:07:55,389 - app.api.routes.meetings - INFO - 🔍 [FILTRO] upcoming_only=True: ahora UTC naive=2026-02-22 01:07:55.389491, filtrando reuniones >= 2026-02-22 01:07:55.389491
+2026-02-22 02:07:55,408 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.055s
+2026-02-22 02:07:55,408 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.056s
+2026-02-22 02:07:55,409 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.056s
+2026-02-22 02:09:39,319 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 02:14:39 CET)" (scheduled at 2026-02-22 02:09:39.317717+01:00)
+2026-02-22 02:09:39,320 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 02:09:49,510 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 02:09:49,511 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 02:09:49,516 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 02:09:49,516 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 02:09:49,516 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 02:14:39 CET)" executed successfully
+2026-02-22 02:14:39,318 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 02:19:39 CET)" (scheduled at 2026-02-22 02:14:39.317717+01:00)
+2026-02-22 02:14:39,319 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 02:14:49,526 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 02:14:49,526 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 02:14:49,531 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 02:14:49,531 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 02:14:49,531 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 02:19:39 CET)" executed successfully
+2026-02-22 02:15:34,320 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.17.0.1
+2026-02-22 02:15:34,324 - app.main - INFO - 📥 POST /api/auth/sso-login - Client: 172.17.0.1
+2026-02-22 02:15:34,324 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.005s
+2026-02-22 02:15:34,332 - app.utils.jwt_utils - INFO - Token generado para usuario rcarro@cosgs.com (user_id=cc2f6977-1ba9-4803-bc06-52c384ef2b42), expira en 30 días (remember_me=True)
+2026-02-22 02:15:34,332 - app.main - INFO - ✅ POST /api/auth/sso-login - Status: 200 - Time: 0.008s
+2026-02-22 02:15:34,365 - app.main - INFO - 📥 POST /api/auth/sso-login - Client: 172.17.0.1
+2026-02-22 02:15:34,371 - app.utils.jwt_utils - INFO - Token generado para usuario rcarro@cosgs.com (user_id=cc2f6977-1ba9-4803-bc06-52c384ef2b42), expira en 30 días (remember_me=True)
+2026-02-22 02:15:34,372 - app.main - INFO - ✅ POST /api/auth/sso-login - Status: 200 - Time: 0.006s
+2026-02-22 02:15:34,403 - app.main - INFO - 📥 POST /api/auth/sso-login - Client: 172.17.0.1
+2026-02-22 02:15:34,409 - app.utils.jwt_utils - INFO - Token generado para usuario rcarro@cosgs.com (user_id=cc2f6977-1ba9-4803-bc06-52c384ef2b42), expira en 30 días (remember_me=True)
+2026-02-22 02:15:34,409 - app.main - INFO - ✅ POST /api/auth/sso-login - Status: 200 - Time: 0.006s
+2026-02-22 02:15:34,411 - app.main - INFO - 📥 GET /api/security/ssl/certificate - Client: 172.17.0.1
+2026-02-22 02:15:34,418 - app.main - INFO - ✅ GET /api/security/ssl/certificate - Status: 200 - Time: 0.007s
+2026-02-22 02:15:34,420 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.17.0.1
+2026-02-22 02:15:34,420 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.17.0.1
+2026-02-22 02:15:34,421 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.17.0.1
+2026-02-22 02:15:34,458 - app.api.routes.meetings - INFO - 🔍 [FILTRO] upcoming_only=True: ahora UTC naive=2026-02-22 01:15:34.458743, filtrando reuniones >= 2026-02-22 01:15:34.458743
+2026-02-22 02:15:34,476 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.056s
+2026-02-22 02:15:34,476 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.056s
+2026-02-22 02:15:34,477 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.056s
+2026-02-22 02:19:39,326 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 02:24:39 CET)" (scheduled at 2026-02-22 02:19:39.317717+01:00)
+2026-02-22 02:19:39,326 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 02:19:49,537 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 02:19:49,538 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 02:19:49,543 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 02:19:49,543 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 02:19:49,543 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 02:24:39 CET)" executed successfully
+2026-02-22 02:24:39,324 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 02:29:39 CET)" (scheduled at 2026-02-22 02:24:39.317717+01:00)
+2026-02-22 02:24:39,324 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 02:24:49,663 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 02:24:49,664 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 02:24:49,668 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 02:24:49,670 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 02:24:49,670 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 02:29:39 CET)" executed successfully
+2026-02-22 02:29:39,331 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 02:34:39 CET)" (scheduled at 2026-02-22 02:29:39.317717+01:00)
+2026-02-22 02:29:39,332 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 02:29:49,478 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 02:29:49,479 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 02:29:49,484 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 02:29:49,484 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 02:29:49,485 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 02:34:39 CET)" executed successfully
+2026-02-22 02:34:39,335 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 02:39:39 CET)" (scheduled at 2026-02-22 02:34:39.317717+01:00)
+2026-02-22 02:34:39,335 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 02:34:49,493 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 02:34:49,494 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 02:34:49,495 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 02:34:49,495 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 02:34:49,495 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 02:39:39 CET)" executed successfully
+2026-02-22 02:39:39,323 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 02:44:39 CET)" (scheduled at 2026-02-22 02:39:39.317717+01:00)
+2026-02-22 02:39:39,323 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 02:39:49,521 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 02:39:49,521 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 02:39:49,526 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 02:39:49,526 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 02:39:49,527 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 02:44:39 CET)" executed successfully
+2026-02-22 02:44:39,340 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 02:49:39 CET)" (scheduled at 2026-02-22 02:44:39.317717+01:00)
+2026-02-22 02:44:39,340 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 02:44:49,530 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 02:44:49,531 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 02:44:49,535 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 02:44:49,536 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 02:44:49,536 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 02:49:39 CET)" executed successfully
+2026-02-22 02:49:39,333 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 02:54:39 CET)" (scheduled at 2026-02-22 02:49:39.317717+01:00)
+2026-02-22 02:49:39,334 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 02:49:49,560 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 02:49:49,560 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 02:49:49,564 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 02:49:49,564 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 02:49:49,564 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 02:54:39 CET)" executed successfully
+2026-02-22 02:54:39,325 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 02:59:39 CET)" (scheduled at 2026-02-22 02:54:39.317717+01:00)
+2026-02-22 02:54:39,325 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 02:54:49,472 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 02:54:49,472 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 02:54:49,476 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 02:54:49,476 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 02:54:49,476 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 02:59:39 CET)" executed successfully
+2026-02-22 02:59:39,323 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 03:04:39 CET)" (scheduled at 2026-02-22 02:59:39.317717+01:00)
+2026-02-22 02:59:39,324 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 02:59:49,497 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 02:59:49,497 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 02:59:49,502 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 02:59:49,502 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 02:59:49,502 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 03:04:39 CET)" executed successfully
+2026-02-22 03:04:39,319 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 03:09:39 CET)" (scheduled at 2026-02-22 03:04:39.317717+01:00)
+2026-02-22 03:04:39,320 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 03:04:49,607 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 03:04:49,608 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 03:04:49,612 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 03:04:49,612 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 03:04:49,613 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 03:09:39 CET)" executed successfully
+2026-02-22 03:09:39,328 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 03:14:39 CET)" (scheduled at 2026-02-22 03:09:39.317717+01:00)
+2026-02-22 03:09:39,328 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 03:09:49,622 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 03:09:49,622 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 03:09:49,624 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 03:09:49,624 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 03:09:49,624 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 03:14:39 CET)" executed successfully
+2026-02-22 03:14:39,338 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 03:19:39 CET)" (scheduled at 2026-02-22 03:14:39.317717+01:00)
+2026-02-22 03:14:39,338 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 03:14:49,642 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 03:14:49,642 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 03:14:49,649 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 03:14:49,649 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 03:14:49,649 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 03:19:39 CET)" executed successfully
+2026-02-22 03:19:39,329 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 03:24:39 CET)" (scheduled at 2026-02-22 03:19:39.317717+01:00)
+2026-02-22 03:19:39,329 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 03:19:49,558 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 03:19:49,559 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 03:19:49,564 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 03:19:49,564 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 03:19:49,564 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 03:24:39 CET)" executed successfully
+2026-02-22 03:24:39,330 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 03:29:39 CET)" (scheduled at 2026-02-22 03:24:39.317717+01:00)
+2026-02-22 03:24:39,330 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 03:24:49,479 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 03:24:49,481 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 03:24:49,486 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 03:24:49,486 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 03:24:49,486 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 03:29:39 CET)" executed successfully
+2026-02-22 03:29:39,339 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 03:34:39 CET)" (scheduled at 2026-02-22 03:29:39.317717+01:00)
+2026-02-22 03:29:39,339 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 03:29:49,583 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 03:29:49,583 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 03:29:49,588 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 03:29:49,588 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 03:29:49,588 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 03:34:39 CET)" executed successfully
+2026-02-22 03:34:39,325 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 03:39:39 CET)" (scheduled at 2026-02-22 03:34:39.317717+01:00)
+2026-02-22 03:34:39,325 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 03:34:49,502 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 03:34:49,502 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 03:34:49,507 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 03:34:49,507 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 03:34:49,507 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 03:39:39 CET)" executed successfully
+2026-02-22 03:39:39,338 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 03:44:39 CET)" (scheduled at 2026-02-22 03:39:39.317717+01:00)
+2026-02-22 03:39:39,338 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 03:39:49,504 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 03:39:49,504 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 03:39:49,509 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 03:39:49,509 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 03:39:49,509 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 03:44:39 CET)" executed successfully
+2026-02-22 03:44:39,324 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 03:49:39 CET)" (scheduled at 2026-02-22 03:44:39.317717+01:00)
+2026-02-22 03:44:39,325 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 03:44:49,506 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 03:44:49,506 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 03:44:49,512 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 03:44:49,512 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 03:44:49,512 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 03:49:39 CET)" executed successfully
+2026-02-22 03:49:39,325 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 03:54:39 CET)" (scheduled at 2026-02-22 03:49:39.317717+01:00)
+2026-02-22 03:49:39,325 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 03:49:49,504 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 03:49:49,505 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 03:49:49,509 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 03:49:49,509 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 03:49:49,509 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 03:54:39 CET)" executed successfully
+2026-02-22 03:54:39,334 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 03:59:39 CET)" (scheduled at 2026-02-22 03:54:39.317717+01:00)
+2026-02-22 03:54:39,334 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 03:54:49,508 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 03:54:49,509 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 03:54:49,514 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 03:54:49,515 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 03:54:49,515 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 03:59:39 CET)" executed successfully
+2026-02-22 03:59:39,323 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 04:04:39 CET)" (scheduled at 2026-02-22 03:59:39.317717+01:00)
+2026-02-22 03:59:39,324 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 03:59:49,508 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 03:59:49,509 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 03:59:49,512 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 03:59:49,512 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 03:59:49,512 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 04:04:39 CET)" executed successfully
+2026-02-22 04:04:39,325 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 04:09:39 CET)" (scheduled at 2026-02-22 04:04:39.317717+01:00)
+2026-02-22 04:04:39,325 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 04:04:49,516 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 04:04:49,516 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 04:04:49,522 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 04:04:49,522 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 04:04:49,522 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 04:09:39 CET)" executed successfully
+2026-02-22 04:09:39,322 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 04:14:39 CET)" (scheduled at 2026-02-22 04:09:39.317717+01:00)
+2026-02-22 04:09:39,322 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 04:09:49,525 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 04:09:49,525 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 04:09:49,530 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 04:09:49,530 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 04:09:49,530 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 04:14:39 CET)" executed successfully
+2026-02-22 04:14:39,319 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 04:19:39 CET)" (scheduled at 2026-02-22 04:14:39.317717+01:00)
+2026-02-22 04:14:39,320 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 04:14:49,530 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 04:14:49,531 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 04:14:49,536 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 04:14:49,536 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 04:14:49,536 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 04:19:39 CET)" executed successfully
+2026-02-22 04:19:39,319 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 04:24:39 CET)" (scheduled at 2026-02-22 04:19:39.317717+01:00)
+2026-02-22 04:19:39,319 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 04:19:49,524 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 04:19:49,525 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 04:19:49,530 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 04:19:49,530 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 04:19:49,530 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 04:24:39 CET)" executed successfully
+2026-02-22 04:24:39,327 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 04:29:39 CET)" (scheduled at 2026-02-22 04:24:39.317717+01:00)
+2026-02-22 04:24:39,328 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 04:24:49,540 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 04:24:49,540 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 04:24:49,546 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 04:24:49,546 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 04:24:49,546 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 04:29:39 CET)" executed successfully
+2026-02-22 04:29:39,322 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 04:34:39 CET)" (scheduled at 2026-02-22 04:29:39.317717+01:00)
+2026-02-22 04:29:39,322 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 04:29:49,541 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 04:29:49,542 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 04:29:49,547 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 04:29:49,547 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 04:29:49,548 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 04:34:39 CET)" executed successfully
+2026-02-22 04:34:39,318 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 04:39:39 CET)" (scheduled at 2026-02-22 04:34:39.317717+01:00)
+2026-02-22 04:34:39,318 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 04:34:49,558 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 04:34:49,559 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 04:34:49,565 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 04:34:49,565 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 04:34:49,565 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 04:39:39 CET)" executed successfully
+2026-02-22 04:39:39,327 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 04:44:39 CET)" (scheduled at 2026-02-22 04:39:39.317717+01:00)
+2026-02-22 04:39:39,328 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 04:39:49,477 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 04:39:49,478 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 04:39:49,482 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 04:39:49,483 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 04:39:49,483 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 04:44:39 CET)" executed successfully
+2026-02-22 04:44:39,321 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 04:49:39 CET)" (scheduled at 2026-02-22 04:44:39.317717+01:00)
+2026-02-22 04:44:39,321 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 04:44:49,491 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 04:44:49,492 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 04:44:49,498 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 04:44:49,499 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 04:44:49,499 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 04:49:39 CET)" executed successfully
+2026-02-22 04:49:39,322 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 04:54:39 CET)" (scheduled at 2026-02-22 04:49:39.317717+01:00)
+2026-02-22 04:49:39,322 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 04:49:49,489 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 04:49:49,490 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 04:49:49,494 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 04:49:49,494 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 04:49:49,494 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 04:54:39 CET)" executed successfully
+2026-02-22 04:54:39,318 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 04:59:39 CET)" (scheduled at 2026-02-22 04:54:39.317717+01:00)
+2026-02-22 04:54:39,318 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 04:54:49,502 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 04:54:49,503 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 04:54:49,508 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 04:54:49,508 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 04:54:49,508 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 04:59:39 CET)" executed successfully
+2026-02-22 04:59:39,327 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 05:04:39 CET)" (scheduled at 2026-02-22 04:59:39.317717+01:00)
+2026-02-22 04:59:39,328 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 04:59:49,516 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 04:59:49,517 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 04:59:49,518 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 04:59:49,518 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 04:59:49,518 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 05:04:39 CET)" executed successfully
+2026-02-22 05:04:39,331 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 05:09:39 CET)" (scheduled at 2026-02-22 05:04:39.317717+01:00)
+2026-02-22 05:04:39,331 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 05:04:49,517 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 05:04:49,518 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 05:04:49,523 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 05:04:49,523 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 05:04:49,524 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 05:09:39 CET)" executed successfully
+2026-02-22 05:09:39,337 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 05:14:39 CET)" (scheduled at 2026-02-22 05:09:39.317717+01:00)
+2026-02-22 05:09:39,337 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 05:09:49,535 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 05:09:49,535 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 05:09:49,541 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 05:09:49,541 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 05:09:49,541 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 05:14:39 CET)" executed successfully
+2026-02-22 05:14:39,330 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 05:19:39 CET)" (scheduled at 2026-02-22 05:14:39.317717+01:00)
+2026-02-22 05:14:39,331 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 05:14:49,558 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 05:14:49,559 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 05:14:49,565 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 05:14:49,565 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 05:14:49,565 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 05:19:39 CET)" executed successfully
+2026-02-22 05:19:39,325 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 05:24:39 CET)" (scheduled at 2026-02-22 05:19:39.317717+01:00)
+2026-02-22 05:19:39,325 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 05:19:49,473 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 05:19:49,473 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 05:19:49,479 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 05:19:49,479 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 05:19:49,479 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 05:24:39 CET)" executed successfully
+2026-02-22 05:24:39,318 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 05:29:39 CET)" (scheduled at 2026-02-22 05:24:39.317717+01:00)
+2026-02-22 05:24:39,318 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 05:24:49,499 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 05:24:49,500 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 05:24:49,505 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 05:24:49,505 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 05:24:49,505 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 05:29:39 CET)" executed successfully
+2026-02-22 05:29:39,320 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 05:34:39 CET)" (scheduled at 2026-02-22 05:29:39.317717+01:00)
+2026-02-22 05:29:39,320 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 05:29:49,514 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 05:29:49,514 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 05:29:49,518 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 05:29:49,518 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 05:29:49,518 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 05:34:39 CET)" executed successfully
+2026-02-22 05:34:39,321 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 05:39:39 CET)" (scheduled at 2026-02-22 05:34:39.317717+01:00)
+2026-02-22 05:34:39,321 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 05:34:49,499 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 05:34:49,500 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 05:34:49,506 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 05:34:49,506 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 05:34:49,506 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 05:39:39 CET)" executed successfully
+2026-02-22 05:39:39,328 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 05:44:39 CET)" (scheduled at 2026-02-22 05:39:39.317717+01:00)
+2026-02-22 05:39:39,328 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 05:39:49,507 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 05:39:49,507 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 05:39:49,512 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 05:39:49,513 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 05:39:49,513 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 05:44:39 CET)" executed successfully
+2026-02-22 05:44:39,323 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 05:49:39 CET)" (scheduled at 2026-02-22 05:44:39.317717+01:00)
+2026-02-22 05:44:39,323 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 05:44:49,518 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 05:44:49,518 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 05:44:49,523 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 05:44:49,523 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 05:44:49,523 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 05:49:39 CET)" executed successfully
+2026-02-22 05:49:39,323 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 05:54:39 CET)" (scheduled at 2026-02-22 05:49:39.317717+01:00)
+2026-02-22 05:49:39,323 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 05:49:49,546 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 05:49:49,547 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 05:49:49,553 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 05:49:49,553 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 05:49:49,553 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 05:54:39 CET)" executed successfully
+2026-02-22 05:54:39,318 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 05:59:39 CET)" (scheduled at 2026-02-22 05:54:39.317717+01:00)
+2026-02-22 05:54:39,318 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 05:54:49,461 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 05:54:49,463 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 05:54:49,467 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 05:54:49,467 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 05:54:49,467 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 05:59:39 CET)" executed successfully
+2026-02-22 05:59:39,330 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 06:04:39 CET)" (scheduled at 2026-02-22 05:59:39.317717+01:00)
+2026-02-22 05:59:39,330 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 05:59:49,485 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 05:59:49,486 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 05:59:49,492 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 05:59:49,492 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 05:59:49,492 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 06:04:39 CET)" executed successfully
+2026-02-22 06:04:39,330 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 06:09:39 CET)" (scheduled at 2026-02-22 06:04:39.317717+01:00)
+2026-02-22 06:04:39,331 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 06:04:49,519 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 06:04:49,520 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 06:04:49,525 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 06:04:49,525 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 06:04:49,525 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 06:09:39 CET)" executed successfully
+2026-02-22 06:09:39,331 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 06:14:39 CET)" (scheduled at 2026-02-22 06:09:39.317717+01:00)
+2026-02-22 06:09:39,331 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 06:09:49,535 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 06:09:49,535 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 06:09:49,541 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 06:09:49,541 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 06:09:49,541 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 06:14:39 CET)" executed successfully
+2026-02-22 06:14:39,333 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 06:19:39 CET)" (scheduled at 2026-02-22 06:14:39.317717+01:00)
+2026-02-22 06:14:39,333 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 06:14:49,554 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 06:14:49,555 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 06:14:49,559 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 06:14:49,559 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 06:14:49,559 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 06:19:39 CET)" executed successfully
+2026-02-22 06:19:39,333 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 06:24:39 CET)" (scheduled at 2026-02-22 06:19:39.317717+01:00)
+2026-02-22 06:19:39,334 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 06:19:49,573 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 06:19:49,574 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 06:19:49,578 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 06:19:49,579 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 06:19:49,579 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 06:24:39 CET)" executed successfully
+2026-02-22 06:24:39,337 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 06:29:39 CET)" (scheduled at 2026-02-22 06:24:39.317717+01:00)
+2026-02-22 06:24:39,337 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 06:24:49,491 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 06:24:49,492 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 06:24:49,497 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 06:24:49,497 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 06:24:49,497 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 06:29:39 CET)" executed successfully
+2026-02-22 06:29:39,331 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 06:34:39 CET)" (scheduled at 2026-02-22 06:29:39.317717+01:00)
+2026-02-22 06:29:39,332 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 06:29:49,520 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 06:29:49,520 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 06:29:49,526 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 06:29:49,526 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 06:29:49,526 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 06:34:39 CET)" executed successfully
+2026-02-22 06:34:39,318 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 06:39:39 CET)" (scheduled at 2026-02-22 06:34:39.317717+01:00)
+2026-02-22 06:34:39,318 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 06:34:49,646 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 06:34:49,647 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 06:34:49,650 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 06:34:49,652 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 06:34:49,652 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 06:39:39 CET)" executed successfully
+2026-02-22 06:39:39,322 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 06:44:39 CET)" (scheduled at 2026-02-22 06:39:39.317717+01:00)
+2026-02-22 06:39:39,322 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 06:39:49,478 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 06:39:49,479 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 06:39:49,483 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 06:39:49,484 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 06:39:49,484 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 06:44:39 CET)" executed successfully
+2026-02-22 06:44:39,330 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 06:49:39 CET)" (scheduled at 2026-02-22 06:44:39.317717+01:00)
+2026-02-22 06:44:39,330 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 06:44:49,515 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 06:44:49,515 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 06:44:49,521 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 06:44:49,522 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 06:44:49,522 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 06:49:39 CET)" executed successfully
+2026-02-22 06:49:39,351 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 06:54:39 CET)" (scheduled at 2026-02-22 06:49:39.317717+01:00)
+2026-02-22 06:49:39,351 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 06:49:49,527 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 06:49:49,527 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 06:49:49,532 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 06:49:49,533 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 06:49:49,533 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 06:54:39 CET)" executed successfully
+2026-02-22 06:54:39,324 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 06:59:39 CET)" (scheduled at 2026-02-22 06:54:39.317717+01:00)
+2026-02-22 06:54:39,325 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 06:54:49,640 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 06:54:49,642 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 06:54:49,646 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 06:54:49,646 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 06:54:49,647 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 06:59:39 CET)" executed successfully
+2026-02-22 06:59:39,322 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 07:04:39 CET)" (scheduled at 2026-02-22 06:59:39.317717+01:00)
+2026-02-22 06:59:39,322 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 06:59:49,553 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 06:59:49,553 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 06:59:49,559 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 06:59:49,559 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 06:59:49,559 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 07:04:39 CET)" executed successfully
+2026-02-22 07:04:39,332 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 07:09:39 CET)" (scheduled at 2026-02-22 07:04:39.317717+01:00)
+2026-02-22 07:04:39,332 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 07:04:49,654 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 07:04:49,655 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 07:04:49,659 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 07:04:49,659 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 07:04:49,659 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 07:09:39 CET)" executed successfully
+2026-02-22 07:09:39,332 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 07:14:39 CET)" (scheduled at 2026-02-22 07:09:39.317717+01:00)
+2026-02-22 07:09:39,332 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 07:09:49,581 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 07:09:49,582 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 07:09:49,587 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 07:09:49,587 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 07:09:49,587 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 07:14:39 CET)" executed successfully
+2026-02-22 07:14:39,327 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 07:19:39 CET)" (scheduled at 2026-02-22 07:14:39.317717+01:00)
+2026-02-22 07:14:39,327 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 07:14:49,490 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 07:14:49,492 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 07:14:49,496 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 07:14:49,496 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 07:14:49,496 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 07:19:39 CET)" executed successfully
+2026-02-22 07:19:39,336 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 07:24:39 CET)" (scheduled at 2026-02-22 07:19:39.317717+01:00)
+2026-02-22 07:19:39,337 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 07:19:49,519 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 07:19:49,520 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 07:19:49,524 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 07:19:49,524 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 07:19:49,524 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 07:24:39 CET)" executed successfully
+2026-02-22 07:24:39,319 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 07:29:39 CET)" (scheduled at 2026-02-22 07:24:39.317717+01:00)
+2026-02-22 07:24:39,320 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 07:24:49,539 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 07:24:49,539 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 07:24:49,543 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 07:24:49,543 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 07:24:49,545 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 07:29:39 CET)" executed successfully
+2026-02-22 07:29:39,328 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 07:34:39 CET)" (scheduled at 2026-02-22 07:29:39.317717+01:00)
+2026-02-22 07:29:39,329 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 07:29:49,544 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 07:29:49,545 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 07:29:49,550 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 07:29:49,550 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 07:29:49,550 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 07:34:39 CET)" executed successfully
+2026-02-22 07:34:39,341 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 07:39:39 CET)" (scheduled at 2026-02-22 07:34:39.317717+01:00)
+2026-02-22 07:34:39,341 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 07:34:49,570 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 07:34:49,570 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 07:34:49,575 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 07:34:49,575 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 07:34:49,575 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 07:39:39 CET)" executed successfully
+2026-02-22 07:39:39,326 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 07:44:39 CET)" (scheduled at 2026-02-22 07:39:39.317717+01:00)
+2026-02-22 07:39:39,326 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 07:39:49,490 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 07:39:49,490 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 07:39:49,496 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 07:39:49,496 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 07:39:49,497 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 07:44:39 CET)" executed successfully
+2026-02-22 07:44:39,319 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 07:49:39 CET)" (scheduled at 2026-02-22 07:44:39.317717+01:00)
+2026-02-22 07:44:39,319 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 07:44:49,500 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 07:44:49,501 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 07:44:49,502 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 07:44:49,502 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 07:44:49,502 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 07:49:39 CET)" executed successfully
+2026-02-22 07:49:39,332 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 07:54:39 CET)" (scheduled at 2026-02-22 07:49:39.317717+01:00)
+2026-02-22 07:49:39,332 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 07:49:49,489 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 07:49:49,491 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 07:49:49,494 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 07:49:49,494 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 07:49:49,494 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 07:54:39 CET)" executed successfully
+2026-02-22 07:54:39,334 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 07:59:39 CET)" (scheduled at 2026-02-22 07:54:39.317717+01:00)
+2026-02-22 07:54:39,334 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 07:54:49,492 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 07:54:49,492 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 07:54:49,498 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 07:54:49,499 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 07:54:49,499 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 07:59:39 CET)" executed successfully
+2026-02-22 07:59:39,322 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 08:04:39 CET)" (scheduled at 2026-02-22 07:59:39.317717+01:00)
+2026-02-22 07:59:39,322 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 07:59:49,515 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 07:59:49,515 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 07:59:49,517 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 07:59:49,517 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 07:59:49,517 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 08:04:39 CET)" executed successfully
+2026-02-22 08:04:39,332 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 08:09:39 CET)" (scheduled at 2026-02-22 08:04:39.317717+01:00)
+2026-02-22 08:04:39,332 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 08:04:49,520 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 08:04:49,520 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 08:04:49,525 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 08:04:49,525 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 08:04:49,527 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 08:09:39 CET)" executed successfully
+2026-02-22 08:09:39,322 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 08:14:39 CET)" (scheduled at 2026-02-22 08:09:39.317717+01:00)
+2026-02-22 08:09:39,322 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 08:09:49,621 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 08:09:49,621 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 08:09:49,623 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 08:09:49,623 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 08:09:49,623 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 08:14:39 CET)" executed successfully
+2026-02-22 08:14:39,337 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 08:19:39 CET)" (scheduled at 2026-02-22 08:14:39.317717+01:00)
+2026-02-22 08:14:39,337 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 08:14:49,528 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 08:14:49,528 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 08:14:49,534 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 08:14:49,535 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 08:14:49,535 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 08:19:39 CET)" executed successfully
+2026-02-22 08:19:39,320 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 08:24:39 CET)" (scheduled at 2026-02-22 08:19:39.317717+01:00)
+2026-02-22 08:19:39,320 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 08:19:49,540 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 08:19:49,541 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 08:19:49,544 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 08:19:49,544 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 08:19:49,544 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 08:24:39 CET)" executed successfully
+2026-02-22 08:24:39,319 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 08:29:39 CET)" (scheduled at 2026-02-22 08:24:39.317717+01:00)
+2026-02-22 08:24:39,320 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 08:24:49,466 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 08:24:49,468 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 08:24:49,473 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 08:24:49,473 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 08:24:49,473 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 08:29:39 CET)" executed successfully
+2026-02-22 08:29:39,323 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 08:34:39 CET)" (scheduled at 2026-02-22 08:29:39.317717+01:00)
+2026-02-22 08:29:39,324 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 08:29:49,480 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 08:29:49,482 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 08:29:49,486 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 08:29:49,486 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 08:29:49,486 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 08:34:39 CET)" executed successfully
+2026-02-22 08:34:39,319 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 08:39:39 CET)" (scheduled at 2026-02-22 08:34:39.317717+01:00)
+2026-02-22 08:34:39,319 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 08:34:49,498 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 08:34:49,498 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 08:34:49,504 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 08:34:49,504 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 08:34:49,504 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 08:39:39 CET)" executed successfully
+2026-02-22 08:39:39,318 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 08:44:39 CET)" (scheduled at 2026-02-22 08:39:39.317717+01:00)
+2026-02-22 08:39:39,318 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 08:39:49,520 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 08:39:49,521 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 08:39:49,524 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 08:39:49,524 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 08:39:49,526 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 08:44:39 CET)" executed successfully
+2026-02-22 08:44:39,333 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 08:49:39 CET)" (scheduled at 2026-02-22 08:44:39.317717+01:00)
+2026-02-22 08:44:39,333 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 08:44:49,547 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 08:44:49,548 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 08:44:49,552 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 08:44:49,553 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 08:44:49,553 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 08:49:39 CET)" executed successfully
+2026-02-22 08:49:39,333 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 08:54:39 CET)" (scheduled at 2026-02-22 08:49:39.317717+01:00)
+2026-02-22 08:49:39,333 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 08:49:49,568 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 08:49:49,568 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 08:49:49,574 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 08:49:49,574 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 08:49:49,574 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 08:54:39 CET)" executed successfully
+2026-02-22 08:54:39,330 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 08:59:39 CET)" (scheduled at 2026-02-22 08:54:39.317717+01:00)
+2026-02-22 08:54:39,330 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 08:54:49,482 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 08:54:49,484 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 08:54:49,489 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 08:54:49,489 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 08:54:49,489 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 08:59:39 CET)" executed successfully
+2026-02-22 08:59:39,327 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 09:04:39 CET)" (scheduled at 2026-02-22 08:59:39.317717+01:00)
+2026-02-22 08:59:39,327 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 08:59:49,495 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 08:59:49,495 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 08:59:49,500 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 08:59:49,501 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 08:59:49,501 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 09:04:39 CET)" executed successfully
+2026-02-22 09:04:39,330 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 09:09:39 CET)" (scheduled at 2026-02-22 09:04:39.317717+01:00)
+2026-02-22 09:04:39,330 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 09:04:49,513 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 09:04:49,515 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 09:04:49,519 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 09:04:49,520 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 09:04:49,520 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 09:09:39 CET)" executed successfully
+2026-02-22 09:09:39,321 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 09:14:39 CET)" (scheduled at 2026-02-22 09:09:39.317717+01:00)
+2026-02-22 09:09:39,321 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 09:09:49,528 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 09:09:49,530 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 09:09:49,535 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 09:09:49,535 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 09:09:49,535 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 09:14:39 CET)" executed successfully
+2026-02-22 09:14:39,317 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 09:19:39 CET)" (scheduled at 2026-02-22 09:14:39.317717+01:00)
+2026-02-22 09:14:39,318 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 09:14:49,529 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 09:14:49,530 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 09:14:49,535 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 09:14:49,535 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 09:14:49,535 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 09:19:39 CET)" executed successfully
+2026-02-22 09:19:39,318 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 09:24:39 CET)" (scheduled at 2026-02-22 09:19:39.317717+01:00)
+2026-02-22 09:19:39,318 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 09:19:49,542 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 09:19:49,542 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 09:19:49,548 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 09:19:49,549 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 09:19:49,549 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 09:24:39 CET)" executed successfully
+2026-02-22 09:24:39,324 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 09:29:39 CET)" (scheduled at 2026-02-22 09:24:39.317717+01:00)
+2026-02-22 09:24:39,325 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 09:24:49,557 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 09:24:49,557 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 09:24:49,561 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 09:24:49,561 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 09:24:49,563 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 09:29:39 CET)" executed successfully
+2026-02-22 09:29:39,331 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 09:34:39 CET)" (scheduled at 2026-02-22 09:29:39.317717+01:00)
+2026-02-22 09:29:39,331 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 09:29:49,649 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 09:29:49,650 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 09:29:49,654 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 09:29:49,654 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 09:29:49,654 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 09:34:39 CET)" executed successfully
+2026-02-22 09:34:39,327 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 09:39:39 CET)" (scheduled at 2026-02-22 09:34:39.317717+01:00)
+2026-02-22 09:34:39,328 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 09:34:49,568 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 09:34:49,568 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 09:34:49,574 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 09:34:49,574 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 09:34:49,574 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 09:39:39 CET)" executed successfully
+2026-02-22 09:39:39,335 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 09:44:39 CET)" (scheduled at 2026-02-22 09:39:39.317717+01:00)
+2026-02-22 09:39:39,335 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 09:39:49,482 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 09:39:49,483 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 09:39:49,489 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 09:39:49,489 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 09:39:49,489 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 09:44:39 CET)" executed successfully
+2026-02-22 09:44:39,331 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 09:49:39 CET)" (scheduled at 2026-02-22 09:44:39.317717+01:00)
+2026-02-22 09:44:39,331 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 09:44:49,602 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 09:44:49,602 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 09:44:49,609 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 09:44:49,609 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 09:44:49,609 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 09:49:39 CET)" executed successfully
+2026-02-22 09:49:39,329 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 09:54:39 CET)" (scheduled at 2026-02-22 09:49:39.317717+01:00)
+2026-02-22 09:49:39,329 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 09:49:49,512 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 09:49:49,513 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 09:49:49,518 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 09:49:49,518 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 09:49:49,519 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 09:54:39 CET)" executed successfully
+2026-02-22 09:54:39,333 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 09:59:39 CET)" (scheduled at 2026-02-22 09:54:39.317717+01:00)
+2026-02-22 09:54:39,333 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 09:54:49,511 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 09:54:49,511 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 09:54:49,516 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 09:54:49,516 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 09:54:49,516 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 09:59:39 CET)" executed successfully
+2026-02-22 09:59:39,330 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 10:04:39 CET)" (scheduled at 2026-02-22 09:59:39.317717+01:00)
+2026-02-22 09:59:39,331 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 09:59:49,620 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 09:59:49,621 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 09:59:49,626 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 09:59:49,626 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 09:59:49,627 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 10:04:39 CET)" executed successfully
+2026-02-22 10:04:39,331 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 10:09:39 CET)" (scheduled at 2026-02-22 10:04:39.317717+01:00)
+2026-02-22 10:04:39,332 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 10:04:49,550 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 10:04:49,550 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 10:04:49,555 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 10:04:49,556 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 10:04:49,556 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 10:09:39 CET)" executed successfully
+2026-02-22 10:09:39,326 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 10:14:39 CET)" (scheduled at 2026-02-22 10:09:39.317717+01:00)
+2026-02-22 10:09:39,326 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 10:09:49,552 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 10:09:49,552 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 10:09:49,558 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 10:09:49,558 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 10:09:49,558 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 10:14:39 CET)" executed successfully
+2026-02-22 10:14:39,317 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 10:19:39 CET)" (scheduled at 2026-02-22 10:14:39.317717+01:00)
+2026-02-22 10:14:39,318 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 10:14:49,468 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 10:14:49,469 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 10:14:49,474 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 10:14:49,474 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 10:14:49,474 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 10:19:39 CET)" executed successfully
+2026-02-22 10:19:39,320 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 10:24:39 CET)" (scheduled at 2026-02-22 10:19:39.317717+01:00)
+2026-02-22 10:19:39,321 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 10:19:49,468 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 10:19:49,468 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 10:19:49,473 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 10:19:49,473 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 10:19:49,475 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 10:24:39 CET)" executed successfully
+2026-02-22 10:24:39,333 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 10:29:39 CET)" (scheduled at 2026-02-22 10:24:39.317717+01:00)
+2026-02-22 10:24:39,334 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 10:24:49,480 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 10:24:49,482 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 10:24:49,486 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 10:24:49,486 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 10:24:49,486 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 10:29:39 CET)" executed successfully
+2026-02-22 10:29:39,326 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 10:34:39 CET)" (scheduled at 2026-02-22 10:29:39.317717+01:00)
+2026-02-22 10:29:39,326 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 10:29:49,498 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 10:29:49,499 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 10:29:49,503 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 10:29:49,503 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 10:29:49,503 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 10:34:39 CET)" executed successfully
+2026-02-22 10:34:39,334 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 10:39:39 CET)" (scheduled at 2026-02-22 10:34:39.317717+01:00)
+2026-02-22 10:34:39,334 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 10:34:49,521 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 10:34:49,521 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 10:34:49,527 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 10:34:49,527 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 10:34:49,527 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 10:39:39 CET)" executed successfully
+2026-02-22 10:39:39,333 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 10:44:39 CET)" (scheduled at 2026-02-22 10:39:39.317717+01:00)
+2026-02-22 10:39:39,333 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 10:39:49,534 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 10:39:49,534 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 10:39:49,538 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 10:39:49,538 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 10:39:49,538 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 10:44:39 CET)" executed successfully
+2026-02-22 10:44:39,342 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 10:49:39 CET)" (scheduled at 2026-02-22 10:44:39.317717+01:00)
+2026-02-22 10:44:39,342 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 10:44:49,555 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 10:44:49,555 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 10:44:49,561 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 10:44:49,561 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 10:44:49,562 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 10:49:39 CET)" executed successfully
+2026-02-22 10:46:33,502 - app.main - INFO - 📥 POST /api/integrations/webhook/outlook-calendar - Client: 172.17.0.1
+2026-02-22 10:46:33,503 - app.api.routes.integrations - INFO - Webhook Outlook: validacion (validationToken)
+2026-02-22 10:46:33,504 - app.main - INFO - ✅ POST /api/integrations/webhook/outlook-calendar - Status: 200 - Time: 0.002s
+2026-02-22 10:49:39,338 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 10:54:39 CET)" (scheduled at 2026-02-22 10:49:39.317717+01:00)
+2026-02-22 10:49:39,339 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 10:49:49,574 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 10:49:49,575 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 10:49:49,577 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 10:49:49,577 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 10:49:49,580 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 10:54:39 CET)" executed successfully
+2026-02-22 10:54:39,322 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 10:59:39 CET)" (scheduled at 2026-02-22 10:54:39.317717+01:00)
+2026-02-22 10:54:39,322 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 10:54:49,493 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 10:54:49,494 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 10:54:49,496 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 10:54:49,496 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 10:54:49,496 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 10:59:39 CET)" executed successfully
+2026-02-22 10:59:39,321 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 11:04:39 CET)" (scheduled at 2026-02-22 10:59:39.317717+01:00)
+2026-02-22 10:59:39,321 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 10:59:49,508 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 10:59:49,509 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 10:59:49,514 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 10:59:49,515 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 10:59:49,515 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 11:04:39 CET)" executed successfully
+2026-02-22 11:04:39,334 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 11:09:39 CET)" (scheduled at 2026-02-22 11:04:39.317717+01:00)
+2026-02-22 11:04:39,334 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 11:04:49,515 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 11:04:49,516 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 11:04:49,520 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 11:04:49,520 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 11:04:49,521 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 11:09:39 CET)" executed successfully
+2026-02-22 11:09:39,328 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 11:14:39 CET)" (scheduled at 2026-02-22 11:09:39.317717+01:00)
+2026-02-22 11:09:39,328 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 11:09:49,544 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 11:09:49,544 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 11:09:49,550 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 11:09:49,550 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 11:09:49,550 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 11:14:39 CET)" executed successfully
+2026-02-22 11:14:39,331 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 11:19:39 CET)" (scheduled at 2026-02-22 11:14:39.317717+01:00)
+2026-02-22 11:14:39,331 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 11:14:49,573 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 11:14:49,574 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 11:14:49,579 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 11:14:49,579 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 11:14:49,579 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 11:19:39 CET)" executed successfully
+2026-02-22 11:19:39,328 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 11:24:39 CET)" (scheduled at 2026-02-22 11:19:39.317717+01:00)
+2026-02-22 11:19:39,329 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 11:19:49,494 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 11:19:49,494 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 11:19:49,500 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 11:19:49,500 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 11:19:49,500 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 11:24:39 CET)" executed successfully
+2026-02-22 11:24:39,334 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 11:29:39 CET)" (scheduled at 2026-02-22 11:24:39.317717+01:00)
+2026-02-22 11:24:39,335 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 11:24:49,502 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 11:24:49,503 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 11:24:49,507 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 11:24:49,507 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 11:24:49,509 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 11:29:39 CET)" executed successfully
+2026-02-22 11:29:39,319 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 11:34:39 CET)" (scheduled at 2026-02-22 11:29:39.317717+01:00)
+2026-02-22 11:29:39,319 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 11:29:49,496 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 11:29:49,497 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 11:29:49,502 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 11:29:49,502 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 11:29:49,502 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 11:34:39 CET)" executed successfully
+2026-02-22 11:34:39,327 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 11:39:39 CET)" (scheduled at 2026-02-22 11:34:39.317717+01:00)
+2026-02-22 11:34:39,327 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 11:34:49,506 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 11:34:49,507 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 11:34:49,513 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 11:34:49,513 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 11:34:49,513 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 11:39:39 CET)" executed successfully
+2026-02-22 11:39:39,320 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 11:44:39 CET)" (scheduled at 2026-02-22 11:39:39.317717+01:00)
+2026-02-22 11:39:39,320 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 11:39:49,527 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 11:39:49,528 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 11:39:49,534 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 11:39:49,534 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 11:39:49,534 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 11:44:39 CET)" executed successfully
+2026-02-22 11:44:39,327 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 11:49:39 CET)" (scheduled at 2026-02-22 11:44:39.317717+01:00)
+2026-02-22 11:44:39,328 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 11:44:49,529 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 11:44:49,530 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 11:44:49,534 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 11:44:49,535 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 11:44:49,535 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 11:49:39 CET)" executed successfully
+2026-02-22 11:49:39,328 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 11:54:39 CET)" (scheduled at 2026-02-22 11:49:39.317717+01:00)
+2026-02-22 11:49:39,328 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 11:49:49,552 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 11:49:49,552 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 11:49:49,557 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 11:49:49,557 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 11:49:49,557 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 11:54:39 CET)" executed successfully
+2026-02-22 11:54:39,324 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 11:59:39 CET)" (scheduled at 2026-02-22 11:54:39.317717+01:00)
+2026-02-22 11:54:39,324 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 11:54:49,479 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 11:54:49,479 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 11:54:49,483 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 11:54:49,483 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 11:54:49,485 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 11:59:39 CET)" executed successfully
+2026-02-22 11:59:39,330 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 12:04:39 CET)" (scheduled at 2026-02-22 11:59:39.317717+01:00)
+2026-02-22 11:59:39,330 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 11:59:49,491 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 11:59:49,491 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 11:59:49,497 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 11:59:49,497 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 11:59:49,498 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 12:04:39 CET)" executed successfully
+2026-02-22 12:04:39,326 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 12:09:39 CET)" (scheduled at 2026-02-22 12:04:39.317717+01:00)
+2026-02-22 12:04:39,326 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 12:04:49,514 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 12:04:49,515 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 12:04:49,517 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 12:04:49,517 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 12:04:49,517 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 12:09:39 CET)" executed successfully
+2026-02-22 12:09:19,799 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.17.0.1
+2026-02-22 12:09:19,802 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.003s
+2026-02-22 12:09:20,555 - app.main - INFO - 📥 GET /api/security/ssl/certificate - Client: 172.17.0.1
+2026-02-22 12:09:20,561 - app.main - INFO - ✅ GET /api/security/ssl/certificate - Status: 200 - Time: 0.006s
+2026-02-22 12:09:20,563 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.17.0.1
+2026-02-22 12:09:20,564 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.17.0.1
+2026-02-22 12:09:20,586 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.023s
+2026-02-22 12:09:20,586 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.022s
+2026-02-22 12:09:20,587 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.17.0.1
+2026-02-22 12:09:20,592 - app.api.routes.meetings - INFO - 🔍 [FILTRO] upcoming_only=True: ahora UTC naive=2026-02-22 11:09:20.592581, filtrando reuniones >= 2026-02-22 11:09:20.592581
+2026-02-22 12:09:20,598 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.011s
+2026-02-22 12:09:20,626 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.17.0.1
+2026-02-22 12:09:20,629 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.003s
+2026-02-22 12:09:39,333 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 12:14:39 CET)" (scheduled at 2026-02-22 12:09:39.317717+01:00)
+2026-02-22 12:09:39,333 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 12:09:46,721 - app.main - INFO - 📥 POST /api/auth/sso-login - Client: 172.17.0.1
+2026-02-22 12:09:46,728 - app.utils.jwt_utils - INFO - Token generado para usuario fdescartin@cosgs.com (user_id=d83844fc-f535-4f98-867e-3c26f79c1bec), expira en 30 días (remember_me=True)
+2026-02-22 12:09:46,729 - app.main - INFO - ✅ POST /api/auth/sso-login - Status: 200 - Time: 0.008s
+2026-02-22 12:09:46,856 - app.main - INFO - 📥 POST /api/auth/sso-login - Client: 172.17.0.1
+2026-02-22 12:09:46,862 - app.utils.jwt_utils - INFO - Token generado para usuario fdescartin@cosgs.com (user_id=d83844fc-f535-4f98-867e-3c26f79c1bec), expira en 30 días (remember_me=True)
+2026-02-22 12:09:46,863 - app.main - INFO - ✅ POST /api/auth/sso-login - Status: 200 - Time: 0.007s
+2026-02-22 12:09:46,988 - app.main - INFO - 📥 GET /api/security/ssl/certificate - Client: 172.17.0.1
+2026-02-22 12:09:46,993 - app.main - INFO - ✅ GET /api/security/ssl/certificate - Status: 200 - Time: 0.005s
+2026-02-22 12:09:46,997 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.17.0.1
+2026-02-22 12:09:46,998 - app.main - INFO - 📥 GET /api/meetings/list - Client: 172.17.0.1
+2026-02-22 12:09:47,006 - app.api.routes.meetings - INFO - 🔍 [FILTRO] upcoming_only=True: ahora UTC naive=2026-02-22 11:09:47.006778, filtrando reuniones >= 2026-02-22 11:09:47.006778
+2026-02-22 12:09:47,031 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.033s
+2026-02-22 12:09:47,032 - app.main - INFO - ✅ GET /api/meetings/list - Status: 200 - Time: 0.033s
+2026-02-22 12:09:47,033 - app.main - INFO - 📥 GET /api/auth/me - Client: 172.17.0.1
+2026-02-22 12:09:47,037 - app.main - INFO - ✅ GET /api/auth/me - Status: 200 - Time: 0.005s
+2026-02-22 12:09:49,515 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 12:09:49,516 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 12:09:49,518 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 12:09:49,518 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 12:09:49,522 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 12:14:39 CET)" executed successfully
+2026-02-22 12:14:39,332 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 12:19:39 CET)" (scheduled at 2026-02-22 12:14:39.317717+01:00)
+2026-02-22 12:14:39,333 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 12:14:49,519 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 12:14:49,520 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 12:14:49,520 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 12:14:49,520 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 12:14:49,520 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 12:19:39 CET)" executed successfully
+2026-02-22 12:19:39,324 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 12:24:39 CET)" (scheduled at 2026-02-22 12:19:39.317717+01:00)
+2026-02-22 12:19:39,324 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 12:19:49,532 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 12:19:49,534 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 12:19:49,539 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 12:19:49,539 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 12:19:49,540 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 12:24:39 CET)" executed successfully
+2026-02-22 12:24:39,327 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 12:29:39 CET)" (scheduled at 2026-02-22 12:24:39.317717+01:00)
+2026-02-22 12:24:39,327 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 12:24:49,539 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 12:24:49,539 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 12:24:49,544 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 12:24:49,545 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 12:24:49,545 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 12:29:39 CET)" executed successfully
+2026-02-22 12:29:39,324 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 12:34:39 CET)" (scheduled at 2026-02-22 12:29:39.317717+01:00)
+2026-02-22 12:29:39,324 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 12:29:49,553 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 12:29:49,554 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 12:29:49,559 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 12:29:49,559 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 12:29:49,560 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 12:34:39 CET)" executed successfully
+2026-02-22 12:34:39,325 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 12:39:39 CET)" (scheduled at 2026-02-22 12:34:39.317717+01:00)
+2026-02-22 12:34:39,325 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 12:34:49,480 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 12:34:49,480 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 12:34:49,486 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 12:34:49,486 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 12:34:49,487 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 12:39:39 CET)" executed successfully
+2026-02-22 12:39:39,334 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 12:44:39 CET)" (scheduled at 2026-02-22 12:39:39.317717+01:00)
+2026-02-22 12:39:39,335 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 12:39:49,483 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 12:39:49,483 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 12:39:49,487 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 12:39:49,487 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 12:39:49,487 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 12:44:39 CET)" executed successfully
+2026-02-22 12:44:39,319 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 12:49:39 CET)" (scheduled at 2026-02-22 12:44:39.317717+01:00)
+2026-02-22 12:44:39,319 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 12:44:49,512 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 12:44:49,514 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 12:44:49,518 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 12:44:49,518 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 12:44:49,518 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 12:49:39 CET)" executed successfully
+2026-02-22 12:49:39,324 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 12:54:39 CET)" (scheduled at 2026-02-22 12:49:39.317717+01:00)
+2026-02-22 12:49:39,324 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 12:49:49,517 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 12:49:49,518 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 12:49:49,522 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 12:49:49,523 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 12:49:49,523 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 12:54:39 CET)" executed successfully
+2026-02-22 12:54:39,333 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 12:59:39 CET)" (scheduled at 2026-02-22 12:54:39.317717+01:00)
+2026-02-22 12:54:39,334 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 12:54:49,627 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 12:54:49,627 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 12:54:49,633 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 12:54:49,633 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 12:54:49,633 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 12:59:39 CET)" executed successfully
+2026-02-22 12:59:39,326 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 13:04:39 CET)" (scheduled at 2026-02-22 12:59:39.317717+01:00)
+2026-02-22 12:59:39,326 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 12:59:49,541 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 12:59:49,542 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 43 segundos)
+2026-02-22 12:59:49,548 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 12:59:49,548 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 12:59:49,548 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 13:04:39 CET)" executed successfully
+2026-02-22 13:04:39,319 - apscheduler.executors.default - INFO - Running job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 13:09:39 CET)" (scheduled at 2026-02-22 13:04:39.317717+01:00)
+2026-02-22 13:04:39,320 - app.services.monitoring_service - INFO - [MONITORING] Iniciando verificacion de salud de Celery...
+2026-02-22 13:04:49,561 - app.services.monitoring_service - INFO - [MONITORING] Celery Worker activo: 1 worker(s)
+2026-02-22 13:04:49,561 - app.services.monitoring_service - INFO - [MONITORING] Celery Beat activo (ultima modificacion hace 44 segundos)
+2026-02-22 13:04:49,566 - app.services.monitoring_service - INFO - [MONITORING] Cola de Celery: 0 tareas pendientes
+2026-02-22 13:04:49,566 - app.services.monitoring_service - INFO - [MONITORING] Verificacion de salud de Celery completada
+2026-02-22 13:04:49,566 - apscheduler.executors.default - INFO - Job "Monitoreo de salud de Celery (trigger: interval[0:05:00], next run at: 2026-02-22 13:09:39 CET)" executed successfully

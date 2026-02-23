@@ -1,0 +1,532 @@
+2026-02-15 00:00:12,411 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 00:00:12,419 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.008s
+2026-02-15 00:03:12,823 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 00:03:12,828 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.006s
+2026-02-15 00:06:13,241 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 00:06:13,246 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 00:09:13,637 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 00:09:13,642 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 00:12:14,098 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 00:12:14,103 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 00:15:14,509 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 00:15:14,515 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 00:18:14,931 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 00:18:14,937 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 00:21:15,329 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 00:21:15,333 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 00:24:15,752 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 00:24:15,758 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.006s
+2026-02-15 00:27:16,151 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 00:27:16,156 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 00:30:16,580 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 00:30:16,585 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 01:00:12,359 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 01:00:12,364 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.006s
+2026-02-15 01:03:12,779 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 01:03:12,784 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.006s
+2026-02-15 01:06:13,199 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 01:06:13,204 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 01:09:13,609 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 01:09:13,614 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 01:12:14,051 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 01:12:14,056 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 01:15:14,451 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 01:15:14,456 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 01:18:14,874 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 01:18:14,879 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 01:21:15,289 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 01:21:15,294 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.006s
+2026-02-15 01:24:15,750 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 01:24:15,756 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 01:27:16,159 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 01:27:16,164 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 01:30:16,591 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 01:30:16,596 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 02:00:12,335 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 02:00:12,339 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 02:03:13,411 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 02:03:13,417 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 02:06:13,863 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 02:06:13,868 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 02:09:14,267 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 02:09:14,272 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 02:12:14,680 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 02:12:14,684 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 02:15:15,085 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 02:15:15,090 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 02:18:15,518 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 02:18:15,523 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 02:21:15,916 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 02:21:15,921 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 02:24:16,352 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 02:24:16,357 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 02:27:16,747 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 02:27:16,752 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 02:30:17,158 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 02:30:17,162 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 03:00:12,411 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 03:00:12,417 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 03:03:12,817 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 03:03:12,822 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 03:06:13,271 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 03:06:13,276 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 03:09:13,663 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 03:09:13,668 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 03:12:14,078 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 03:12:14,083 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 03:15:14,474 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 03:15:14,479 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 03:18:14,906 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 03:18:14,911 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 03:21:15,314 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 03:21:15,319 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 03:24:15,746 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 03:24:15,751 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 03:27:16,136 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 03:27:16,142 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 03:30:16,532 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 03:30:16,537 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 04:00:12,362 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 04:00:12,368 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 04:03:12,765 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 04:03:12,770 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 04:06:13,172 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 04:06:13,177 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 04:09:13,557 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 04:09:13,562 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 04:12:13,989 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 04:12:13,994 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 04:15:14,379 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 04:15:14,384 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 04:18:14,805 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 04:18:14,811 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 04:21:15,223 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 04:21:15,228 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 04:24:15,650 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 04:24:15,655 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 04:27:16,044 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 04:27:16,049 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 04:30:16,458 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 04:30:16,462 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 05:00:12,356 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 05:00:12,361 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 05:03:12,760 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 05:03:12,765 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 05:06:13,164 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 05:06:13,170 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.006s
+2026-02-15 05:09:13,564 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 05:09:13,569 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 05:12:14,015 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 05:12:14,020 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 05:15:14,409 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 05:15:14,414 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 05:18:14,801 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 05:18:14,806 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 05:21:15,193 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 05:21:15,198 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 05:24:15,615 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 05:24:15,620 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 05:27:16,013 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 05:27:16,017 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 05:30:16,426 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 05:30:16,431 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 06:00:12,352 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 06:00:12,357 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 06:03:12,755 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 06:03:12,760 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 06:06:13,155 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 06:06:13,159 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 06:09:13,557 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 06:09:13,563 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 06:12:13,992 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 06:12:13,997 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.006s
+2026-02-15 06:15:14,385 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 06:15:14,390 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 06:18:14,826 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 06:18:14,830 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 06:21:15,236 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 06:21:15,241 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 06:24:15,675 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 06:24:15,681 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 06:27:16,078 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 06:27:16,083 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 06:30:16,498 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 06:30:16,503 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 07:00:12,359 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 07:00:12,364 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 07:03:12,768 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 07:03:12,773 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 07:06:13,202 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 07:06:13,207 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 07:09:13,601 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 07:09:13,607 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 07:12:14,034 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 07:12:14,038 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 07:15:14,438 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 07:15:14,442 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 07:18:14,867 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 07:18:14,872 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.006s
+2026-02-15 07:21:15,281 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 07:21:15,285 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 07:24:15,714 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 07:24:15,718 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 07:27:16,106 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 07:27:16,111 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 07:30:16,566 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 07:30:16,571 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 08:00:12,436 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 08:00:12,441 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 08:03:12,840 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 08:03:12,845 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 08:06:13,305 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 08:06:13,311 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 08:09:13,708 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 08:09:13,713 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 08:12:14,125 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 08:12:14,130 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 08:15:14,525 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 08:15:14,530 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 08:18:14,955 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 08:18:14,960 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 08:21:15,349 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 08:21:15,354 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 08:24:15,739 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 08:24:15,743 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 08:27:16,142 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 08:27:16,147 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 08:30:16,590 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 08:30:16,594 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 09:00:12,360 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 09:00:12,365 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 09:03:12,783 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 09:03:12,788 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 09:06:13,215 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 09:06:13,221 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 09:09:13,607 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 09:09:13,612 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 09:12:14,041 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 09:12:14,046 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 09:15:14,435 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 09:15:14,439 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 09:18:14,836 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 09:18:14,840 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.004s
+2026-02-15 09:21:15,243 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 09:21:15,248 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 09:24:15,677 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 09:24:15,682 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.004s
+2026-02-15 09:27:16,072 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 09:27:16,076 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 09:30:16,529 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 09:30:16,534 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 10:00:12,373 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 10:00:12,379 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.006s
+2026-02-15 10:03:12,779 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 10:03:12,784 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 10:06:13,232 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 10:06:13,236 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 10:09:13,615 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 10:09:13,620 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 10:12:14,034 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 10:12:14,039 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 10:15:14,445 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 10:15:14,450 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 10:18:14,883 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 10:18:14,888 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 10:21:15,287 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 10:21:15,292 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 10:24:15,717 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 10:24:15,722 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 10:27:16,127 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 10:27:16,131 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 10:30:16,596 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 10:30:16,601 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 11:00:12,362 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 11:00:12,367 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 11:03:12,773 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 11:03:12,778 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 11:06:13,197 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 11:06:13,203 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 11:09:13,597 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 11:09:13,602 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 11:12:14,021 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 11:12:14,026 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 11:15:14,428 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 11:15:14,433 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 11:18:14,844 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 11:18:14,849 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 11:21:15,248 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 11:21:15,253 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 11:24:15,649 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 11:24:15,654 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 11:27:16,052 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 11:27:16,057 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 11:30:16,523 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 11:30:16,528 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 12:00:12,434 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 12:00:12,439 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 12:03:12,831 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 12:03:12,836 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 12:06:13,253 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 12:06:13,258 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 12:09:13,637 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 12:09:13,642 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 12:12:14,060 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 12:12:14,065 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 12:15:14,448 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 12:15:14,453 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 12:18:14,867 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 12:18:14,873 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 12:21:15,251 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 12:21:15,256 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 12:24:15,637 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 12:24:15,642 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 12:27:16,040 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 12:27:16,045 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 12:30:16,540 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 12:30:16,545 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 13:00:12,352 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 13:00:12,357 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 13:03:12,777 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 13:03:12,782 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 13:06:13,221 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 13:06:13,226 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 13:09:13,639 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 13:09:13,647 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.008s
+2026-02-15 13:12:14,060 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 13:12:14,065 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 13:15:14,444 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 13:15:14,450 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 13:18:14,860 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 13:18:14,865 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 13:21:15,256 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 13:21:15,261 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 13:24:15,700 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 13:24:15,705 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 13:27:16,106 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 13:27:16,110 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 13:30:16,572 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 13:30:16,577 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 14:00:12,403 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 14:00:12,408 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 14:03:12,803 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 14:03:12,808 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 14:06:13,232 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 14:06:13,238 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.006s
+2026-02-15 14:09:13,649 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 14:09:13,654 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 14:12:14,068 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 14:12:14,073 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 14:15:14,476 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 14:15:14,481 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 14:18:14,909 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 14:18:14,914 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 14:21:15,313 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 14:21:15,317 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 14:24:15,739 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 14:24:15,744 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 14:27:16,142 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 14:27:16,147 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 14:30:16,575 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 14:30:16,580 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 15:00:12,377 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 15:00:12,382 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 15:03:12,789 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 15:03:12,794 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 15:06:13,257 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 15:06:13,262 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 15:09:13,660 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 15:09:13,665 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 15:12:14,063 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 15:12:14,068 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 15:15:14,474 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 15:15:14,480 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 15:18:14,916 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 15:18:14,921 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 15:21:15,317 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 15:21:15,322 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 15:24:15,751 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 15:24:15,757 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 15:27:16,149 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 15:27:16,154 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 15:30:16,583 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 15:30:16,588 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 16:00:12,413 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 16:00:12,418 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 16:03:12,819 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 16:03:12,823 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 16:06:13,255 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 16:06:13,260 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 16:09:13,653 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 16:09:13,658 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 16:12:14,100 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 16:12:14,105 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 16:15:14,501 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 16:15:14,505 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 16:18:14,912 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 16:18:14,917 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 16:21:15,318 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 16:21:15,322 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 16:24:15,751 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 16:24:15,757 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 16:27:16,137 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 16:27:16,142 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 16:30:16,589 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 16:30:16,594 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 17:00:12,391 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 17:00:12,397 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 17:03:12,803 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 17:03:12,808 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.006s
+2026-02-15 17:06:13,225 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 17:06:13,230 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 17:09:13,630 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 17:09:13,635 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 17:12:14,027 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 17:12:14,032 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 17:15:14,439 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 17:15:14,444 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 17:18:14,868 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 17:18:14,872 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 17:21:15,280 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 17:21:15,285 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 17:24:15,726 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 17:24:15,731 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 17:27:16,120 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 17:27:16,125 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 17:30:16,570 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 17:30:16,575 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 18:00:12,372 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 18:00:12,378 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 18:03:12,767 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 18:03:12,772 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 18:06:13,219 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 18:06:13,224 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 18:09:13,620 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 18:09:13,625 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 18:12:14,082 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 18:12:14,087 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 18:15:14,482 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 18:15:14,486 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 18:18:14,917 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 18:18:14,922 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 18:21:15,329 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 18:21:15,334 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 18:24:15,768 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 18:24:15,773 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 18:27:16,183 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 18:27:16,188 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 18:30:16,626 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 18:30:16,631 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 19:00:12,344 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 19:00:12,349 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 19:03:12,735 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 19:03:12,741 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 19:06:13,166 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 19:06:13,170 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 19:09:13,562 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 19:09:13,567 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 19:12:14,004 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 19:12:14,009 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 19:15:14,399 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 19:15:14,404 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 19:18:14,830 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 19:18:14,835 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 19:21:15,218 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 19:21:15,223 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 19:24:15,646 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 19:24:15,650 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 19:27:16,036 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 19:27:16,041 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 19:30:16,508 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 19:30:16,513 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 20:00:12,428 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 20:00:12,433 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.006s
+2026-02-15 20:03:12,834 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 20:03:12,839 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 20:06:13,267 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 20:06:13,272 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 20:09:13,688 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 20:09:13,692 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 20:12:14,099 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 20:12:14,104 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 20:15:14,497 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 20:15:14,502 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 20:18:14,928 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 20:18:14,933 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 20:21:15,331 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 20:21:15,336 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 20:24:15,771 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 20:24:15,776 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 20:27:16,175 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 20:27:16,180 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 20:30:16,620 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 20:30:16,625 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 21:00:12,625 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 21:00:12,629 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 21:03:13,035 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 21:03:13,040 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 21:06:13,440 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 21:06:13,445 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 21:09:13,841 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 21:09:13,846 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 21:12:14,270 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 21:12:14,276 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 21:15:14,675 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 21:15:14,680 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 21:18:15,145 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 21:18:15,150 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 21:21:15,549 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 21:21:15,553 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 21:24:15,996 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 21:24:16,001 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 21:27:16,407 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 21:27:16,413 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 21:30:16,818 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 21:30:16,822 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 22:00:12,399 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 22:00:12,405 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 22:03:13,095 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 22:03:13,101 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 22:06:13,559 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 22:06:13,564 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 22:09:13,960 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 22:09:13,965 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 22:12:14,379 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 22:12:14,384 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 22:15:09,231 - app.main - INFO - 📥 POST /api/ad/users/admin/unlock - Client: 172.17.0.1
+2026-02-15 22:15:09,232 - app.main - INFO - ❌ POST /api/ad/users/admin/unlock - Status: 404 - Time: 0.001s
+2026-02-15 22:15:14,777 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 22:15:14,782 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 22:18:15,183 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 22:18:15,188 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 22:21:15,582 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 22:21:15,587 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 22:24:16,008 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 22:24:16,013 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 22:27:16,409 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 22:27:16,414 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 22:30:16,856 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 22:30:16,861 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 22:36:54,892 - app.main - INFO - 📥 POST /api/ad/users/bgarcia/unlock - Client: 172.17.0.1
+2026-02-15 22:36:54,893 - app.main - INFO - ❌ POST /api/ad/users/bgarcia/unlock - Status: 404 - Time: 0.001s
+2026-02-15 23:00:12,384 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 23:00:12,390 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.006s
+2026-02-15 23:03:12,796 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 23:03:12,801 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 23:06:13,202 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 23:06:13,207 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 23:09:13,598 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 23:09:13,603 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 23:12:14,053 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 23:12:14,058 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 23:15:14,459 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 23:15:14,463 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 23:18:14,874 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 23:18:14,879 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 23:21:15,276 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 23:21:15,281 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 23:24:15,708 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 23:24:15,714 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
+2026-02-15 23:27:16,096 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 23:27:16,101 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.004s
+2026-02-15 23:30:16,541 - app.main - INFO - 📥 GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Client: 172.17.0.1
+2026-02-15 23:30:16,547 - app.main - INFO - ✅ GET /api/meetings/39e0fe8b-8248-42d3-80d6-5a318e886957/transcription - Status: 200 - Time: 0.005s
