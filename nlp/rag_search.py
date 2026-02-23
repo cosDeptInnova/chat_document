@@ -210,6 +210,8 @@ def _build_qdrant_filter_from_filters(
         "title": "section",
         "hoja": "sheet",
         "tabla": "table_id",
+        "tabla_slug": "table_slug",
+        "fila_id": "row_id",
         "firma_fila": "row_signature",
     }
 
@@ -256,7 +258,9 @@ def _build_qdrant_filter_from_filters(
         "sheet_canon",
         "table_id",
         "table_id_canon",
+        "table_slug",
         "table_cache_path",
+        "row_id",
         "row_signature",
         "brand",
         "model",
@@ -275,7 +279,7 @@ def _build_qdrant_filter_from_filters(
     section_keys = {"section", "section_path", "section_ancestors"}
 
     # campos int típicos
-    int_keys = {"page", "row_idx", "row_id", "chunk_index", "chunk_index_in_doc", "metadata_schema_version", "chunk_char_len"}
+    int_keys = {"page", "row_idx", "chunk_index", "chunk_index_in_doc", "metadata_schema_version", "chunk_char_len"}
 
     # campos num/range típicos
     range_keys = {"quantity", "price"}
