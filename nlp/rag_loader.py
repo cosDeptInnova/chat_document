@@ -13,6 +13,8 @@ from pdfminer.high_level import extract_text as extract_text_from_pdf
 
 logger = logging.getLogger("cosmos_nlp_v3.loader")
 
+RAG_METADATA_SCHEMA_VERSION = int(os.getenv("RAG_METADATA_SCHEMA_VERSION", "2"))
+
 # --- Forzar/descubrir providers de ONNXRuntime (GPU/CPU) ---
 try:
     import onnxruntime as _ort
@@ -548,6 +550,72 @@ def load_and_fragment_files_impl(indexer, files: List[str]):
     documents: List[str] = []
     doc_names: List[str] = []
 
+    def _normalize_meta_record(idx: int) -> None:
+        """
+        Backward-compatible metadata normalization for every generated chunk.
+
+        Objetivo:
+        - Homogeneizar metadatos para búsqueda/filtros multi-módulo.
+        - Mantener compatibilidad con índices históricos (solo añade defaults).
+        """
+        if idx < 0 or idx >= len(documents) or idx >= len(doc_names):
+            return
+
+        if idx >= len(indexer._metas):
+            indexer._metas.extend({} for _ in range(idx - len(indexer._metas) + 1))
+
+        meta = indexer._metas[idx]
+        if not isinstance(meta, dict):
+            meta = {}
+
+        txt = documents[idx] or ""
+        dname = str(doc_names[idx] or "")
+        source_file_name = meta.get("source_file_name") or os.path.basename(dname.split("::")[0] if dname else "")
+        backend = str(meta.get("backend") or "classic")
+
+        if "sheet" in meta and "sheet_canon" not in meta:
+            try:
+                meta["sheet_canon"] = _canon(str(meta.get("sheet") or ""))
+            except Exception:
+                pass
+
+        if "table_id" in meta and "table_id_canon" not in meta:
+            try:
+                meta["table_id_canon"] = _canon(str(meta.get("table_id") or ""))
+            except Exception:
+                pass
+
+        # Posición por documento para trazabilidad de chunking.
+        if "chunk_index_in_doc" not in meta:
+            target_name = source_file_name or dname
+            count = 0
+            for j in range(idx):
+                prev_name = str(doc_names[j] or "")
+                prev_base = os.path.basename(prev_name.split("::")[0] if prev_name else "")
+                if prev_base == target_name:
+                    count += 1
+            meta["chunk_index_in_doc"] = count
+
+        if "source_file_name" not in meta and source_file_name:
+            meta["source_file_name"] = source_file_name
+        if "chunk_char_len" not in meta:
+            meta["chunk_char_len"] = len(txt)
+        if "chunk_hash" not in meta and txt:
+            meta["chunk_hash"] = hashlib.sha1(txt.encode("utf-8", errors="ignore")).hexdigest()
+        if "metadata_schema_version" not in meta:
+            meta["metadata_schema_version"] = RAG_METADATA_SCHEMA_VERSION
+        if "ingestion_pipeline" not in meta:
+            meta["ingestion_pipeline"] = "rag_loader_v2"
+        if "chunking_profile" not in meta:
+            if backend.startswith("excel"):
+                meta["chunking_profile"] = "excel_structured_v1"
+            elif backend in ("docling", "mineru"):
+                meta["chunking_profile"] = "structured_parser_v1"
+            else:
+                meta["chunking_profile"] = "semantic_sentences_v1"
+
+        indexer._metas[idx] = meta
+
     for path in tqdm(files, desc="Procesando archivos"):
         print(f"(load) Procesando archivo: {path}", flush=True)
         ext = os.path.splitext(path.lower())[1]
@@ -702,6 +770,7 @@ def load_and_fragment_files_impl(indexer, files: List[str]):
                                     doc_names.append(f"{basename}::{sheet.title}::macro#{chunk_idx}")
                                     indexer._metas.append({
                                         "sheet": sheet.title,
+                                        "sheet_canon": _canon(str(sheet.title)),
                                         "row_idx": None,
                                         "headers": headers,
                                         "source_path": path,
@@ -743,14 +812,25 @@ def load_and_fragment_files_impl(indexer, files: List[str]):
                             documents.append(row_text)
                             doc_names.append(basename)
 
+                            row_signature = ""
+                            try:
+                                row_sig_parts = [f"{k}={v}" for k, v in sorted((row_kv or {}).items(), key=lambda kv: str(kv[0]).lower())]
+                                if row_sig_parts:
+                                    row_signature = hashlib.sha1("|".join(row_sig_parts).encode("utf-8", errors="ignore")).hexdigest()
+                            except Exception:
+                                row_signature = ""
+
                             meta = {
                                 "sheet": sheet.title,
+                                "sheet_canon": _canon(str(sheet.title)),
                                 "row_idx": ridx,
                                 "headers": headers,
                                 "row_kv": row_kv,
                                 "source_path": path,
                                 "backend": "excel_row",
                             }
+                            if row_signature:
+                                meta["row_signature"] = row_signature
                             extra_meta = _canonicalize_row_meta(row_kv)
                             meta.update(extra_meta)
 
@@ -788,6 +868,7 @@ def load_and_fragment_files_impl(indexer, files: List[str]):
                                     try:
                                         m = indexer._metas[mi]
                                         m["table_id"] = table_id
+                                        m["table_id_canon"] = _canon(str(table_id))
                                         m["table_cache_path"] = str(table_cache_path)
                                     except Exception:
                                         pass
@@ -797,11 +878,13 @@ def load_and_fragment_files_impl(indexer, files: List[str]):
                                 doc_names.append(f"{basename}::{sheet.title}::profile")
                                 indexer._metas.append({
                                     "sheet": sheet.title,
+                                    "sheet_canon": _canon(str(sheet.title)),
                                     "row_idx": None,
                                     "headers": headers,
                                     "source_path": path,
                                     "backend": "excel_profile",
                                     "table_id": table_id,
+                                    "table_id_canon": _canon(str(table_id)),
                                     "table_cache_path": str(table_cache_path),
                                     "profile_path": str(profile_path),
                                 })
@@ -886,6 +969,22 @@ def load_and_fragment_files_impl(indexer, files: List[str]):
         except Exception as e:
             logger.warning(f"Error procesando {path}: {e}")
 
+    # Normalización final de metadatos por chunk (todas las rutas de ingestión).
+    for i in range(len(documents)):
+        _normalize_meta_record(i)
+
+    # Logging agregando visibilidad de backend para operación en producción.
+    backend_counts: Dict[str, int] = {}
+    for m in (indexer._metas or []):
+        b = str((m or {}).get("backend") or "unknown")
+        backend_counts[b] = backend_counts.get(b, 0) + 1
+
+    logger.info(
+        "(load) Total fragments=%d | metas=%d | backend_distribution=%s",
+        len(documents),
+        len(indexer._metas or []),
+        backend_counts,
+    )
     print(f"(load) Total fragments: {len(documents)}", flush=True)
     return documents, doc_names, False
 
