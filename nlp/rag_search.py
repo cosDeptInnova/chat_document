@@ -262,11 +262,14 @@ def _build_qdrant_filter_from_filters(
         "asset_id",
         "doc_id",
         "tags",
+        "chunk_hash",
+        "chunking_profile",
+        "ingestion_pipeline",
     }
     section_keys = {"section", "section_path", "section_ancestors"}
 
     # campos int típicos
-    int_keys = {"page", "row_idx", "row_id", "chunk_index"}
+    int_keys = {"page", "row_idx", "row_id", "chunk_index", "chunk_index_in_doc", "metadata_schema_version", "chunk_char_len"}
 
     # campos num/range típicos
     range_keys = {"quantity", "price"}
@@ -469,6 +472,12 @@ def vector_search_raw_impl(
             "serial",
             "inventory_id",
             "asset_id",
+            "chunk_hash",
+            "chunk_char_len",
+            "chunk_index_in_doc",
+            "chunking_profile",
+            "metadata_schema_version",
+            "ingestion_pipeline",
         )
         meta = {k: pld.get(k) for k in meta_fields if pld.get(k) is not None}
         if doc_id is not None:

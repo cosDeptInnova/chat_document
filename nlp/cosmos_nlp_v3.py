@@ -1,5 +1,6 @@
 # cosmos_nlp_v3.py
 import os
+import time
 import spacy
 import logging
 import torch
@@ -332,6 +333,7 @@ class DocumentIndexer:
 
         used_dev: Optional[torch.device] = None
 
+        t0 = time.time()
         with gpu_manager.use_device_with_fallback(
             self.sbert_model,
             prefer_device=self.embed_device,
@@ -350,6 +352,10 @@ class DocumentIndexer:
                 device=device_arg,
                 show_progress_bar=False,
             )
+        logger.info(
+            "(embed) encoded texts=%d batch=%d is_query=%s device=%s dt=%.3fs",
+            len(texts), bs, bool(is_query), str(used_dev), time.time() - t0
+        )
 
         # Solo “stick” a CUDA si realmente se usó CUDA (evita quedarse pegado a CPU tras un fallback puntual)
         if used_dev is not None and used_dev.type == "cuda":
@@ -475,6 +481,8 @@ class DocumentIndexer:
             "location", "brand", "model", "class", "asset_type",
             "serial", "inventory_id", "asset_id",
             "quantity", "price",
+            "chunk_hash", "chunk_char_len", "chunk_index_in_doc",
+            "chunking_profile", "metadata_schema_version", "ingestion_pipeline",
         ]
         for k in passthrough_keys:
             if k in meta and meta[k] is not None:
@@ -524,6 +532,13 @@ class DocumentIndexer:
 
                 ("quantity", PayloadSchemaType.FLOAT),
                 ("price", PayloadSchemaType.FLOAT),
+
+                ("chunk_hash", PayloadSchemaType.KEYWORD),
+                ("chunk_char_len", PayloadSchemaType.INTEGER),
+                ("chunk_index_in_doc", PayloadSchemaType.INTEGER),
+                ("chunking_profile", PayloadSchemaType.KEYWORD),
+                ("metadata_schema_version", PayloadSchemaType.INTEGER),
+                ("ingestion_pipeline", PayloadSchemaType.KEYWORD),
             ]
 
             for field, schema in fields_and_types:

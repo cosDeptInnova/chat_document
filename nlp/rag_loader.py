@@ -13,6 +13,8 @@ from pdfminer.high_level import extract_text as extract_text_from_pdf
 
 logger = logging.getLogger("cosmos_nlp_v3.loader")
 
+RAG_METADATA_SCHEMA_VERSION = int(os.getenv("RAG_METADATA_SCHEMA_VERSION", "2"))
+
 # --- Forzar/descubrir providers de ONNXRuntime (GPU/CPU) ---
 try:
     import onnxruntime as _ort
@@ -548,6 +550,60 @@ def load_and_fragment_files_impl(indexer, files: List[str]):
     documents: List[str] = []
     doc_names: List[str] = []
 
+    def _normalize_meta_record(idx: int) -> None:
+        """
+        Backward-compatible metadata normalization for every generated chunk.
+
+        Objetivo:
+        - Homogeneizar metadatos para búsqueda/filtros multi-módulo.
+        - Mantener compatibilidad con índices históricos (solo añade defaults).
+        """
+        if idx < 0 or idx >= len(documents) or idx >= len(doc_names):
+            return
+
+        if idx >= len(indexer._metas):
+            indexer._metas.extend({} for _ in range(idx - len(indexer._metas) + 1))
+
+        meta = indexer._metas[idx]
+        if not isinstance(meta, dict):
+            meta = {}
+
+        txt = documents[idx] or ""
+        dname = str(doc_names[idx] or "")
+        source_file_name = meta.get("source_file_name") or os.path.basename(dname.split("::")[0] if dname else "")
+        backend = str(meta.get("backend") or "classic")
+
+        # Posición por documento para trazabilidad de chunking.
+        if "chunk_index_in_doc" not in meta:
+            target_name = source_file_name or dname
+            count = 0
+            for j in range(idx):
+                prev_name = str(doc_names[j] or "")
+                prev_base = os.path.basename(prev_name.split("::")[0] if prev_name else "")
+                if prev_base == target_name:
+                    count += 1
+            meta["chunk_index_in_doc"] = count
+
+        if "source_file_name" not in meta and source_file_name:
+            meta["source_file_name"] = source_file_name
+        if "chunk_char_len" not in meta:
+            meta["chunk_char_len"] = len(txt)
+        if "chunk_hash" not in meta and txt:
+            meta["chunk_hash"] = hashlib.sha1(txt.encode("utf-8", errors="ignore")).hexdigest()
+        if "metadata_schema_version" not in meta:
+            meta["metadata_schema_version"] = RAG_METADATA_SCHEMA_VERSION
+        if "ingestion_pipeline" not in meta:
+            meta["ingestion_pipeline"] = "rag_loader_v2"
+        if "chunking_profile" not in meta:
+            if backend.startswith("excel"):
+                meta["chunking_profile"] = "excel_structured_v1"
+            elif backend in ("docling", "mineru"):
+                meta["chunking_profile"] = "structured_parser_v1"
+            else:
+                meta["chunking_profile"] = "semantic_sentences_v1"
+
+        indexer._metas[idx] = meta
+
     for path in tqdm(files, desc="Procesando archivos"):
         print(f"(load) Procesando archivo: {path}", flush=True)
         ext = os.path.splitext(path.lower())[1]
@@ -886,6 +942,22 @@ def load_and_fragment_files_impl(indexer, files: List[str]):
         except Exception as e:
             logger.warning(f"Error procesando {path}: {e}")
 
+    # Normalización final de metadatos por chunk (todas las rutas de ingestión).
+    for i in range(len(documents)):
+        _normalize_meta_record(i)
+
+    # Logging agregando visibilidad de backend para operación en producción.
+    backend_counts: Dict[str, int] = {}
+    for m in (indexer._metas or []):
+        b = str((m or {}).get("backend") or "unknown")
+        backend_counts[b] = backend_counts.get(b, 0) + 1
+
+    logger.info(
+        "(load) Total fragments=%d | metas=%d | backend_distribution=%s",
+        len(documents),
+        len(indexer._metas or []),
+        backend_counts,
+    )
     print(f"(load) Total fragments: {len(documents)}", flush=True)
     return documents, doc_names, False
 
