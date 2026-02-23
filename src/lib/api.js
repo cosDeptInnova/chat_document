@@ -902,10 +902,20 @@ export async function fetchNotetakerSsoUrl() {
 
 /**
  * Acción directa: abre Notetaker.
+ * @param {string} [displayName] - Nombre completo del usuario (se añade a la URL si el backend no lo incluyó).
  */
-export async function openNotetaker() {
+export async function openNotetaker(displayName) {
   const { url } = await fetchNotetakerSsoUrl();
   if (!url) throw new Error("No se recibió URL de Notetaker.");
-  window.location.href = url; // redirección full page (otro origen)
-}
 
+  let finalUrl = url;
+  if (displayName) {
+    const u = new URL(url);
+    if (!u.searchParams.has("display_name")) {
+      u.searchParams.set("display_name", displayName);
+      finalUrl = u.toString();
+    }
+  }
+
+  window.location.href = finalUrl;
+}
