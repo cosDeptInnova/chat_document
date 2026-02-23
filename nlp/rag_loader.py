@@ -573,6 +573,18 @@ def load_and_fragment_files_impl(indexer, files: List[str]):
         source_file_name = meta.get("source_file_name") or os.path.basename(dname.split("::")[0] if dname else "")
         backend = str(meta.get("backend") or "classic")
 
+        if "sheet" in meta and "sheet_canon" not in meta:
+            try:
+                meta["sheet_canon"] = _canon(str(meta.get("sheet") or ""))
+            except Exception:
+                pass
+
+        if "table_id" in meta and "table_id_canon" not in meta:
+            try:
+                meta["table_id_canon"] = _canon(str(meta.get("table_id") or ""))
+            except Exception:
+                pass
+
         # Posición por documento para trazabilidad de chunking.
         if "chunk_index_in_doc" not in meta:
             target_name = source_file_name or dname
@@ -758,6 +770,7 @@ def load_and_fragment_files_impl(indexer, files: List[str]):
                                     doc_names.append(f"{basename}::{sheet.title}::macro#{chunk_idx}")
                                     indexer._metas.append({
                                         "sheet": sheet.title,
+                                        "sheet_canon": _canon(str(sheet.title)),
                                         "row_idx": None,
                                         "headers": headers,
                                         "source_path": path,
@@ -799,14 +812,25 @@ def load_and_fragment_files_impl(indexer, files: List[str]):
                             documents.append(row_text)
                             doc_names.append(basename)
 
+                            row_signature = ""
+                            try:
+                                row_sig_parts = [f"{k}={v}" for k, v in sorted((row_kv or {}).items(), key=lambda kv: str(kv[0]).lower())]
+                                if row_sig_parts:
+                                    row_signature = hashlib.sha1("|".join(row_sig_parts).encode("utf-8", errors="ignore")).hexdigest()
+                            except Exception:
+                                row_signature = ""
+
                             meta = {
                                 "sheet": sheet.title,
+                                "sheet_canon": _canon(str(sheet.title)),
                                 "row_idx": ridx,
                                 "headers": headers,
                                 "row_kv": row_kv,
                                 "source_path": path,
                                 "backend": "excel_row",
                             }
+                            if row_signature:
+                                meta["row_signature"] = row_signature
                             extra_meta = _canonicalize_row_meta(row_kv)
                             meta.update(extra_meta)
 
@@ -844,6 +868,7 @@ def load_and_fragment_files_impl(indexer, files: List[str]):
                                     try:
                                         m = indexer._metas[mi]
                                         m["table_id"] = table_id
+                                        m["table_id_canon"] = _canon(str(table_id))
                                         m["table_cache_path"] = str(table_cache_path)
                                     except Exception:
                                         pass
@@ -853,11 +878,13 @@ def load_and_fragment_files_impl(indexer, files: List[str]):
                                 doc_names.append(f"{basename}::{sheet.title}::profile")
                                 indexer._metas.append({
                                     "sheet": sheet.title,
+                                    "sheet_canon": _canon(str(sheet.title)),
                                     "row_idx": None,
                                     "headers": headers,
                                     "source_path": path,
                                     "backend": "excel_profile",
                                     "table_id": table_id,
+                                    "table_id_canon": _canon(str(table_id)),
                                     "table_cache_path": str(table_cache_path),
                                     "profile_path": str(profile_path),
                                 })

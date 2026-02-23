@@ -475,6 +475,9 @@ class DocumentIndexer:
 
         # Passthrough tabular / extra
         passthrough_keys = [
+            "sheet", "sheet_canon", "row_idx", "headers", "row_kv", "row_kv_canon",
+            "block_type", "bbox", "chunk_index",
+            "table_id", "table_id_canon", "table_cache_path", "row_id", "row_signature",
             "sheet", "row_idx", "headers", "row_kv", "row_kv_canon",
             "block_type", "bbox", "chunk_index",
             "table_id", "table_cache_path", "row_id",
@@ -516,6 +519,13 @@ class DocumentIndexer:
                 ("page", PayloadSchemaType.INTEGER),
 
                 ("sheet", PayloadSchemaType.KEYWORD),
+                ("sheet_canon", PayloadSchemaType.KEYWORD),
+                ("table_id", PayloadSchemaType.KEYWORD),
+                ("table_id_canon", PayloadSchemaType.KEYWORD),
+                ("table_cache_path", PayloadSchemaType.KEYWORD),
+                ("row_idx", PayloadSchemaType.INTEGER),
+                ("row_id", PayloadSchemaType.INTEGER),
+                ("row_signature", PayloadSchemaType.KEYWORD),
                 ("table_id", PayloadSchemaType.KEYWORD),
                 ("table_cache_path", PayloadSchemaType.KEYWORD),
                 ("row_idx", PayloadSchemaType.INTEGER),
