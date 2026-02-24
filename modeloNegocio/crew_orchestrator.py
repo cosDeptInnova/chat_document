@@ -3,6 +3,7 @@
 import os
 import logging
 import re
+from datetime import datetime
 from typing import Any, Dict, List, Optional
 import httpx
 from crewai import Agent, Task, Crew, Process, LLM
@@ -39,6 +40,16 @@ def _sanitize_for_prompt(value: Any, max_len: int = 2000) -> str:
     if max_len > 0 and len(text) > max_len:
         return text[:max_len] + "…"
     return text
+
+
+def _safe_bool(value: Any, default: bool = False) -> bool:
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, str):
+        return value.strip().lower() in {"1", "true", "yes", "si", "sí"}
+    if isinstance(value, (int, float)):
+        return bool(value)
+    return default
 
 
 class CosmosCrewOrchestrator:
@@ -212,6 +223,85 @@ class CosmosCrewOrchestrator:
             if u or b:
                 chunks.append(f"Usuario: {u}\nAsistente: {b}")
         return "\n\n".join(chunks) if chunks else "No hay historial previo relevante."
+
+    def _format_tracking_capsules(
+        self,
+        history_data: Dict[str, Any],
+        max_capsules: int = 4,
+        max_chars: int = 1800,
+    ) -> str:
+        """
+        Recupera cápsulas condensadas de turnos previos para mantener continuidad
+        sin inflar la ventana de contexto.
+        """
+        entries = (history_data or {}).get("conversation_history", []) or []
+        if not entries:
+            return ""
+
+        capsules: List[str] = []
+        for item in reversed(entries):
+            if not isinstance(item, dict):
+                continue
+            capsule = item.get("tracking_capsule")
+            if not isinstance(capsule, dict):
+                continue
+
+            ts = _sanitize_for_prompt(capsule.get("timestamp"), max_len=40)
+            intent = _sanitize_for_prompt(capsule.get("intent") or "otro", max_len=40)
+            user_q = _sanitize_for_prompt(capsule.get("user_question"), max_len=180)
+            answer = _sanitize_for_prompt(capsule.get("assistant_answer"), max_len=220)
+            rag_used = _safe_bool(capsule.get("rag_used"), default=False)
+            source = _sanitize_for_prompt(capsule.get("rag_source") or "", max_len=80)
+            pending = _sanitize_for_prompt(capsule.get("pending") or "", max_len=140)
+
+            lines = [
+                f"- [{ts or 's/f'}] intent={intent}; rag_used={str(rag_used).lower()}",
+                f"  · Pregunta: {user_q or '(vacía)'}",
+                f"  · Respuesta resumen: {answer or '(vacía)'}",
+            ]
+            if source:
+                lines.append(f"  · Fuente RAG usada: {source}")
+            if pending:
+                lines.append(f"  · Pendiente detectado: {pending}")
+
+            capsules.append("\n".join(lines))
+            if len(capsules) >= max_capsules:
+                break
+
+        if not capsules:
+            return ""
+
+        block = "\n\n".join(reversed(capsules))
+        return block[:max_chars]
+
+    def build_tracking_capsule(
+        self,
+        user_prompt: str,
+        response_text: str,
+        plan: Optional[Dict[str, Any]] = None,
+        flow: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        """
+        Crea una cápsula compacta por turno para continuidad multi-turno y multiagente.
+        Es deterministic-friendly (sin llamada adicional a LLM) para minimizar latencia.
+        """
+        plan = plan or {}
+        rag_status = _sanitize_for_prompt(plan.get("rag_status") or "", max_len=30)
+        rag_used = rag_status in {"ok", "partial_ok", "degraded_ok"}
+        pending = ""
+        if "no_results" in rag_status or rag_status == "error":
+            pending = "Validar fuentes/documentos para ampliar cobertura de respuesta."
+
+        return {
+            "timestamp": datetime.utcnow().isoformat(timespec="seconds") + "Z",
+            "flow": _sanitize_for_prompt((flow or "C").upper(), max_len=4),
+            "intent": _sanitize_for_prompt(plan.get("intent") or "otro", max_len=40),
+            "rag_used": rag_used,
+            "rag_source": _sanitize_for_prompt(plan.get("rag_used_department") or "", max_len=100),
+            "user_question": _sanitize_for_prompt(user_prompt, max_len=240),
+            "assistant_answer": _sanitize_for_prompt(response_text, max_len=320),
+            "pending": _sanitize_for_prompt(pending, max_len=180),
+        }
 
     def _extract_json_from_text(self, raw: str) -> dict:
         import json
@@ -830,6 +920,7 @@ class CosmosCrewOrchestrator:
         MAX_HISTORY_CHARS = 4000
         MAX_RAG_CHARS = 7000
         MAX_EPH_CHARS = 2000
+        MAX_TRACKING_CHARS = 1800
         MAX_PROMPT_CHARS = 15000
 
         plan = plan or {}
@@ -875,6 +966,12 @@ class CosmosCrewOrchestrator:
             history_str = raw_history_str or ""
             if len(history_str) > MAX_HISTORY_CHARS:
                 history_str = history_str[-MAX_HISTORY_CHARS:]
+
+        tracking_str = self._format_tracking_capsules(
+            history_data or {},
+            max_capsules=4,
+            max_chars=MAX_TRACKING_CHARS,
+        )
 
         # 3) RAG
         rag_str = ""
@@ -1029,10 +1126,16 @@ class CosmosCrewOrchestrator:
         core = question_block + normalized_block + high_level_block + tail + "\n\n"
 
         history_block = f"=== Historial reciente ===\n{history_str}\n\n" if history_str else ""
+        tracking_block = (
+            "=== Seguimiento condensado de turnos previos (HITL) ===\n"
+            f"{tracking_str}\n\n"
+            if tracking_str
+            else ""
+        )
         rag_block = f"=== Resultados RAG (filas de inventario y texto relevante) ===\n{rag_str}\n\n" if rag_str else ""
         eph_block = f"=== Archivos en vuelo (si los hay) ===\n{eph_str}\n\n" if eph_str else ""
 
-        context_sections: List[str] = [history_block, rag_block, agg_block, eph_block, meta_plan_block]
+        context_sections: List[str] = [tracking_block, history_block, rag_block, agg_block, eph_block, meta_plan_block]
 
         if len(core) >= MAX_PROMPT_CHARS:
             logger.warning(
