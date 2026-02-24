@@ -1367,6 +1367,14 @@ async def handle_query_to_llm(
         )
         response_text = clean_text(response_text or "")
 
+        tracking_capsule = crew_orchestrator.build_tracking_capsule(
+            user_prompt=prompt,
+            response_text=response_text,
+            plan=plan,
+            rag_results=rag_results,
+            ephemeral_files=ephemeral_files,
+        )
+
         # -------------------------------------------
         # 8) Guardar historial en Redis (SCOPED)
         # -------------------------------------------
@@ -1378,6 +1386,7 @@ async def handle_query_to_llm(
             "response": response_text,
             "flow": flow,
             "planner_plan": plan,
+            "tracking_capsule": tracking_capsule,
             "timestamp": datetime.utcnow().isoformat(),
         }
         await save_conversation_to_redis(
