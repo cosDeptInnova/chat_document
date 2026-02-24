@@ -2,6 +2,7 @@
 
 import os
 import logging
+import re
 from typing import Any, Dict, List, Optional
 import httpx
 from crewai import Agent, Task, Crew, Process, LLM
@@ -21,6 +22,23 @@ from cosmos_crew_src.prompts import (
 from cosmos_crew_src.utils import clean_llm_text, should_use_toon
 
 logger = logging.getLogger(__name__)
+
+_CTRL_CHARS_RE = re.compile(r"[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]")
+
+
+def _sanitize_for_prompt(value: Any, max_len: int = 2000) -> str:
+    """
+    Sanitiza cualquier valor antes de incrustarlo en prompts para evitar
+    caracteres de control (frecuentes en datos tabulares) y explosiones de tamaño.
+    """
+    if value is None:
+        return ""
+    text = str(value)
+    text = _CTRL_CHARS_RE.sub(" ", text)
+    text = re.sub(r"\s+", " ", text).strip()
+    if max_len > 0 and len(text) > max_len:
+        return text[:max_len] + "…"
+    return text
 
 
 class CosmosCrewOrchestrator:
@@ -237,7 +255,9 @@ class CosmosCrewOrchestrator:
             lines: List[str] = []
             items = list(row_kv.items())[:max_fields]
             for k, v in items:
-                lines.append(f"{indent}· {k}: {v}")
+                k_safe = _sanitize_for_prompt(k, max_len=120)
+                v_safe = _sanitize_for_prompt(v, max_len=300)
+                lines.append(f"{indent}· {k_safe}: {v_safe}")
             if len(row_kv) > max_fields:
                 lines.append(
                     f"{indent}… ({len(row_kv) - max_fields} campos adicionales omitidos)"
@@ -257,9 +277,13 @@ class CosmosCrewOrchestrator:
                 or meta.get("file_name")
                 or "Documento sin nombre"
             )
+            doc_name = _sanitize_for_prompt(doc_name, max_len=220)
 
             score = _safe_score(r)
-            main_text = str(r.get("text") or r.get("chunk") or "").strip()
+            main_text = _sanitize_for_prompt(
+                r.get("text") or r.get("chunk") or "",
+                max_len=2500,
+            )
 
             header_lines: List[str] = []
             header_lines.append(f"📄 Documento #{idx}: {doc_name}")
@@ -279,9 +303,9 @@ class CosmosCrewOrchestrator:
             if backend or sheet or row_kv:
                 body_lines.append("METADATOS DEL REGISTRO PRINCIPAL:")
                 if backend:
-                    body_lines.append(f"- Origen: {backend}")
+                    body_lines.append(f"- Origen: {_sanitize_for_prompt(backend, max_len=120)}")
                 if sheet:
-                    body_lines.append(f"- Hoja de Excel: {sheet}")
+                    body_lines.append(f"- Hoja de Excel: {_sanitize_for_prompt(sheet, max_len=120)}")
                 if row_idx is not None:
                     body_lines.append(f"- Fila (0-based o índice interno): {row_idx}")
                 if isinstance(row_kv, dict) and row_kv:
@@ -296,7 +320,7 @@ class CosmosCrewOrchestrator:
                 for sb in similar_blocks[:max_similar_blocks]:
                     if not isinstance(sb, dict):
                         continue
-                    sb_text = str(sb.get("text") or "").strip()
+                    sb_text = _sanitize_for_prompt(sb.get("text") or "", max_len=1200)
                     sb_score = _safe_score(sb)
                     sb_meta = sb.get("meta") or {}
                     if not isinstance(sb_meta, dict):
@@ -1059,32 +1083,85 @@ class CosmosCrewOrchestrator:
             verbose=assistant_agent.verbose,
         )
 
-        try:
-            logger.info("[CREW_RUN %s] Ejecutando crew.kickoff()", chat_id)
-            result = crew.kickoff()
-            logger.info("[CREW_RUN %s] crew.kickoff() completado", chat_id)
-        except Exception as exc:
-            logger.exception("[CREW_RUN %s] Error ejecutando crew.kickoff: %s", chat_id, exc)
-            return (
-                "Ha ocurrido un error interno al generar la respuesta con el motor de IA. "
-                "Por favor, inténtalo de nuevo en unos instantes. "
-                "Si el problema persiste, contacta con el equipo de COSMOS."
+        def _extract_non_empty_result(res: Any) -> str:
+            if hasattr(res, "raw") and isinstance(res.raw, str):
+                val = clean_llm_text(res.raw)
+                if val:
+                    return val
+
+            tasks_output = getattr(res, "tasks_output", None)
+            if tasks_output:
+                first = tasks_output[0]
+                output = getattr(first, "output", None)
+                if isinstance(output, str):
+                    val = clean_llm_text(output)
+                    if val:
+                        return val
+                if output is not None:
+                    val = clean_llm_text(str(output))
+                    if val:
+                        return val
+
+            return clean_llm_text(str(res))
+
+        attempts: List[tuple[str, str]] = [
+            (description, task.expected_output),
+            (description[:9000], "Respuesta breve y directa en español."),
+            (question_block + tail[:1200], "Respuesta directa en español en máximo 5 líneas."),
+        ]
+
+        for attempt_idx, (desc_try, expected_try) in enumerate(attempts, start=1):
+            try:
+                if attempt_idx > 1:
+                    logger.warning(
+                        "[CREW_RUN %s] Reintento %d/%d por salida vacía/errónea. len_prompt=%d",
+                        chat_id,
+                        attempt_idx,
+                        len(attempts),
+                        len(desc_try),
+                    )
+
+                    task = Task(
+                        description=desc_try,
+                        expected_output=expected_try,
+                        agent=assistant_agent,
+                    )
+                    crew = Crew(
+                        agents=[assistant_agent],
+                        tasks=[task],
+                        process=Process.sequential,
+                        verbose=assistant_agent.verbose,
+                    )
+
+                logger.info("[CREW_RUN %s] Ejecutando crew.kickoff() intento=%d", chat_id, attempt_idx)
+                result = crew.kickoff()
+                logger.info("[CREW_RUN %s] crew.kickoff() completado en intento=%d", chat_id, attempt_idx)
+            except Exception as exc:
+                logger.exception(
+                    "[CREW_RUN %s] Error ejecutando crew.kickoff() intento=%d: %s",
+                    chat_id,
+                    attempt_idx,
+                    exc,
+                )
+                continue
+
+            final_text = _extract_non_empty_result(result)
+            if final_text:
+                return final_text
+
+            logger.warning(
+                "[CREW_RUN %s] Respuesta vacía detectada en intento=%d (flow=%s, intent=%s).",
+                chat_id,
+                attempt_idx,
+                flow_norm,
+                intent,
             )
 
-        if hasattr(result, "raw") and isinstance(result.raw, str):
-            return result.raw
-
-        tasks_output = getattr(result, "tasks_output", None)
-        if tasks_output:
-            first = tasks_output[0]
-            output = getattr(first, "output", None)
-            if isinstance(output, str):
-                return output
-            if output is not None:
-                return str(output)
-
-        logger.warning("[CREW_RUN %s] Resultado sin 'raw' ni 'tasks_output'. Fallback a str(result).", chat_id)
-        return str(result)
+        return (
+            "Ha ocurrido un error interno al generar la respuesta con el motor de IA. "
+            "Por favor, inténtalo de nuevo en unos instantes. "
+            "Si el problema persiste, contacta con el equipo de COSMOS."
+        )
 
 
     # ---------------------------------------------------------------------

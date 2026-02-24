@@ -3,6 +3,7 @@ import json
 import logging
 import hashlib
 import subprocess
+import re
 from pathlib import Path
 from typing import List, Dict, Optional, Tuple, Any
 
@@ -70,6 +71,21 @@ def clean_text_impl(text: Any) -> str:
     Elimina líneas en blanco, igual que el método original clean_text de DocumentIndexer.
     """
     return "\n".join([line for line in text.splitlines() if line.strip()]) if isinstance(text, str) else ""
+
+
+_CTRL_CHARS_RE = re.compile(r"[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]")
+
+
+def _sanitize_excel_cell(value: Any, max_len: int = 1200) -> str:
+    """Normaliza celdas Excel para evitar caracteres de control y ruido en embeddings."""
+    if value is None:
+        return ""
+    txt = str(value)
+    txt = _CTRL_CHARS_RE.sub(" ", txt)
+    txt = re.sub(r"\s+", " ", txt).strip()
+    if max_len > 0 and len(txt) > max_len:
+        return txt[:max_len] + "…"
+    return txt
 
 
 def load_txt_impl(path: str) -> str:
@@ -763,13 +779,13 @@ def load_and_fragment_files_impl(indexer, files: List[str]):
 
                         rows_str: List[List[str]] = []
                         for row in rows_raw:
-                            rows_str.append([(str(c) if c is not None else "").strip() for c in row])
+                            rows_str.append([_sanitize_excel_cell(c) for c in row])
 
                         hdr_row_index: Optional[int] = indexer._detect_header_row(rows_str)
                         headers: List[str] = []
                         start_idx = 0
                         if hdr_row_index is not None:
-                            headers = [h.strip() for h in rows_str[hdr_row_index]]
+                            headers = [_sanitize_excel_cell(h, max_len=220) for h in rows_str[hdr_row_index]]
                             start_idx = hdr_row_index + 1
 
                         #  en vez de acumular indices (lista gigante), guardamos rango de metas por hoja
@@ -833,12 +849,15 @@ def load_and_fragment_files_impl(indexer, files: List[str]):
                                     continue
                                 if headers and i < len(headers) and headers[i].strip():
                                     h = headers[i].strip()
-                                    row_kv[h] = v
-                                    pairs.append(f"{h}={v}" if not EXCEL_HEADER_PREFIX else f"{h}: {v}")
+                                    h_safe = _sanitize_excel_cell(h, max_len=220)
+                                    v_safe = _sanitize_excel_cell(v)
+                                    row_kv[h_safe] = v_safe
+                                    pairs.append(f"{h_safe}={v_safe}" if not EXCEL_HEADER_PREFIX else f"{h_safe}: {v_safe}")
                                 else:
                                     synth_key = f"col_{i+1}"
-                                    row_kv[synth_key] = v
-                                    pairs.append(v)
+                                    v_safe = _sanitize_excel_cell(v)
+                                    row_kv[synth_key] = v_safe
+                                    pairs.append(v_safe)
 
                             if row_kv:
                                 row_kv = _apple_class_fix(row_kv)
