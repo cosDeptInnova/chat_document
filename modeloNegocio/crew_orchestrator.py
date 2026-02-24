@@ -2,8 +2,6 @@
 
 import os
 import logging
-import re
-from datetime import datetime
 from typing import Any, Dict, List, Optional
 import httpx
 from crewai import Agent, Task, Crew, Process, LLM
@@ -23,33 +21,6 @@ from cosmos_crew_src.prompts import (
 from cosmos_crew_src.utils import clean_llm_text, should_use_toon
 
 logger = logging.getLogger(__name__)
-
-_CTRL_CHARS_RE = re.compile(r"[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]")
-
-
-def _sanitize_for_prompt(value: Any, max_len: int = 2000) -> str:
-    """
-    Sanitiza cualquier valor antes de incrustarlo en prompts para evitar
-    caracteres de control (frecuentes en datos tabulares) y explosiones de tamaño.
-    """
-    if value is None:
-        return ""
-    text = str(value)
-    text = _CTRL_CHARS_RE.sub(" ", text)
-    text = re.sub(r"\s+", " ", text).strip()
-    if max_len > 0 and len(text) > max_len:
-        return text[:max_len] + "…"
-    return text
-
-
-def _safe_bool(value: Any, default: bool = False) -> bool:
-    if isinstance(value, bool):
-        return value
-    if isinstance(value, str):
-        return value.strip().lower() in {"1", "true", "yes", "si", "sí"}
-    if isinstance(value, (int, float)):
-        return bool(value)
-    return default
 
 
 class CosmosCrewOrchestrator:
@@ -224,85 +195,6 @@ class CosmosCrewOrchestrator:
                 chunks.append(f"Usuario: {u}\nAsistente: {b}")
         return "\n\n".join(chunks) if chunks else "No hay historial previo relevante."
 
-    def _format_tracking_capsules(
-        self,
-        history_data: Dict[str, Any],
-        max_capsules: int = 4,
-        max_chars: int = 1800,
-    ) -> str:
-        """
-        Recupera cápsulas condensadas de turnos previos para mantener continuidad
-        sin inflar la ventana de contexto.
-        """
-        entries = (history_data or {}).get("conversation_history", []) or []
-        if not entries:
-            return ""
-
-        capsules: List[str] = []
-        for item in reversed(entries):
-            if not isinstance(item, dict):
-                continue
-            capsule = item.get("tracking_capsule")
-            if not isinstance(capsule, dict):
-                continue
-
-            ts = _sanitize_for_prompt(capsule.get("timestamp"), max_len=40)
-            intent = _sanitize_for_prompt(capsule.get("intent") or "otro", max_len=40)
-            user_q = _sanitize_for_prompt(capsule.get("user_question"), max_len=180)
-            answer = _sanitize_for_prompt(capsule.get("assistant_answer"), max_len=220)
-            rag_used = _safe_bool(capsule.get("rag_used"), default=False)
-            source = _sanitize_for_prompt(capsule.get("rag_source") or "", max_len=80)
-            pending = _sanitize_for_prompt(capsule.get("pending") or "", max_len=140)
-
-            lines = [
-                f"- [{ts or 's/f'}] intent={intent}; rag_used={str(rag_used).lower()}",
-                f"  · Pregunta: {user_q or '(vacía)'}",
-                f"  · Respuesta resumen: {answer or '(vacía)'}",
-            ]
-            if source:
-                lines.append(f"  · Fuente RAG usada: {source}")
-            if pending:
-                lines.append(f"  · Pendiente detectado: {pending}")
-
-            capsules.append("\n".join(lines))
-            if len(capsules) >= max_capsules:
-                break
-
-        if not capsules:
-            return ""
-
-        block = "\n\n".join(reversed(capsules))
-        return block[:max_chars]
-
-    def build_tracking_capsule(
-        self,
-        user_prompt: str,
-        response_text: str,
-        plan: Optional[Dict[str, Any]] = None,
-        flow: Optional[str] = None,
-    ) -> Dict[str, Any]:
-        """
-        Crea una cápsula compacta por turno para continuidad multi-turno y multiagente.
-        Es deterministic-friendly (sin llamada adicional a LLM) para minimizar latencia.
-        """
-        plan = plan or {}
-        rag_status = _sanitize_for_prompt(plan.get("rag_status") or "", max_len=30)
-        rag_used = rag_status in {"ok", "partial_ok", "degraded_ok"}
-        pending = ""
-        if "no_results" in rag_status or rag_status == "error":
-            pending = "Validar fuentes/documentos para ampliar cobertura de respuesta."
-
-        return {
-            "timestamp": datetime.utcnow().isoformat(timespec="seconds") + "Z",
-            "flow": _sanitize_for_prompt((flow or "C").upper(), max_len=4),
-            "intent": _sanitize_for_prompt(plan.get("intent") or "otro", max_len=40),
-            "rag_used": rag_used,
-            "rag_source": _sanitize_for_prompt(plan.get("rag_used_department") or "", max_len=100),
-            "user_question": _sanitize_for_prompt(user_prompt, max_len=240),
-            "assistant_answer": _sanitize_for_prompt(response_text, max_len=320),
-            "pending": _sanitize_for_prompt(pending, max_len=180),
-        }
-
     def _extract_json_from_text(self, raw: str) -> dict:
         import json
 
@@ -345,9 +237,7 @@ class CosmosCrewOrchestrator:
             lines: List[str] = []
             items = list(row_kv.items())[:max_fields]
             for k, v in items:
-                k_safe = _sanitize_for_prompt(k, max_len=120)
-                v_safe = _sanitize_for_prompt(v, max_len=300)
-                lines.append(f"{indent}· {k_safe}: {v_safe}")
+                lines.append(f"{indent}· {k}: {v}")
             if len(row_kv) > max_fields:
                 lines.append(
                     f"{indent}… ({len(row_kv) - max_fields} campos adicionales omitidos)"
@@ -367,13 +257,9 @@ class CosmosCrewOrchestrator:
                 or meta.get("file_name")
                 or "Documento sin nombre"
             )
-            doc_name = _sanitize_for_prompt(doc_name, max_len=220)
 
             score = _safe_score(r)
-            main_text = _sanitize_for_prompt(
-                r.get("text") or r.get("chunk") or "",
-                max_len=2500,
-            )
+            main_text = str(r.get("text") or r.get("chunk") or "").strip()
 
             header_lines: List[str] = []
             header_lines.append(f"📄 Documento #{idx}: {doc_name}")
@@ -393,9 +279,9 @@ class CosmosCrewOrchestrator:
             if backend or sheet or row_kv:
                 body_lines.append("METADATOS DEL REGISTRO PRINCIPAL:")
                 if backend:
-                    body_lines.append(f"- Origen: {_sanitize_for_prompt(backend, max_len=120)}")
+                    body_lines.append(f"- Origen: {backend}")
                 if sheet:
-                    body_lines.append(f"- Hoja de Excel: {_sanitize_for_prompt(sheet, max_len=120)}")
+                    body_lines.append(f"- Hoja de Excel: {sheet}")
                 if row_idx is not None:
                     body_lines.append(f"- Fila (0-based o índice interno): {row_idx}")
                 if isinstance(row_kv, dict) and row_kv:
@@ -410,7 +296,7 @@ class CosmosCrewOrchestrator:
                 for sb in similar_blocks[:max_similar_blocks]:
                     if not isinstance(sb, dict):
                         continue
-                    sb_text = _sanitize_for_prompt(sb.get("text") or "", max_len=1200)
+                    sb_text = str(sb.get("text") or "").strip()
                     sb_score = _safe_score(sb)
                     sb_meta = sb.get("meta") or {}
                     if not isinstance(sb_meta, dict):
@@ -920,7 +806,6 @@ class CosmosCrewOrchestrator:
         MAX_HISTORY_CHARS = 4000
         MAX_RAG_CHARS = 7000
         MAX_EPH_CHARS = 2000
-        MAX_TRACKING_CHARS = 1800
         MAX_PROMPT_CHARS = 15000
 
         plan = plan or {}
@@ -966,12 +851,6 @@ class CosmosCrewOrchestrator:
             history_str = raw_history_str or ""
             if len(history_str) > MAX_HISTORY_CHARS:
                 history_str = history_str[-MAX_HISTORY_CHARS:]
-
-        tracking_str = self._format_tracking_capsules(
-            history_data or {},
-            max_capsules=4,
-            max_chars=MAX_TRACKING_CHARS,
-        )
 
         # 3) RAG
         rag_str = ""
@@ -1126,16 +1005,10 @@ class CosmosCrewOrchestrator:
         core = question_block + normalized_block + high_level_block + tail + "\n\n"
 
         history_block = f"=== Historial reciente ===\n{history_str}\n\n" if history_str else ""
-        tracking_block = (
-            "=== Seguimiento condensado de turnos previos (HITL) ===\n"
-            f"{tracking_str}\n\n"
-            if tracking_str
-            else ""
-        )
         rag_block = f"=== Resultados RAG (filas de inventario y texto relevante) ===\n{rag_str}\n\n" if rag_str else ""
         eph_block = f"=== Archivos en vuelo (si los hay) ===\n{eph_str}\n\n" if eph_str else ""
 
-        context_sections: List[str] = [tracking_block, history_block, rag_block, agg_block, eph_block, meta_plan_block]
+        context_sections: List[str] = [history_block, rag_block, agg_block, eph_block, meta_plan_block]
 
         if len(core) >= MAX_PROMPT_CHARS:
             logger.warning(
@@ -1186,85 +1059,32 @@ class CosmosCrewOrchestrator:
             verbose=assistant_agent.verbose,
         )
 
-        def _extract_non_empty_result(res: Any) -> str:
-            if hasattr(res, "raw") and isinstance(res.raw, str):
-                val = clean_llm_text(res.raw)
-                if val:
-                    return val
-
-            tasks_output = getattr(res, "tasks_output", None)
-            if tasks_output:
-                first = tasks_output[0]
-                output = getattr(first, "output", None)
-                if isinstance(output, str):
-                    val = clean_llm_text(output)
-                    if val:
-                        return val
-                if output is not None:
-                    val = clean_llm_text(str(output))
-                    if val:
-                        return val
-
-            return clean_llm_text(str(res))
-
-        attempts: List[tuple[str, str]] = [
-            (description, task.expected_output),
-            (description[:9000], "Respuesta breve y directa en español."),
-            (question_block + tail[:1200], "Respuesta directa en español en máximo 5 líneas."),
-        ]
-
-        for attempt_idx, (desc_try, expected_try) in enumerate(attempts, start=1):
-            try:
-                if attempt_idx > 1:
-                    logger.warning(
-                        "[CREW_RUN %s] Reintento %d/%d por salida vacía/errónea. len_prompt=%d",
-                        chat_id,
-                        attempt_idx,
-                        len(attempts),
-                        len(desc_try),
-                    )
-
-                    task = Task(
-                        description=desc_try,
-                        expected_output=expected_try,
-                        agent=assistant_agent,
-                    )
-                    crew = Crew(
-                        agents=[assistant_agent],
-                        tasks=[task],
-                        process=Process.sequential,
-                        verbose=assistant_agent.verbose,
-                    )
-
-                logger.info("[CREW_RUN %s] Ejecutando crew.kickoff() intento=%d", chat_id, attempt_idx)
-                result = crew.kickoff()
-                logger.info("[CREW_RUN %s] crew.kickoff() completado en intento=%d", chat_id, attempt_idx)
-            except Exception as exc:
-                logger.exception(
-                    "[CREW_RUN %s] Error ejecutando crew.kickoff() intento=%d: %s",
-                    chat_id,
-                    attempt_idx,
-                    exc,
-                )
-                continue
-
-            final_text = _extract_non_empty_result(result)
-            if final_text:
-                return final_text
-
-            logger.warning(
-                "[CREW_RUN %s] Respuesta vacía detectada en intento=%d (flow=%s, intent=%s).",
-                chat_id,
-                attempt_idx,
-                flow_norm,
-                intent,
+        try:
+            logger.info("[CREW_RUN %s] Ejecutando crew.kickoff()", chat_id)
+            result = crew.kickoff()
+            logger.info("[CREW_RUN %s] crew.kickoff() completado", chat_id)
+        except Exception as exc:
+            logger.exception("[CREW_RUN %s] Error ejecutando crew.kickoff: %s", chat_id, exc)
+            return (
+                "Ha ocurrido un error interno al generar la respuesta con el motor de IA. "
+                "Por favor, inténtalo de nuevo en unos instantes. "
+                "Si el problema persiste, contacta con el equipo de COSMOS."
             )
 
-        return (
-            "Ha ocurrido un error interno al generar la respuesta con el motor de IA. "
-            "Por favor, inténtalo de nuevo en unos instantes. "
-            "Si el problema persiste, contacta con el equipo de COSMOS."
-        )
+        if hasattr(result, "raw") and isinstance(result.raw, str):
+            return result.raw
+
+        tasks_output = getattr(result, "tasks_output", None)
+        if tasks_output:
+            first = tasks_output[0]
+            output = getattr(first, "output", None)
+            if isinstance(output, str):
+                return output
+            if output is not None:
+                return str(output)
+
+        logger.warning("[CREW_RUN %s] Resultado sin 'raw' ni 'tasks_output'. Fallback a str(result).", chat_id)
+        return str(result)
 
 
     # ---------------------------------------------------------------------
