@@ -195,6 +195,106 @@ class CosmosCrewOrchestrator:
                 chunks.append(f"Usuario: {u}\nAsistente: {b}")
         return "\n\n".join(chunks) if chunks else "No hay historial previo relevante."
 
+    def _format_tracking_capsules(
+        self,
+        history_data: Dict[str, Any],
+        max_capsules: int = 6,
+        max_chars: int = 3000,
+    ) -> str:
+        """
+        Construye un bloque compacto de seguimiento multi-turno.
+
+        Lee `tracking_capsule` guardado por turno en Redis y evita reenviar
+        respuestas completas al LLM, reduciendo consumo de ventana de contexto.
+        """
+        if not history_data:
+            return ""
+
+        entries = history_data.get("conversation_history", []) or []
+        if not isinstance(entries, list) or not entries:
+            return ""
+
+        lines: List[str] = []
+        for item in entries[-max_capsules:]:
+            if not isinstance(item, dict):
+                continue
+            capsule = item.get("tracking_capsule")
+            if not isinstance(capsule, dict):
+                continue
+
+            turn_id = str(capsule.get("turn_id") or "?")
+            intent = str(capsule.get("intent") or "otro")
+            topic = str(capsule.get("topic") or "").strip()
+            result = str(capsule.get("result") or "").strip()
+            pendings = capsule.get("pending") or []
+            if not isinstance(pendings, list):
+                pendings = []
+            pending_text = "; ".join(str(p).strip() for p in pendings if str(p).strip())
+
+            line = f"- Turno {turn_id} | intent={intent}"
+            if topic:
+                line += f" | tema={topic}"
+            if result:
+                line += f" | resultado={result}"
+            if pending_text:
+                line += f" | pendiente={pending_text}"
+            lines.append(line)
+
+        if not lines:
+            return ""
+
+        out = "\n".join(lines)
+        if len(out) > max_chars:
+            out = out[-max_chars:]
+        return out
+
+    def build_tracking_capsule(
+        self,
+        user_prompt: str,
+        response_text: str,
+        plan: Optional[Dict[str, Any]] = None,
+        rag_results: Optional[List[Dict[str, Any]]] = None,
+        ephemeral_files: Optional[List[Dict[str, Any]]] = None,
+    ) -> Dict[str, Any]:
+        """
+        Resumen estructurado por turno para continuidad conversacional.
+
+        - Determinista (sin llamadas extra a LLM): seguro y barato en concurrencia.
+        - Pensado para pasar entre agentes/iteraciones sin inflar contexto.
+        """
+        import uuid
+
+        plan = plan or {}
+        topic = (plan.get("normalized_question") or user_prompt or "").strip()
+        topic = " ".join(topic.split())[:180]
+
+        result = " ".join((response_text or "").split())[:260]
+        if not result:
+            result = "sin respuesta"
+
+        rag_count = len(rag_results or [])
+        eph_count = len(ephemeral_files or [])
+
+        pending: List[str] = []
+        if plan.get("rag_status") in ("no_results", "error"):
+            pending.append("validar fuentes o filtros RAG")
+        if plan.get("needs_files") and eph_count == 0:
+            pending.append("no se detectaron adjuntos en vuelo")
+        if not pending and "falt" in result.lower():
+            pending.append("completar datos faltantes en siguiente turno")
+
+        return {
+            "turn_id": uuid.uuid4().hex[:8],
+            "intent": str(plan.get("intent") or "otro"),
+            "topic": topic,
+            "result": result,
+            "pending": pending[:3],
+            "source_counts": {
+                "rag": rag_count,
+                "ephemeral_files": eph_count,
+            },
+        }
+
     def _extract_json_from_text(self, raw: str) -> dict:
         import json
 
@@ -803,7 +903,7 @@ class CosmosCrewOrchestrator:
         logger = logging.getLogger(__name__)
         chat_id = uuid.uuid4().hex[:8]
 
-        MAX_HISTORY_CHARS = 4000
+        MAX_HISTORY_CHARS = 3000
         MAX_RAG_CHARS = 7000
         MAX_EPH_CHARS = 2000
         MAX_PROMPT_CHARS = 15000
@@ -846,11 +946,18 @@ class CosmosCrewOrchestrator:
 
         # 2) Historial
         history_str = ""
+        tracking_capsules_block = ""
         if use_history:
             raw_history_str = self._format_history(history_data or {})
             history_str = raw_history_str or ""
             if len(history_str) > MAX_HISTORY_CHARS:
                 history_str = history_str[-MAX_HISTORY_CHARS:]
+
+            tracking_capsules_block = self._format_tracking_capsules(
+                history_data or {},
+                max_capsules=8,
+                max_chars=3500,
+            )
 
         # 3) RAG
         rag_str = ""
@@ -1008,7 +1115,14 @@ class CosmosCrewOrchestrator:
         rag_block = f"=== Resultados RAG (filas de inventario y texto relevante) ===\n{rag_str}\n\n" if rag_str else ""
         eph_block = f"=== Archivos en vuelo (si los hay) ===\n{eph_str}\n\n" if eph_str else ""
 
-        context_sections: List[str] = [history_block, rag_block, agg_block, eph_block, meta_plan_block]
+        tracking_block = (
+            "=== Seguimiento condensado multi-turno (priorízalo frente al historial literal) ===\n"
+            f"{tracking_capsules_block}\n\n"
+            if tracking_capsules_block
+            else ""
+        )
+
+        context_sections: List[str] = [tracking_block, history_block, rag_block, agg_block, eph_block, meta_plan_block]
 
         if len(core) >= MAX_PROMPT_CHARS:
             logger.warning(
