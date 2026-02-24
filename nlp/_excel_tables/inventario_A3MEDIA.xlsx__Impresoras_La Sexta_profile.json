@@ -1,0 +1,203 @@
+{
+  "table_id": "inventario_A3MEDIA.xlsx::Impresoras_La Sexta",
+  "n_rows": 9,
+  "n_cols": 7,
+  "columns": {
+    "I3  Television": {
+      "dtype": "object",
+      "non_null": 9,
+      "nulls": 0,
+      "n_unique": 6,
+      "top_values": [
+        {
+          "value": "1.5",
+          "count": 3
+        },
+        {
+          "value": "1",
+          "count": 2
+        },
+        {
+          "value": "Coste unitario",
+          "count": 1
+        },
+        {
+          "value": "Total",
+          "count": 1
+        },
+        {
+          "value": "6.5",
+          "count": 1
+        },
+        {
+          "value": "5",
+          "count": 1
+        }
+      ]
+    },
+    "col_2": {
+      "dtype": "object",
+      "non_null": 6,
+      "nulls": 3,
+      "n_unique": 6,
+      "top_values": [
+        {
+          "value": "Inv. A3",
+          "count": 1
+        },
+        {
+          "value": "56245",
+          "count": 1
+        },
+        {
+          "value": "84197",
+          "count": 1
+        },
+        {
+          "value": "75357",
+          "count": 1
+        },
+        {
+          "value": "NO TIENE",
+          "count": 1
+        },
+        {
+          "value": "75366",
+          "count": 1
+        }
+      ]
+    },
+    "col_3": {
+      "dtype": "object",
+      "non_null": 6,
+      "nulls": 3,
+      "n_unique": 3,
+      "top_values": [
+        {
+          "value": "LASER RED",
+          "count": 3
+        },
+        {
+          "value": "LASER PERSONAL",
+          "count": 2
+        },
+        {
+          "value": "Clase",
+          "count": 1
+        }
+      ]
+    },
+    "col_4": {
+      "dtype": "object",
+      "non_null": 6,
+      "nulls": 3,
+      "n_unique": 3,
+      "top_values": [
+        {
+          "value": "HEWLETT PACKARD",
+          "count": 4
+        },
+        {
+          "value": "Marca",
+          "count": 1
+        },
+        {
+          "value": "DELL",
+          "count": 1
+        }
+      ]
+    },
+    "col_5": {
+      "dtype": "object",
+      "non_null": 6,
+      "nulls": 3,
+      "n_unique": 6,
+      "top_values": [
+        {
+          "value": "Modelo",
+          "count": 1
+        },
+        {
+          "value": "1710",
+          "count": 1
+        },
+        {
+          "value": "LASERJET ENTERPRISE M506",
+          "count": 1
+        },
+        {
+          "value": "LASERJET PRO 400 M401dne",
+          "count": 1
+        },
+        {
+          "value": "LASERJET PRO 400 M402 dn",
+          "count": 1
+        },
+        {
+          "value": "LASERJET P3015DN",
+          "count": 1
+        }
+      ]
+    },
+    "col_6": {
+      "dtype": "object",
+      "non_null": 6,
+      "nulls": 3,
+      "n_unique": 6,
+      "top_values": [
+        {
+          "value": "Número de Serie",
+          "count": 1
+        },
+        {
+          "value": "C56JN71",
+          "count": 1
+        },
+        {
+          "value": "PHBVK490CQ",
+          "count": 1
+        },
+        {
+          "value": "VNH5313128",
+          "count": 1
+        },
+        {
+          "value": "CNFF924394",
+          "count": 1
+        },
+        {
+          "value": "VNCQFB30BV",
+          "count": 1
+        }
+      ]
+    },
+    "col_7": {
+      "dtype": "object",
+      "non_null": 6,
+      "nulls": 3,
+      "n_unique": 5,
+      "top_values": [
+        {
+          "value": "ESTUDIO 7 LIARLA PARDA",
+          "count": 2
+        },
+        {
+          "value": "Ubicación",
+          "count": 1
+        },
+        {
+          "value": "INFORMATIVOS LA SEXTA",
+          "count": 1
+        },
+        {
+          "value": "INFORMATIVOS LA SEXTA DOCUMENTACION",
+          "count": 1
+        },
+        {
+          "value": "INFORMATIVOS LA SEXTA LA MELLA",
+          "count": 1
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,211 @@
+{
+  "table_id": "inventario_A3MEDIA.xlsx::Impresoras Documentacion",
+  "n_rows": 13,
+  "n_cols": 6,
+  "columns": {
+    "Accenture (Documentacion)": {
+      "dtype": "object",
+      "non_null": 13,
+      "nulls": 0,
+      "n_unique": 6,
+      "top_values": [
+        {
+          "value": "1.5",
+          "count": 5
+        },
+        {
+          "value": "3.5",
+          "count": 4
+        },
+        {
+          "value": "Coste unitario",
+          "count": 1
+        },
+        {
+          "value": "Total",
+          "count": 1
+        },
+        {
+          "value": "21.5",
+          "count": 1
+        },
+        {
+          "value": "9",
+          "count": 1
+        }
+      ]
+    },
+    "col_2": {
+      "dtype": "object",
+      "non_null": 10,
+      "nulls": 3,
+      "n_unique": 10,
+      "top_values": [
+        {
+          "value": "Inv. A3",
+          "count": 1
+        },
+        {
+          "value": "13837",
+          "count": 1
+        },
+        {
+          "value": "13849",
+          "count": 1
+        },
+        {
+          "value": "19623",
+          "count": 1
+        },
+        {
+          "value": "43403",
+          "count": 1
+        },
+        {
+          "value": "43487",
+          "count": 1
+        },
+        {
+          "value": "51617",
+          "count": 1
+        },
+        {
+          "value": "60359",
+          "count": 1
+        },
+        {
+          "value": "62830",
+          "count": 1
+        },
+        {
+          "value": "20645",
+          "count": 1
+        }
+      ]
+    },
+    "col_3": {
+      "dtype": "object",
+      "non_null": 10,
+      "nulls": 3,
+      "n_unique": 4,
+      "top_values": [
+        {
+          "value": "LASER RED",
+          "count": 5
+        },
+        {
+          "value": "TERMICAS",
+          "count": 3
+        },
+        {
+          "value": "Clase",
+          "count": 1
+        },
+        {
+          "value": "LASER RED COLOR",
+          "count": 1
+        }
+      ]
+    },
+    "col_4": {
+      "dtype": "object",
+      "non_null": 10,
+      "nulls": 3,
+      "n_unique": 4,
+      "top_values": [
+        {
+          "value": "HEWLETT PACKARD",
+          "count": 5
+        },
+        {
+          "value": "TEC",
+          "count": 3
+        },
+        {
+          "value": "Marca",
+          "count": 1
+        },
+        {
+          "value": "EPSON",
+          "count": 1
+        }
+      ]
+    },
+    "col_5": {
+      "dtype": "object",
+      "non_null": 10,
+      "nulls": 3,
+      "n_unique": 5,
+      "top_values": [
+        {
+          "value": "LASERJET 2200 DTN",
+          "count": 4
+        },
+        {
+          "value": "VB 472",
+          "count": 3
+        },
+        {
+          "value": "Modelo",
+          "count": 1
+        },
+        {
+          "value": "ACULASER C4200",
+          "count": 1
+        },
+        {
+          "value": "LASERJET 4000N",
+          "count": 1
+        }
+      ]
+    },
+    "col_6": {
+      "dtype": "object",
+      "non_null": 10,
+      "nulls": 3,
+      "n_unique": 10,
+      "top_values": [
+        {
+          "value": "Número de Serie",
+          "count": 1
+        },
+        {
+          "value": "7S0096601",
+          "count": 1
+        },
+        {
+          "value": "7H006453L",
+          "count": 1
+        },
+        {
+          "value": "8H014988",
+          "count": 1
+        },
+        {
+          "value": "CNKR888765",
+          "count": 1
+        },
+        {
+          "value": "CNKRB93298",
+          "count": 1
+        },
+        {
+          "value": "CNKRB88764",
+          "count": 1
+        },
+        {
+          "value": "GMYZ123202",
+          "count": 1
+        },
+        {
+          "value": "CNKR888939",
+          "count": 1
+        },
+        {
+          "value": "NLEW430745",
+          "count": 1
+        }
+      ]
+    }
+  }
+}

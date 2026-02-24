@@ -1,0 +1,127 @@
+{
+  "table_id": "inventario_A3MEDIA.xlsx::Estaciones trabajo OCR",
+  "n_rows": 5,
+  "n_cols": 7,
+  "columns": {
+    "Antena 3": {
+      "dtype": "object",
+      "non_null": 5,
+      "nulls": 0,
+      "n_unique": 4,
+      "top_values": [
+        {
+          "value": "6",
+          "count": 2
+        },
+        {
+          "value": "Coste unitario",
+          "count": 1
+        },
+        {
+          "value": "Total",
+          "count": 1
+        },
+        {
+          "value": "1",
+          "count": 1
+        }
+      ]
+    },
+    "col_2": {
+      "dtype": "object",
+      "non_null": 2,
+      "nulls": 3,
+      "n_unique": 2,
+      "top_values": [
+        {
+          "value": "Inventario",
+          "count": 1
+        },
+        {
+          "value": "83657",
+          "count": 1
+        }
+      ]
+    },
+    "col_3": {
+      "dtype": "object",
+      "non_null": 2,
+      "nulls": 3,
+      "n_unique": 2,
+      "top_values": [
+        {
+          "value": "Clase",
+          "count": 1
+        },
+        {
+          "value": "IMAC",
+          "count": 1
+        }
+      ]
+    },
+    "col_4": {
+      "dtype": "object",
+      "non_null": 2,
+      "nulls": 3,
+      "n_unique": 2,
+      "top_values": [
+        {
+          "value": "Marca",
+          "count": 1
+        },
+        {
+          "value": "APPLE MAC",
+          "count": 1
+        }
+      ]
+    },
+    "col_5": {
+      "dtype": "object",
+      "non_null": 2,
+      "nulls": 3,
+      "n_unique": 2,
+      "top_values": [
+        {
+          "value": "Modelo",
+          "count": 1
+        },
+        {
+          "value": "A1419",
+          "count": 1
+        }
+      ]
+    },
+    "col_6": {
+      "dtype": "object",
+      "non_null": 2,
+      "nulls": 3,
+      "n_unique": 2,
+      "top_values": [
+        {
+          "value": "Número de Serie",
+          "count": 1
+        },
+        {
+          "value": "C02S50PKGG7J",
+          "count": 1
+        }
+      ]
+    },
+    "col_7": {
+      "dtype": "object",
+      "non_null": 2,
+      "nulls": 3,
+      "n_unique": 2,
+      "top_values": [
+        {
+          "value": "Ubicación",
+          "count": 1
+        },
+        {
+          "value": "Onda Cero Deportes",
+          "count": 1
+        }
+      ]
+    }
+  }
+}

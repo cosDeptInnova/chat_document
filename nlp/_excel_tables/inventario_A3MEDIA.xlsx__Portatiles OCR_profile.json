@@ -1,0 +1,283 @@
+{
+  "table_id": "inventario_A3MEDIA.xlsx::Portatiles OCR",
+  "n_rows": 240,
+  "n_cols": 7,
+  "columns": {
+    "Onda Cero": {
+      "dtype": "object",
+      "non_null": 240,
+      "nulls": 0,
+      "n_unique": 4,
+      "top_values": [
+        {
+          "value": "1.5",
+          "count": 237
+        },
+        {
+          "value": "Coste unitario",
+          "count": 1
+        },
+        {
+          "value": "355.5",
+          "count": 1
+        },
+        {
+          "value": "237",
+          "count": 1
+        }
+      ]
+    },
+    "col_2": {
+      "dtype": "object",
+      "non_null": 238,
+      "nulls": 2,
+      "n_unique": 17,
+      "top_values": [
+        {
+          "value": "No tiene",
+          "count": 222
+        },
+        {
+          "value": "Inventario",
+          "count": 1
+        },
+        {
+          "value": "93575",
+          "count": 1
+        },
+        {
+          "value": "93663",
+          "count": 1
+        },
+        {
+          "value": "93595",
+          "count": 1
+        },
+        {
+          "value": "93670",
+          "count": 1
+        },
+        {
+          "value": "93677",
+          "count": 1
+        },
+        {
+          "value": "93684",
+          "count": 1
+        },
+        {
+          "value": "93666",
+          "count": 1
+        },
+        {
+          "value": "93698",
+          "count": 1
+        }
+      ]
+    },
+    "col_3": {
+      "dtype": "object",
+      "non_null": 238,
+      "nulls": 2,
+      "n_unique": 5,
+      "top_values": [
+        {
+          "value": "PORTATIL",
+          "count": 227
+        },
+        {
+          "value": "SURFACE",
+          "count": 8
+        },
+        {
+          "value": "Clase",
+          "count": 1
+        },
+        {
+          "value": "IMAC",
+          "count": 1
+        },
+        {
+          "value": "TABLET",
+          "count": 1
+        }
+      ]
+    },
+    "col_4": {
+      "dtype": "object",
+      "non_null": 238,
+      "nulls": 2,
+      "n_unique": 6,
+      "top_values": [
+        {
+          "value": "HP",
+          "count": 164
+        },
+        {
+          "value": "DELL",
+          "count": 54
+        },
+        {
+          "value": "HEWLETT PACKARD",
+          "count": 10
+        },
+        {
+          "value": "MICROSOFT",
+          "count": 8
+        },
+        {
+          "value": "Marca",
+          "count": 1
+        },
+        {
+          "value": "APPLE MAC",
+          "count": 1
+        }
+      ]
+    },
+    "col_5": {
+      "dtype": "object",
+      "non_null": 238,
+      "nulls": 2,
+      "n_unique": 13,
+      "top_values": [
+        {
+          "value": "PROBOOK 640 G8",
+          "count": 164
+        },
+        {
+          "value": "LATITUDE 3420",
+          "count": 25
+        },
+        {
+          "value": "Vostro 5590 14",
+          "count": 12
+        },
+        {
+          "value": "LATITUDE E 5470",
+          "count": 9
+        },
+        {
+          "value": "PROBOOK 440 G5",
+          "count": 7
+        },
+        {
+          "value": "LATITUDE 3400",
+          "count": 6
+        },
+        {
+          "value": "PRO 3",
+          "count": 5
+        },
+        {
+          "value": "PRO 4",
+          "count": 3
+        },
+        {
+          "value": "Vostro 5590 15",
+          "count": 2
+        },
+        {
+          "value": "PROBOOK 440 G4",
+          "count": 2
+        }
+      ]
+    },
+    "col_6": {
+      "dtype": "object",
+      "non_null": 238,
+      "nulls": 2,
+      "n_unique": 238,
+      "top_values": [
+        {
+          "value": "Número de Serie",
+          "count": 1
+        },
+        {
+          "value": "1WVGFW2",
+          "count": 1
+        },
+        {
+          "value": "20WGFW2",
+          "count": 1
+        },
+        {
+          "value": "7070JW2",
+          "count": 1
+        },
+        {
+          "value": "8BY3HW2",
+          "count": 1
+        },
+        {
+          "value": "JBY3HW2",
+          "count": 1
+        },
+        {
+          "value": "2Q70JW2",
+          "count": 1
+        },
+        {
+          "value": "B170JW2",
+          "count": 1
+        },
+        {
+          "value": "9BY3HW2",
+          "count": 1
+        },
+        {
+          "value": "4Y60JW2",
+          "count": 1
+        }
+      ]
+    },
+    "col_7": {
+      "dtype": "object",
+      "non_null": 238,
+      "nulls": 2,
+      "n_unique": 81,
+      "top_values": [
+        {
+          "value": "EDIFICIO SS.AA/ONDA CERO PLANTA SEGUNDA",
+          "count": 63
+        },
+        {
+          "value": "CAU (SISTEMA I3)",
+          "count": 16
+        },
+        {
+          "value": "ONDA CERO MADRID",
+          "count": 16
+        },
+        {
+          "value": "ONDA CERO/BARCELONA",
+          "count": 8
+        },
+        {
+          "value": "ALMACEN GENERAL",
+          "count": 6
+        },
+        {
+          "value": "ONDA CERO/SEVILLA",
+          "count": 6
+        },
+        {
+          "value": "ONDA CERO/BILBAO",
+          "count": 5
+        },
+        {
+          "value": "ONDA CERO MADRID DEPORTES",
+          "count": 3
+        },
+        {
+          "value": "ONDA CERO VALLADOLID",
+          "count": 3
+        },
+        {
+          "value": "EDIFICIO SS.AA/ATRES ADVERTISING",
+          "count": 3
+        }
+      ]
+    }
+  }
+}

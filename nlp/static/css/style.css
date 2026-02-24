@@ -1,0 +1,145 @@
+
+:root {
+    /* Modo claro (por defecto) */
+    --background-color: #ffffff;
+    --text-color: #000000;
+    --link-color: #1a73e8;
+    --messages-background-color: #e3e3e3;  
+    --bubble-text-gray: #919191;
+    --bubble-text-gray-hover: #b8b8b8;
+    --background-submenu: #e3e3e3;  
+}
+.dark-mode {
+    /* Modo oscuro */
+    --background-color: #1F2024;
+    --text-color: #ffffff;
+    --link-color: #bb86fc;
+    --messages-background-color: #465059;  
+    --bubble-text-gray: #A68F97;
+    --bubble-text-gray-hover: #A68F97;
+    --background-submenu: #1c1c1c;  
+}
+@media (prefers-color-scheme: dark) {
+    :root {
+        --background-color: #1F2024;
+        --text-color: #ffffff;
+        --link-color: #bb86fc;
+        --messages-background-color: #465059;  
+        --bubble-text-gray-hover: #79717A;
+        --background-submenu: #1c1c1c;   
+    }
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--background-color);
+    margin: 0;
+    padding: 10px;
+    color: var(--text-color);
+}
+
+/* Estilo del encabezado */
+h2 {
+    margin-top: 0px;
+    color: var(--text-color);
+    text-align: center;
+}
+
+/* Estilo para los mensajes */
+p {
+    text-align: center;
+    color: #e74c3c; /* Color rojo para mensajes de error */
+}
+
+/* Estilo del formulario */
+form {
+    background-color: var(--messages-background-color);
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 500px;
+    margin: 20px auto;
+}
+
+/* Estilo de las etiquetas */
+label {
+    font-weight: bold;
+    margin-bottom: 10px;
+    display: block;
+}
+
+/* Estilo de los inputs de archivo */
+input[type="file"] {
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+/* Estilo de los botones */
+button {
+    background-color: #0067b8; /* Color de fondo azul */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%; /* Botón ocupa el ancho completo */
+    font-size: 16px;
+}
+
+/* Efecto hover para el botón */
+button:hover {
+    background-color: #005ba0; /* Color más oscuro al pasar el ratón */
+}
+
+/* Estilo del select de departamento */
+select {
+    padding: 10px;
+    margin-bottom: 20px;
+    width: 100%; /* Ocupa todo el ancho del formulario */
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+/* Estilo del contenedor */
+.file-upload-container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-direction: column;
+}
+
+.custom-file-upload:hover {
+    background-color: #0056b3;
+}
+
+.custom-file-upload {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #0067b8; /* Color de fondo del botón */
+    color: white; /* Color del texto */
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.custom-file-upload:hover {
+    background-color: #005ba0; /* Cambio de color cuando se pasa el mouse */
+}
+
+input[type="file"] {
+    display: none; /* Ocultamos el input */
+}
+
+.file-slider {
+    display: none;  /* Ocultar el contenedor inicialmente */
+    margin-top: 10px;
+    padding: 5px;
+    border: 1px solid #ddd;
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: var(--messages-background-color);
+}
+
+

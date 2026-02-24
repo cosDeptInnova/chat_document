@@ -1,0 +1,303 @@
+{
+  "table_id": "inventario_A3MEDIA.xlsx::Impresoras OCR",
+  "n_rows": 203,
+  "n_cols": 7,
+  "columns": {
+    "Onda Cero Radio": {
+      "dtype": "object",
+      "non_null": 200,
+      "nulls": 3,
+      "n_unique": 7,
+      "top_values": [
+        {
+          "value": "1.5",
+          "count": 110
+        },
+        {
+          "value": "1",
+          "count": 68
+        },
+        {
+          "value": "3.5",
+          "count": 18
+        },
+        {
+          "value": "Coste unitario",
+          "count": 1
+        },
+        {
+          "value": "Total",
+          "count": 1
+        },
+        {
+          "value": "296",
+          "count": 1
+        },
+        {
+          "value": "196",
+          "count": 1
+        }
+      ]
+    },
+    "col_2": {
+      "dtype": "object",
+      "non_null": 196,
+      "nulls": 7,
+      "n_unique": 40,
+      "top_values": [
+        {
+          "value": "NO TIENE",
+          "count": 157
+        },
+        {
+          "value": "Inv. A3",
+          "count": 1
+        },
+        {
+          "value": "82637",
+          "count": 1
+        },
+        {
+          "value": "38",
+          "count": 1
+        },
+        {
+          "value": "61136",
+          "count": 1
+        },
+        {
+          "value": "34",
+          "count": 1
+        },
+        {
+          "value": "35",
+          "count": 1
+        },
+        {
+          "value": "36",
+          "count": 1
+        },
+        {
+          "value": "72",
+          "count": 1
+        },
+        {
+          "value": "58985",
+          "count": 1
+        }
+      ]
+    },
+    "col_3": {
+      "dtype": "object",
+      "non_null": 197,
+      "nulls": 6,
+      "n_unique": 6,
+      "top_values": [
+        {
+          "value": "LASER RED",
+          "count": 110
+        },
+        {
+          "value": "LASER PERSONAL",
+          "count": 66
+        },
+        {
+          "value": "LASER RED COLOR",
+          "count": 13
+        },
+        {
+          "value": "MULTIFUNCION",
+          "count": 5
+        },
+        {
+          "value": "INYECCION COLOR",
+          "count": 2
+        },
+        {
+          "value": "Clase",
+          "count": 1
+        }
+      ]
+    },
+    "col_4": {
+      "dtype": "object",
+      "non_null": 197,
+      "nulls": 6,
+      "n_unique": 7,
+      "top_values": [
+        {
+          "value": "HEWLETT PACKARD",
+          "count": 129
+        },
+        {
+          "value": "DELL",
+          "count": 58
+        },
+        {
+          "value": "CANON",
+          "count": 5
+        },
+        {
+          "value": "BROTHER DCP",
+          "count": 2
+        },
+        {
+          "value": "Marca",
+          "count": 1
+        },
+        {
+          "value": "SAMSUNG",
+          "count": 1
+        },
+        {
+          "value": "LEXMARK",
+          "count": 1
+        }
+      ]
+    },
+    "col_5": {
+      "dtype": "object",
+      "non_null": 197,
+      "nulls": 6,
+      "n_unique": 48,
+      "top_values": [
+        {
+          "value": "LASERJET PRO 400 M401dne",
+          "count": 40
+        },
+        {
+          "value": "1720",
+          "count": 27
+        },
+        {
+          "value": "LASERJET P3015DN",
+          "count": 21
+        },
+        {
+          "value": "LASERJET ENTERPRISE M506 DN",
+          "count": 18
+        },
+        {
+          "value": "2330 DN",
+          "count": 8
+        },
+        {
+          "value": "LASERJET 1200",
+          "count": 8
+        },
+        {
+          "value": "1710",
+          "count": 7
+        },
+        {
+          "value": "LASERJET ENTERPRISE M506X",
+          "count": 5
+        },
+        {
+          "value": "LASERJET ENTERPRISE 500 COLOR M551",
+          "count": 4
+        },
+        {
+          "value": "LASERJET ENTERPRISE M506",
+          "count": 4
+        }
+      ]
+    },
+    "col_6": {
+      "dtype": "object",
+      "non_null": 196,
+      "nulls": 7,
+      "n_unique": 195,
+      "top_values": [
+        {
+          "value": "PHCL806412",
+          "count": 2
+        },
+        {
+          "value": "VNFVG700WC",
+          "count": 1
+        },
+        {
+          "value": "Número de Serie",
+          "count": 1
+        },
+        {
+          "value": "PHBVHCJ0QF",
+          "count": 1
+        },
+        {
+          "value": "PHBVJ4X03D",
+          "count": 1
+        },
+        {
+          "value": "DJY2SG1",
+          "count": 1
+        },
+        {
+          "value": "DKT58D1",
+          "count": 1
+        },
+        {
+          "value": "3XY2SG1",
+          "count": 1
+        },
+        {
+          "value": "9399991",
+          "count": 1
+        },
+        {
+          "value": "PHKF636778",
+          "count": 1
+        }
+      ]
+    },
+    "col_7": {
+      "dtype": "object",
+      "non_null": 196,
+      "nulls": 7,
+      "n_unique": 79,
+      "top_values": [
+        {
+          "value": "ONDA CERO MADRID PLANTA BAJA",
+          "count": 11
+        },
+        {
+          "value": "ONDA CERO MADRID PRIMERA PLANTA",
+          "count": 7
+        },
+        {
+          "value": "ONDA CERO MALAGA",
+          "count": 7
+        },
+        {
+          "value": "ONDA CERO CORUÑA",
+          "count": 6
+        },
+        {
+          "value": "ONDA CERO ALCAZAR DE SAN JUAN",
+          "count": 6
+        },
+        {
+          "value": "ONDA CERO SEVILLA",
+          "count": 6
+        },
+        {
+          "value": "ONDA CERO MADRID",
+          "count": 6
+        },
+        {
+          "value": "ONDA CERO ALICANTE",
+          "count": 5
+        },
+        {
+          "value": "ONDA CERO VALENCIA",
+          "count": 5
+        },
+        {
+          "value": "ONDA CERO BARCELONA",
+          "count": 5
+        }
+      ]
+    }
+  }
+}

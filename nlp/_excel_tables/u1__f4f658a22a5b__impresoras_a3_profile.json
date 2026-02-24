@@ -1,0 +1,323 @@
+{
+  "table_id": "inventario_A3MEDIA.xlsx::Impresoras A3",
+  "n_rows": 201,
+  "n_cols": 7,
+  "columns": {
+    "Antena 3": {
+      "dtype": "object",
+      "non_null": 201,
+      "nulls": 0,
+      "n_unique": 8,
+      "top_values": [
+        {
+          "value": "1.5",
+          "count": 93
+        },
+        {
+          "value": "3.5",
+          "count": 54
+        },
+        {
+          "value": "1",
+          "count": 48
+        },
+        {
+          "value": "6",
+          "count": 2
+        },
+        {
+          "value": "Coste unitario",
+          "count": 1
+        },
+        {
+          "value": "Total",
+          "count": 1
+        },
+        {
+          "value": "388.5",
+          "count": 1
+        },
+        {
+          "value": "197",
+          "count": 1
+        }
+      ]
+    },
+    "col_2": {
+      "dtype": "object",
+      "non_null": 198,
+      "nulls": 3,
+      "n_unique": 193,
+      "top_values": [
+        {
+          "value": "NO TIENE",
+          "count": 4
+        },
+        {
+          "value": "77599",
+          "count": 2
+        },
+        {
+          "value": "82615",
+          "count": 2
+        },
+        {
+          "value": "81117",
+          "count": 1
+        },
+        {
+          "value": "Inv. A3",
+          "count": 1
+        },
+        {
+          "value": "82602",
+          "count": 1
+        },
+        {
+          "value": "76675",
+          "count": 1
+        },
+        {
+          "value": "82194",
+          "count": 1
+        },
+        {
+          "value": "76266",
+          "count": 1
+        },
+        {
+          "value": "87899",
+          "count": 1
+        }
+      ]
+    },
+    "col_3": {
+      "dtype": "object",
+      "non_null": 198,
+      "nulls": 3,
+      "n_unique": 8,
+      "top_values": [
+        {
+          "value": "LASER RED",
+          "count": 93
+        },
+        {
+          "value": "LASER PERSONAL",
+          "count": 47
+        },
+        {
+          "value": "LASER RED COLOR",
+          "count": 43
+        },
+        {
+          "value": "MULTIFUNCION",
+          "count": 7
+        },
+        {
+          "value": "TERMICAS",
+          "count": 4
+        },
+        {
+          "value": "PLOTTER",
+          "count": 2
+        },
+        {
+          "value": "Clase",
+          "count": 1
+        },
+        {
+          "value": "INYECCION COLOR",
+          "count": 1
+        }
+      ]
+    },
+    "col_4": {
+      "dtype": "object",
+      "non_null": 198,
+      "nulls": 3,
+      "n_unique": 9,
+      "top_values": [
+        {
+          "value": "HEWLETT PACKARD",
+          "count": 142
+        },
+        {
+          "value": "DELL",
+          "count": 46
+        },
+        {
+          "value": "LEXMARK",
+          "count": 3
+        },
+        {
+          "value": "TOSHIBA",
+          "count": 2
+        },
+        {
+          "value": "Marca",
+          "count": 1
+        },
+        {
+          "value": "BRADY",
+          "count": 1
+        },
+        {
+          "value": "TEC",
+          "count": 1
+        },
+        {
+          "value": "CANON",
+          "count": 1
+        },
+        {
+          "value": "GESTETNER",
+          "count": 1
+        }
+      ]
+    },
+    "col_5": {
+      "dtype": "object",
+      "non_null": 198,
+      "nulls": 3,
+      "n_unique": 47,
+      "top_values": [
+        {
+          "value": "LASERJET ENTERPRISE M506 DN",
+          "count": 27
+        },
+        {
+          "value": "LASERJET ENTERPRISE 500 COLOR M551",
+          "count": 24
+        },
+        {
+          "value": "LASERJET PRO 400 M401dne",
+          "count": 21
+        },
+        {
+          "value": "LASERJET P3015DN",
+          "count": 18
+        },
+        {
+          "value": "1720",
+          "count": 14
+        },
+        {
+          "value": "2330 DN",
+          "count": 12
+        },
+        {
+          "value": "1710",
+          "count": 8
+        },
+        {
+          "value": "LASERJET ENTERPRISE 500 COLOR M552DN",
+          "count": 6
+        },
+        {
+          "value": "LASERJET 4000N",
+          "count": 5
+        },
+        {
+          "value": "LASERJET P4014DN",
+          "count": 5
+        }
+      ]
+    },
+    "col_6": {
+      "dtype": "object",
+      "non_null": 196,
+      "nulls": 5,
+      "n_unique": 196,
+      "top_values": [
+        {
+          "value": "Número de Serie",
+          "count": 1
+        },
+        {
+          "value": "PHHFC03716",
+          "count": 1
+        },
+        {
+          "value": "PHBVHC309S",
+          "count": 1
+        },
+        {
+          "value": "NP181F879",
+          "count": 1
+        },
+        {
+          "value": "721K112",
+          "count": 1
+        },
+        {
+          "value": "PHBVJ5Z0Y1",
+          "count": 1
+        },
+        {
+          "value": "CNCTG330N5",
+          "count": 1
+        },
+        {
+          "value": "PHBVJ310DX",
+          "count": 1
+        },
+        {
+          "value": "VNC3C41703",
+          "count": 1
+        },
+        {
+          "value": "VNC3C41702",
+          "count": 1
+        }
+      ]
+    },
+    "col_7": {
+      "dtype": "object",
+      "non_null": 198,
+      "nulls": 3,
+      "n_unique": 99,
+      "top_values": [
+        {
+          "value": "FINANCIERO",
+          "count": 13
+        },
+        {
+          "value": "ATRES ADVERTISING MADRID",
+          "count": 13
+        },
+        {
+          "value": "DIRECCION GENERAL",
+          "count": 11
+        },
+        {
+          "value": "ATRES ADVERTISING BARCELONA",
+          "count": 6
+        },
+        {
+          "value": "SALA PRODUCCION GENERAL",
+          "count": 5
+        },
+        {
+          "value": "INFORMATIVOS ESPEJO PUBLICO",
+          "count": 5
+        },
+        {
+          "value": "INFORMATIVOS 1 PLANTA",
+          "count": 5
+        },
+        {
+          "value": "EDIFICIO TECNICO UNITECNIC",
+          "count": 4
+        },
+        {
+          "value": "INGENIERIA",
+          "count": 4
+        },
+        {
+          "value": "CENTRO TERRITORIAL BILBAO",
+          "count": 4
+        }
+      ]
+    }
+  }
+}

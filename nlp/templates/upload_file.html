@@ -1,0 +1,450 @@
+<!-- templates/upload_file.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>COSMOS · Carga e Índice RAG</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root{
+      --bg:#0b1220; --card:#121a2b; --muted:#9fb0d1; --accent:#3a7bff; --ok:#2ecc71; --warn:#ffb020; --err:#ff5b5b;
+      --border:#22304b;
+    }
+    html,body{margin:0;padding:0;background:var(--bg);color:#eaf0ff;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Helvetica Neue',Arial,sans-serif;}
+    .container{max-width:1100px;margin:24px auto;padding:0 16px;}
+    .grid{display:grid;grid-template-columns:1fr;gap:16px}
+    @media (min-width: 980px){ .grid{grid-template-columns:1fr 1fr;} }
+    .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;box-shadow:0 4px 18px rgba(0,0,0,.25);}
+    .title{font-size:20px;margin:0 0 12px 0}
+    .muted{color:var(--muted);}
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    select,input,button,textarea{
+      background:#0d1527;color:#eaf0ff;border:1px solid var(--border);border-radius:10px;padding:10px 12px;font-size:14px;
+    }
+    select, input[type="text"], input[type="number"]{min-width:180px}
+    button{cursor:pointer}
+    button.primary{background:var(--accent);border-color:transparent}
+    button.success{background:var(--ok);border-color:transparent}
+    button.warning{background:var(--warn);border-color:transparent}
+    button.ghost{background:transparent}
+    .dropzone{
+      border:2px dashed var(--border);border-radius:14px;padding:24px;text-align:center;transition:.15s;
+      background:#0a1224;
+    }
+    .dropzone.dragover{border-color:var(--accent);background:rgba(58,123,255,.08)}
+    .file-list{max-height:180px;overflow:auto;border:1px dashed var(--border);border-radius:10px;padding:8px;margin-top:8px;background:#0a1224}
+    .file-item{font-size:13px;padding:6px 8px;border-bottom:1px solid rgba(255,255,255,.05)}
+    .file-item:last-child{border-bottom:none}
+    .pill{display:inline-block;padding:2px 8px;border:1px solid var(--border);border-radius:999px;font-size:12px;color:var(--muted)}
+    .hr{height:1px;background:var(--border);margin:14px 0}
+    .result{border:1px solid var(--border);border-radius:12px;padding:12px;margin:10px 0;background:#0a1224}
+    .small{font-size:12px}
+    .score{font-weight:700}
+    .similars{margin-top:8px;padding-left:14px}
+    .status{margin-top:8px}
+    code.kv{background:#0a1224;border:1px solid var(--border);border-radius:8px;padding:2px 6px}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 style="margin:0 0 6px 0">COSMOS · Cargar e Indexar</h1>
+    <div class="muted small">
+      Directorio: <code class="kv">{{ user_directory }}</code> · Rol: <span class="pill">{{ role }}</span>
+    </div>
+
+    <div class="grid" style="margin-top:16px">
+
+      <!-- Columna izquierda: Upload + Indexado -->
+      <section class="card">
+        <h2 class="title">Subir archivos</h2>
+
+        {% if role == "Supervisor" %}
+        <div class="row" style="margin-bottom:10px">
+          <label for="departmentSelect">Departamento:</label>
+          <select id="departmentSelect">
+            <option value="">— Privado (directorio personal) —</option>
+            {% for dep in departments %}
+              <option value="{{ dep['department_directory'] }}">{{ dep['department_directory'] }}</option>
+            {% endfor %}
+          </select>
+          <span class="muted small">Si seleccionas un dept., se suben al repositorio departamental.</span>
+        </div>
+        {% endif %}
+
+        <div class="row" style="margin-bottom:10px">
+          <label for="clientTag">client_tag (opcional):</label>
+          <input id="clientTag" type="text" placeholder="p.ej. cliente_XYZ" />
+          <button class="ghost" id="setTagBtn" title="Guarda el tag cuando indexes">Guardar tag</button>
+        </div>
+
+        <div id="dropzone" class="dropzone">
+          <div>Arrastra y suelta archivos aquí o <button id="browseBtn" type="button">examinar...</button></div>
+          <input id="fileInput" type="file" multiple style="display:none" />
+          <div class="muted small" style="margin-top:6px">Formatos: .doc, .docx, .xlsx, .pptx, .txt, .jpg, .png, .pdf</div>
+          <div id="selectedFiles" class="file-list" style="display:none"></div>
+        </div>
+
+        <div class="row" style="margin-top:12px">
+          <button id="uploadBtn" class="primary">Subir</button>
+          <button id="listBtn" class="ghost">Listar archivos</button>
+          <button id="deleteBtn" class="ghost">Borrar seleccionados</button>
+          <button id="indexBtn" class="success" title="Procesa e indexa los archivos subidos">Indexar (usuario)</button>
+          {% if role == "Supervisor" %}
+          <button id="indexDeptBtn" class="warning" title="Procesa e indexa todos los departamentos">Indexar (departamentos)</button>
+          {% endif %}
+        </div>
+
+
+        <div id="uploadStatus" class="status muted small"></div>
+        <div id="existingFiles" class="file-list" style="display:none;margin-top:10px"></div>
+      </section>
+
+      <!-- Columna derecha: Buscador RAG -->
+      <section class="card">
+        <h2 class="title">Buscar en el conocimiento</h2>
+        <div class="row" style="margin-bottom:10px">
+          <input id="queryInput" type="text" placeholder="Escribe tu consulta..." style="flex:1" />
+        </div>
+        <div class="row" style="margin-bottom:10px">
+          <label>top_k</label><input id="topK" type="number" value="5" min="1" max="20" />
+          <label>top_k_context</label><input id="topKCtx" type="number" value="3" min="0" max="10" />
+          <button id="searchBtn" class="primary">Buscar</button>
+        </div>
+        <div class="muted small">Consejo: si usaste <em>client_tag</em>, inclúyelo en la query para filtrar (tu backend ya lo hace).</div>
+        <div class="hr"></div>
+        <div id="results"></div>
+      </section>
+
+    </div>
+  </div>
+
+    <script>
+    // ---------- Helpers ----------
+    const $ = sel => document.querySelector(sel);
+    const el = (tag, cls, txt) => {
+      const n = document.createElement(tag);
+      if (cls) n.className = cls;
+      if (txt) n.textContent = txt;
+      return n;
+    };
+    const toJSON = r => r.json();
+
+    /**
+     * Lee una cookie por nombre.
+     * La necesitamos para sacar `csrftoken_nlp` que envía el backend.
+     */
+    function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    /**
+     * Envoltorio de fetch:
+     * - incluye credenciales (cookies)
+     * - añade cabecera X-CSRFToken con el valor de `csrftoken_nlp` si existe
+     */
+    const withCreds = (init = {}) => {
+      const csrfToken = getCookie('csrftoken_nlp');
+      const headers = Object.assign({}, init.headers || {});
+
+      if (csrfToken) {
+        headers['X-CSRFToken'] = csrfToken;
+      }
+
+      return Object.assign({}, init, {
+        credentials: 'include',
+        headers
+      });
+    };
+
+    // ---------- Drag & Drop ----------
+    const dz = $('#dropzone');
+    const fileInput = $('#fileInput');
+    const browseBtn = $('#browseBtn');
+    const selectedFiles = $('#selectedFiles');
+    const uploadBtn = $('#uploadBtn');
+    const listBtn = $('#listBtn');
+    const deleteBtn = $('#deleteBtn');
+    const indexBtn = $('#indexBtn');
+    const indexDeptBtn = $('#indexDeptBtn');
+    const departmentSelect = $('#departmentSelect');
+    const uploadStatus = $('#uploadStatus');
+    const existingFiles = $('#existingFiles');
+    const clientTagEl = $('#clientTag');
+    const setTagBtn = $('#setTagBtn');
+
+    let filesToUpload = [];
+
+    function renderSelectedFiles(){
+      if(!filesToUpload.length){
+        selectedFiles.style.display = 'none';
+        selectedFiles.innerHTML = '';
+        return;
+      }
+      selectedFiles.style.display = 'block';
+      selectedFiles.innerHTML = '';
+      filesToUpload.forEach(f=>{
+        const item = el('div','file-item',`${f.name} (${(f.size/1024).toFixed(1)} KB)`);
+        selectedFiles.appendChild(item);
+      });
+    }
+
+    ['dragenter','dragover'].forEach(evt=>{
+      dz.addEventListener(evt, e => { e.preventDefault(); e.stopPropagation(); dz.classList.add('dragover'); });
+    });
+    ['dragleave','drop'].forEach(evt=>{
+      dz.addEventListener(evt, e => { e.preventDefault(); e.stopPropagation(); dz.classList.remove('dragover'); });
+    });
+    dz.addEventListener('drop', e=>{
+      const dropped = Array.from(e.dataTransfer.files || []);
+      filesToUpload = filesToUpload.concat(dropped);
+      renderSelectedFiles();
+    });
+    browseBtn.addEventListener('click', ()=> fileInput.click());
+    fileInput.addEventListener('change', ()=>{
+      filesToUpload = filesToUpload.concat(Array.from(fileInput.files || []));
+      fileInput.value = '';
+      renderSelectedFiles();
+    });
+
+    // ---------- Subida ----------
+    uploadBtn.addEventListener('click', async ()=>{
+      if(!filesToUpload.length){
+        uploadStatus.innerHTML = '<span style="color: var(--warn)">No hay archivos seleccionados.</span>';
+        return;
+      }
+      uploadStatus.textContent = 'Subiendo archivos...';
+
+      const fd = new FormData();
+      filesToUpload.forEach(f => fd.append('files', f));
+      const dept = departmentSelect ? departmentSelect.value : '';
+      if(dept) fd.append('department', dept);
+
+      try{
+        const res = await fetch('/upload_file', withCreds({ method:'POST', body: fd }));
+        if(!res.ok) throw new Error((await res.text()) || res.status);
+        const data = await res.json();
+        uploadStatus.innerHTML = `<span style="color: var(--ok)">Subida OK.</span> Se cargaron ${data.files?.length || 0} archivo(s).`;
+        filesToUpload = [];
+        renderSelectedFiles();
+        await listExistingFiles();
+      }catch(err){
+        uploadStatus.innerHTML = `<span style="color: var(--err)">Error subiendo:</span> ${err}`;
+      }
+    });
+
+    // ---------- Guardar client_tag en sesión (se aplica al indexar) ----------
+    setTagBtn?.addEventListener('click', ()=>{
+      uploadStatus.textContent = 'client_tag guardado localmente. Se enviará en el indexado.';
+    });
+
+    // ---------- Listar ----------
+    async function listExistingFiles(){
+      existingFiles.innerHTML = '';
+      existingFiles.style.display = 'block';
+      const dept = departmentSelect ? departmentSelect.value : '';
+      const url = dept ? `/list_files?department=${encodeURIComponent(dept)}` : '/list_files';
+      try{
+        const res = await fetch(url, withCreds());
+        const data = await res.json();
+        if(!data.files || !data.files.length){
+          existingFiles.innerHTML = '<div class="file-item muted">No hay archivos en el destino.</div>';
+          return;
+        }
+
+        // Cabecera con "seleccionar todos"
+        const header = el('div','file-item muted');
+        const selectAllChk = el('input');
+        selectAllChk.type = 'checkbox';
+        selectAllChk.id = 'selectAllExisting';
+        selectAllChk.style.marginRight = '6px';
+        header.appendChild(selectAllChk);
+        const label = el('label','small','Seleccionar todos');
+        label.setAttribute('for','selectAllExisting');
+        header.appendChild(label);
+        existingFiles.appendChild(header);
+
+        selectAllChk.addEventListener('change', ()=>{
+          const checkboxes = existingFiles.querySelectorAll('.file-checkbox');
+          checkboxes.forEach(ch => { ch.checked = selectAllChk.checked; });
+        });
+
+        // Lista de archivos con checkbox
+        data.files.forEach(name=>{
+          const item = el('div','file-item');
+          const label = el('label','small');
+          const cb = el('input');
+          cb.type = 'checkbox';
+          cb.className = 'file-checkbox';
+          cb.value = name;
+          cb.style.marginRight = '6px';
+          label.appendChild(cb);
+          label.appendChild(document.createTextNode(name));
+          item.appendChild(label);
+          existingFiles.appendChild(item);
+        });
+      }catch(e){
+        existingFiles.innerHTML = `<div class="file-item" style="color:var(--err)">Error listando: ${e}</div>`;
+      }
+    }
+    listBtn.addEventListener('click', listExistingFiles);
+
+
+    // ---------- Indexar (usuario) ----------
+    indexBtn.addEventListener('click', async ()=>{
+      const tag = clientTagEl?.value?.trim();
+      const url = tag ? `/process_user_files?client_tag=${encodeURIComponent(tag)}` : '/process_user_files';
+      uploadStatus.textContent = 'Indexando (usuario)...';
+      try{
+        const res = await fetch(url, withCreds());
+        const data = await res.json();
+        if(res.status === 200){
+          uploadStatus.innerHTML = `<span style="color: var(--ok)">Indexado completado:</span> ${data.message || 'OK'}`;
+        }else if(res.status === 204){
+          uploadStatus.innerHTML = `<span class="muted">No hay archivos para indexar.</span>`;
+        }else{
+          throw new Error(data?.message || res.status);
+        }
+      }catch(e){
+        uploadStatus.innerHTML = `<span style="color: var(--err)">Error indexando:</span> ${e}`;
+      }
+    });
+
+    // ---------- Indexar (departamentos) ----------
+    indexDeptBtn?.addEventListener('click', async ()=>{
+      uploadStatus.textContent = 'Indexando (departamentos)...';
+      try{
+        const res = await fetch('/process_department_files', withCreds());
+        if(res.status === 200){
+          const data = await res.json();
+          uploadStatus.innerHTML = `<span style="color: var(--ok)">Indexado dept. OK:</span> ${data.message || 'OK'}`;
+        }else if(res.status === 204){
+          uploadStatus.innerHTML = `<span class="muted">No hay archivos en departamentos.</span>`;
+        }else{
+          const t = await res.text();
+          throw new Error(t || res.status);
+        }
+      }catch(e){
+        uploadStatus.innerHTML = `<span style="color: var(--err)">Error indexando departamentos:</span> ${e}`;
+      }
+    });
+
+        // ---------- Borrar archivos seleccionados ----------
+    deleteBtn?.addEventListener('click', async ()=>{
+      const checked = existingFiles.querySelectorAll('.file-checkbox:checked');
+      const filenames = Array.from(checked).map(cb => cb.value);
+
+      if(!filenames.length){
+        uploadStatus.innerHTML = '<span style="color: var(--warn)">No hay archivos seleccionados para borrar.</span>';
+        return;
+      }
+
+      if(!confirm(`¿Seguro que quieres borrar ${filenames.length} archivo(s)?`)){
+        return;
+      }
+
+      const dept = departmentSelect ? departmentSelect.value : '';
+      uploadStatus.textContent = 'Borrando archivos seleccionados...';
+
+      try{
+        const res = await fetch('/delete_files', withCreds({
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            filenames,
+            department: dept || null
+          })
+        }));
+        const data = await res.json();
+        if(!res.ok){
+          throw new Error(data?.detail || data?.error || res.status);
+        }
+
+        const deleted = data.deleted?.length || 0;
+        const notFound = data.not_found?.length || 0;
+        const errors = data.errors?.length || 0;
+
+        let msg = `<span style="color: var(--ok)">Borrado completado.</span> Eliminados ${deleted} archivo(s).`;
+        if(notFound){
+          msg += ` No encontrados: ${notFound}.`;
+        }
+        if(errors){
+          msg += ` Errores: ${errors}.`;
+        }
+        uploadStatus.innerHTML = msg;
+
+        await listExistingFiles();
+      }catch(e){
+        uploadStatus.innerHTML = `<span style="color: var(--err)">Error borrando archivos:</span> ${e}`;
+      }
+    });
+
+    // ---------- Búsqueda ----------
+    const queryInput = $('#queryInput');
+    const topK = $('#topK');
+    const topKCtx = $('#topKCtx');
+    const searchBtn = $('#searchBtn');
+    const results = $('#results');
+
+    function renderResults(items){
+      results.innerHTML = '';
+      if(!items || !items.length){
+        results.innerHTML = '<div class="muted">Sin resultados.</div>';
+        return;
+      }
+      items.forEach(resItem=>{
+        const box = el('div','result');
+        const head = el('div','small muted', `Documento: ${resItem.doc_name || resItem.documento || '—'}`);
+        const score = el('div','score', `score: ${Number(resItem.rerank_score ?? resItem.score).toFixed(4)}`);
+        const text = el('div',null, resItem.text || resItem.texto_principal || '');
+        box.appendChild(head); box.appendChild(score); box.appendChild(el('div','hr')); box.appendChild(text);
+
+        const sims = resItem.similar_blocks || resItem.bloques_similares || [];
+        if(sims.length){
+          const sWrap = el('div','similars');
+          sWrap.appendChild(el('div','small muted','Bloques similares:'));
+          sims.forEach(s=>{
+            const li = el('div','small', `• (${(s.score||0).toFixed(4)}) ${s.text}`);
+            sWrap.appendChild(li);
+          });
+          box.appendChild(sWrap);
+        }
+        results.appendChild(box);
+      });
+    }
+
+    async function doSearch(){
+      const q = queryInput.value.trim();
+      if(!q){ results.innerHTML = '<div class="muted">Escribe una consulta.</div>'; return; }
+      results.innerHTML = '<div class="muted">Buscando...</div>';
+      try{
+        const body = {
+          query: q,
+          top_k: Number(topK.value || 5),
+          top_k_context: Number(topKCtx.value || 3)
+        };
+        const res = await fetch('/search', withCreds({
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body: JSON.stringify(body)
+        }));
+        const data = await res.json();
+        if(res.ok){
+          renderResults(data.results || []);
+        }else{
+          results.innerHTML = `<div style="color:var(--err)">Error: ${data?.error || data?.message || res.status}</div>`;
+        }
+      }catch(e){
+        results.innerHTML = `<div style="color:var(--err)">Error: ${e}</div>`;
+      }
+    }
+    searchBtn.addEventListener('click', doSearch);
+    queryInput.addEventListener('keydown', e=>{ if(e.key==='Enter') doSearch(); });
+
+    // Auto-listar al cargar
+    listExistingFiles();
+  </script>
+
+</body>
+</html>

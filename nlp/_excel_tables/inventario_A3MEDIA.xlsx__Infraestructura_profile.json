@@ -1,0 +1,103 @@
+{
+  "table_id": "inventario_A3MEDIA.xlsx::Infraestructura",
+  "n_rows": 15,
+  "n_cols": 2,
+  "columns": {
+    "ATRESMEDIA 2024": {
+      "dtype": "object",
+      "non_null": 15,
+      "nulls": 0,
+      "n_unique": 15,
+      "top_values": [
+        {
+          "value": "Tecnología",
+          "count": 1
+        },
+        {
+          "value": "servidores  A3",
+          "count": 1
+        },
+        {
+          "value": "estaciones trabajo A3",
+          "count": 1
+        },
+        {
+          "value": "estaciones trabajo OCR",
+          "count": 1
+        },
+        {
+          "value": "portátiles  a3",
+          "count": 1
+        },
+        {
+          "value": "portátiles  ocr",
+          "count": 1
+        },
+        {
+          "value": "portátiles  i3",
+          "count": 1
+        },
+        {
+          "value": "portátiles  La Sexta",
+          "count": 1
+        },
+        {
+          "value": "Equipos sala reuniones",
+          "count": 1
+        },
+        {
+          "value": "impresoras  a3",
+          "count": 1
+        }
+      ]
+    },
+    "col_4": {
+      "dtype": "object",
+      "non_null": 15,
+      "nulls": 0,
+      "n_unique": 14,
+      "top_values": [
+        {
+          "value": "5",
+          "count": 2
+        },
+        {
+          "value": "Uds",
+          "count": 1
+        },
+        {
+          "value": "20",
+          "count": 1
+        },
+        {
+          "value": "1",
+          "count": 1
+        },
+        {
+          "value": "764",
+          "count": 1
+        },
+        {
+          "value": "237",
+          "count": 1
+        },
+        {
+          "value": "75",
+          "count": 1
+        },
+        {
+          "value": "42",
+          "count": 1
+        },
+        {
+          "value": "28",
+          "count": 1
+        },
+        {
+          "value": "197",
+          "count": 1
+        }
+      ]
+    }
+  }
+}

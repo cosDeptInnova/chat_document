@@ -1,0 +1,311 @@
+{
+  "table_id": "inventario_A3MEDIA.xlsx::Portatiles A3",
+  "n_rows": 768,
+  "n_cols": 7,
+  "columns": {
+    "Antena 3": {
+      "dtype": "object",
+      "non_null": 768,
+      "nulls": 0,
+      "n_unique": 5,
+      "top_values": [
+        {
+          "value": "1.5",
+          "count": 764
+        },
+        {
+          "value": "Coste unitario",
+          "count": 1
+        },
+        {
+          "value": "Total",
+          "count": 1
+        },
+        {
+          "value": "1146",
+          "count": 1
+        },
+        {
+          "value": "764",
+          "count": 1
+        }
+      ]
+    },
+    "col_2": {
+      "dtype": "object",
+      "non_null": 765,
+      "nulls": 3,
+      "n_unique": 764,
+      "top_values": [
+        {
+          "value": "92311",
+          "count": 2
+        },
+        {
+          "value": "71698",
+          "count": 1
+        },
+        {
+          "value": "71699",
+          "count": 1
+        },
+        {
+          "value": "71721",
+          "count": 1
+        },
+        {
+          "value": "71744",
+          "count": 1
+        },
+        {
+          "value": "71750",
+          "count": 1
+        },
+        {
+          "value": "71751",
+          "count": 1
+        },
+        {
+          "value": "71752",
+          "count": 1
+        },
+        {
+          "value": "77729",
+          "count": 1
+        },
+        {
+          "value": "78430",
+          "count": 1
+        }
+      ]
+    },
+    "col_3": {
+      "dtype": "object",
+      "non_null": 765,
+      "nulls": 3,
+      "n_unique": 7,
+      "top_values": [
+        {
+          "value": "PORTATIL",
+          "count": 717
+        },
+        {
+          "value": "SURFACE",
+          "count": 25
+        },
+        {
+          "value": "IPAD",
+          "count": 10
+        },
+        {
+          "value": "TABLET",
+          "count": 9
+        },
+        {
+          "value": "ESTACION DE TRABAJO",
+          "count": 2
+        },
+        {
+          "value": "Clase",
+          "count": 1
+        },
+        {
+          "value": "IMAC",
+          "count": 1
+        }
+      ]
+    },
+    "col_4": {
+      "dtype": "object",
+      "non_null": 765,
+      "nulls": 3,
+      "n_unique": 10,
+      "top_values": [
+        {
+          "value": "DELL",
+          "count": 372
+        },
+        {
+          "value": "HP",
+          "count": 210
+        },
+        {
+          "value": "HEWLETT PACKARD",
+          "count": 124
+        },
+        {
+          "value": "MICROSOFT",
+          "count": 25
+        },
+        {
+          "value": "APPLE MAC",
+          "count": 19
+        },
+        {
+          "value": "TOSHIBA",
+          "count": 10
+        },
+        {
+          "value": "LENOVO",
+          "count": 2
+        },
+        {
+          "value": "Marca",
+          "count": 1
+        },
+        {
+          "value": "ASUS",
+          "count": 1
+        },
+        {
+          "value": "IPAD PRO",
+          "count": 1
+        }
+      ]
+    },
+    "col_5": {
+      "dtype": "object",
+      "non_null": 765,
+      "nulls": 3,
+      "n_unique": 41,
+      "top_values": [
+        {
+          "value": "PROBOOK 640 G8",
+          "count": 210
+        },
+        {
+          "value": "Vostro 5590 15",
+          "count": 152
+        },
+        {
+          "value": "Vostro 5590 14",
+          "count": 83
+        },
+        {
+          "value": "PROBOOK 440 G5",
+          "count": 70
+        },
+        {
+          "value": "LATITUDE 3400",
+          "count": 55
+        },
+        {
+          "value": "LATITUDE E 5470",
+          "count": 47
+        },
+        {
+          "value": "LATITUDE 3420",
+          "count": 25
+        },
+        {
+          "value": "PROBOOK 440 G4",
+          "count": 23
+        },
+        {
+          "value": "PRO 4",
+          "count": 18
+        },
+        {
+          "value": "ELITEBOOK REVOLVE 810 G2",
+          "count": 15
+        }
+      ]
+    },
+    "col_6": {
+      "dtype": "object",
+      "non_null": 764,
+      "nulls": 4,
+      "n_unique": 757,
+      "top_values": [
+        {
+          "value": "B9MZQT2",
+          "count": 2
+        },
+        {
+          "value": "6VXGFW2",
+          "count": 2
+        },
+        {
+          "value": "8WXGFW2",
+          "count": 2
+        },
+        {
+          "value": "DSVGFW2",
+          "count": 2
+        },
+        {
+          "value": "9PBWWZ2",
+          "count": 2
+        },
+        {
+          "value": "5CD1391D26",
+          "count": 2
+        },
+        {
+          "value": "5CD1391D6X",
+          "count": 2
+        },
+        {
+          "value": "J591700FY1CUC",
+          "count": 1
+        },
+        {
+          "value": "XA145466H",
+          "count": 1
+        },
+        {
+          "value": "XA146372H",
+          "count": 1
+        }
+      ]
+    },
+    "col_7": {
+      "dtype": "object",
+      "non_null": 748,
+      "nulls": 20,
+      "n_unique": 182,
+      "top_values": [
+        {
+          "value": "ATRES ADVERTISING MADRID",
+          "count": 82
+        },
+        {
+          "value": "DOCUMENTACION/PLANTA 1ª/I3 TELEVISION",
+          "count": 48
+        },
+        {
+          "value": "EDIFICIO SS.AA/ATRES ADVERTISING",
+          "count": 33
+        },
+        {
+          "value": "A3 MULTIMEDIA",
+          "count": 28
+        },
+        {
+          "value": "TECNICA",
+          "count": 23
+        },
+        {
+          "value": "ALMACEN GENERAL",
+          "count": 22
+        },
+        {
+          "value": "DIRECCION GENERAL",
+          "count": 21
+        },
+        {
+          "value": "NOTICIAS 1ª PLANTA/ZONA COMUN",
+          "count": 16
+        },
+        {
+          "value": "DOCUMENTACION/PLANTA 2ª/I3 TELEVISION",
+          "count": 15
+        },
+        {
+          "value": "PROGRAMACION Y EMISIONES LMS",
+          "count": 14
+        }
+      ]
+    }
+  }
+}

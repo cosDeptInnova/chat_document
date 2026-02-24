@@ -1,0 +1,459 @@
+{
+  "table_id": "inventario_A3MEDIA.xlsx::Servidores",
+  "n_rows": 24,
+  "n_cols": 20,
+  "columns": {
+    "col_1": {
+      "dtype": "object",
+      "non_null": 24,
+      "nulls": 0,
+      "n_unique": 5,
+      "top_values": [
+        {
+          "value": "9",
+          "count": 20
+        },
+        {
+          "value": "Coste unitario",
+          "count": 1
+        },
+        {
+          "value": "Total",
+          "count": 1
+        },
+        {
+          "value": "180",
+          "count": 1
+        },
+        {
+          "value": "20",
+          "count": 1
+        }
+      ]
+    },
+    "col_2": {
+      "dtype": "object",
+      "non_null": 21,
+      "nulls": 3,
+      "n_unique": 21,
+      "top_values": [
+        {
+          "value": "Máquina",
+          "count": 1
+        },
+        {
+          "value": "DCSRVTF02",
+          "count": 1
+        },
+        {
+          "value": "Seti01",
+          "count": 1
+        },
+        {
+          "value": "Seti02",
+          "count": 1
+        },
+        {
+          "value": "SMU-Hitachi-Esxi-Server",
+          "count": 1
+        },
+        {
+          "value": "Etiqmedia",
+          "count": 1
+        },
+        {
+          "value": "SONDA1",
+          "count": 1
+        },
+        {
+          "value": "SONDA2",
+          "count": 1
+        },
+        {
+          "value": "SONDA3",
+          "count": 1
+        },
+        {
+          "value": "SONDA4",
+          "count": 1
+        }
+      ]
+    },
+    "col_3": {
+      "dtype": "object",
+      "non_null": 21,
+      "nulls": 3,
+      "n_unique": 8,
+      "top_values": [
+        {
+          "value": "CPDB",
+          "count": 5
+        },
+        {
+          "value": "CPDA",
+          "count": 4
+        },
+        {
+          "value": "CPD A",
+          "count": 4
+        },
+        {
+          "value": "CPD B",
+          "count": 3
+        },
+        {
+          "value": "C Seguridad",
+          "count": 2
+        },
+        {
+          "value": "Sala Desenpate",
+          "count": 1
+        },
+        {
+          "value": "Ubicacion",
+          "count": 1
+        },
+        {
+          "value": "(ubicado en Tenerife)",
+          "count": 1
+        }
+      ]
+    },
+    "col_4": {
+      "dtype": "object",
+      "non_null": 21,
+      "nulls": 3,
+      "n_unique": 2,
+      "top_values": [
+        {
+          "value": "Antena3TV",
+          "count": 20
+        },
+        {
+          "value": "Pertenece a",
+          "count": 1
+        }
+      ]
+    },
+    "Antena 3": {
+      "dtype": "object",
+      "non_null": 21,
+      "nulls": 3,
+      "n_unique": 3,
+      "top_values": [
+        {
+          "value": "Ciberseguridad",
+          "count": 14
+        },
+        {
+          "value": "Infraestructura",
+          "count": 6
+        },
+        {
+          "value": "Area Responsable",
+          "count": 1
+        }
+      ]
+    },
+    "col_6": {
+      "dtype": "object",
+      "non_null": 21,
+      "nulls": 3,
+      "n_unique": 9,
+      "top_values": [
+        {
+          "value": "HPE ProLiant DL20 Gen10 4SFF",
+          "count": 8
+        },
+        {
+          "value": "HPE ProLiant DL160 Gen10- product ID, 878973-B21",
+          "count": 4
+        },
+        {
+          "value": "Dell PowerEdge 2950",
+          "count": 2
+        },
+        {
+          "value": "HPE ProLiant DL160 Gen10- product ID, 878972-B21",
+          "count": 2
+        },
+        {
+          "value": "Marca y Modelo",
+          "count": 1
+        },
+        {
+          "value": "HPE DL360 Gen10 8SFF",
+          "count": 1
+        },
+        {
+          "value": "Cisco UCS C220 M3 V02",
+          "count": 1
+        },
+        {
+          "value": "Dell PowerEdge 1950",
+          "count": 1
+        },
+        {
+          "value": "HPE Proliant DL360",
+          "count": 1
+        }
+      ]
+    },
+    "col_7": {
+      "dtype": "object",
+      "non_null": 21,
+      "nulls": 3,
+      "n_unique": 21,
+      "top_values": [
+        {
+          "value": "NSerie",
+          "count": 1
+        },
+        {
+          "value": "6CXSN2J",
+          "count": 1
+        },
+        {
+          "value": "11TSP3J",
+          "count": 1
+        },
+        {
+          "value": "H0TSP3J",
+          "count": 1
+        },
+        {
+          "value": "FCH1817V1QN",
+          "count": 1
+        },
+        {
+          "value": "CZ29300T6V",
+          "count": 1
+        },
+        {
+          "value": "CZ293507H6",
+          "count": 1
+        },
+        {
+          "value": "CZ293507HB",
+          "count": 1
+        },
+        {
+          "value": "CZ293507H7",
+          "count": 1
+        },
+        {
+          "value": "CZ293507HC",
+          "count": 1
+        }
+      ]
+    },
+    "col_8": {
+      "dtype": "object",
+      "non_null": 3,
+      "nulls": 21,
+      "n_unique": 2,
+      "top_values": [
+        {
+          "value": "INTEL XEON X5451 @ 3.00 GHz",
+          "count": 2
+        },
+        {
+          "value": "Procesador",
+          "count": 1
+        }
+      ]
+    },
+    "col_9": {
+      "dtype": "object",
+      "non_null": 3,
+      "nulls": 21,
+      "n_unique": 2,
+      "top_values": [
+        {
+          "value": "2",
+          "count": 2
+        },
+        {
+          "value": "NProcesadores",
+          "count": 1
+        }
+      ]
+    },
+    "col_10": {
+      "dtype": "object",
+      "non_null": 3,
+      "nulls": 21,
+      "n_unique": 2,
+      "top_values": [
+        {
+          "value": "4",
+          "count": 2
+        },
+        {
+          "value": "Memoria",
+          "count": 1
+        }
+      ]
+    },
+    "col_11": {
+      "dtype": "object",
+      "non_null": 1,
+      "nulls": 23,
+      "n_unique": 1,
+      "top_values": [
+        {
+          "value": "ControladoraRaid",
+          "count": 1
+        }
+      ]
+    },
+    "col_12": {
+      "dtype": "object",
+      "non_null": 1,
+      "nulls": 23,
+      "n_unique": 1,
+      "top_values": [
+        {
+          "value": "ControladoraSCSI",
+          "count": 1
+        }
+      ]
+    },
+    "col_13": {
+      "dtype": "object",
+      "non_null": 1,
+      "nulls": 23,
+      "n_unique": 1,
+      "top_values": [
+        {
+          "value": "TRed",
+          "count": 1
+        }
+      ]
+    },
+    "col_14": {
+      "dtype": "object",
+      "non_null": 1,
+      "nulls": 23,
+      "n_unique": 1,
+      "top_values": [
+        {
+          "value": "Al_Ubicacion",
+          "count": 1
+        }
+      ]
+    },
+    "col_15": {
+      "dtype": "object",
+      "non_null": 3,
+      "nulls": 21,
+      "n_unique": 2,
+      "top_values": [
+        {
+          "value": "2",
+          "count": 2
+        },
+        {
+          "value": "Al_Discos",
+          "count": 1
+        }
+      ]
+    },
+    "col_16": {
+      "dtype": "object",
+      "non_null": 3,
+      "nulls": 21,
+      "n_unique": 2,
+      "top_values": [
+        {
+          "value": "146",
+          "count": 2
+        },
+        {
+          "value": "Al_Tamaño",
+          "count": 1
+        }
+      ]
+    },
+    "col_17": {
+      "dtype": "object",
+      "non_null": 3,
+      "nulls": 21,
+      "n_unique": 2,
+      "top_values": [
+        {
+          "value": "Windows Server 2003 Standard Edition",
+          "count": 2
+        },
+        {
+          "value": "Al_Tipo",
+          "count": 1
+        }
+      ]
+    },
+    "col_18": {
+      "dtype": "object",
+      "non_null": 3,
+      "nulls": 21,
+      "n_unique": 2,
+      "top_values": [
+        {
+          "value": "RAID1",
+          "count": 2
+        },
+        {
+          "value": "Al_Raid",
+          "count": 1
+        }
+      ]
+    },
+    "col_19": {
+      "dtype": "object",
+      "non_null": 8,
+      "nulls": 16,
+      "n_unique": 3,
+      "top_values": [
+        {
+          "value": "2023-12-31 00:00:00",
+          "count": 6
+        },
+        {
+          "value": "Garantia (fin)",
+          "count": 1
+        },
+        {
+          "value": "2024-07-05 00:00:00",
+          "count": 1
+        }
+      ]
+    },
+    "col_20": {
+      "dtype": "object",
+      "non_null": 8,
+      "nulls": 16,
+      "n_unique": 5,
+      "top_values": [
+        {
+          "value": "2 discos SSD  480GB RAID 1\n6 discos SAS 8TB RAID 6",
+          "count": 2
+        },
+        {
+          "value": "2 disco SSD 480GB RAID 1",
+          "count": 2
+        },
+        {
+          "value": "4 discos SAS 8TB RAID 6",
+          "count": 2
+        },
+        {
+          "value": "Notas",
+          "count": 1
+        },
+        {
+          "value": "Datos servidor en comentario",
+          "count": 1
+        }
+      ]
+    }
+  }
+}

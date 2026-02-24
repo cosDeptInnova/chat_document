@@ -1,0 +1,167 @@
+{
+  "table_id": "inventario_A3MEDIA.xlsx::Impresoras_I3",
+  "n_rows": 7,
+  "n_cols": 7,
+  "columns": {
+    "I3 Television": {
+      "dtype": "object",
+      "non_null": 7,
+      "nulls": 0,
+      "n_unique": 6,
+      "top_values": [
+        {
+          "value": "1.5",
+          "count": 2
+        },
+        {
+          "value": "Coste unitario",
+          "count": 1
+        },
+        {
+          "value": "3.5",
+          "count": 1
+        },
+        {
+          "value": "Total",
+          "count": 1
+        },
+        {
+          "value": "6.5",
+          "count": 1
+        },
+        {
+          "value": "3",
+          "count": 1
+        }
+      ]
+    },
+    "col_2": {
+      "dtype": "object",
+      "non_null": 4,
+      "nulls": 3,
+      "n_unique": 4,
+      "top_values": [
+        {
+          "value": "Inv. A3",
+          "count": 1
+        },
+        {
+          "value": "82193",
+          "count": 1
+        },
+        {
+          "value": "74042",
+          "count": 1
+        },
+        {
+          "value": "84202",
+          "count": 1
+        }
+      ]
+    },
+    "col_3": {
+      "dtype": "object",
+      "non_null": 4,
+      "nulls": 3,
+      "n_unique": 3,
+      "top_values": [
+        {
+          "value": "LASER RED",
+          "count": 2
+        },
+        {
+          "value": "Clase",
+          "count": 1
+        },
+        {
+          "value": "LASER RED COLOR",
+          "count": 1
+        }
+      ]
+    },
+    "col_4": {
+      "dtype": "object",
+      "non_null": 4,
+      "nulls": 3,
+      "n_unique": 2,
+      "top_values": [
+        {
+          "value": "HEWLETT PACKARD",
+          "count": 3
+        },
+        {
+          "value": "Marca",
+          "count": 1
+        }
+      ]
+    },
+    "col_5": {
+      "dtype": "object",
+      "non_null": 4,
+      "nulls": 3,
+      "n_unique": 4,
+      "top_values": [
+        {
+          "value": "Modelo",
+          "count": 1
+        },
+        {
+          "value": "LASERJET ENTERPRISE M506 DN",
+          "count": 1
+        },
+        {
+          "value": "LASERJET 5550 DN",
+          "count": 1
+        },
+        {
+          "value": "LASERJET ENTERPRISE M506X",
+          "count": 1
+        }
+      ]
+    },
+    "col_6": {
+      "dtype": "object",
+      "non_null": 4,
+      "nulls": 3,
+      "n_unique": 4,
+      "top_values": [
+        {
+          "value": "Número de Serie",
+          "count": 1
+        },
+        {
+          "value": "PHBVJ310F9",
+          "count": 1
+        },
+        {
+          "value": "JPSVB4MGP",
+          "count": 1
+        },
+        {
+          "value": "PHBVK490C2",
+          "count": 1
+        }
+      ]
+    },
+    "col_7": {
+      "dtype": "object",
+      "non_null": 4,
+      "nulls": 3,
+      "n_unique": 3,
+      "top_values": [
+        {
+          "value": "SISTEMAS DE INFORMACION",
+          "count": 2
+        },
+        {
+          "value": "Ubicación",
+          "count": 1
+        },
+        {
+          "value": "SISTEMA DE INFORMACION DESARROLLO",
+          "count": 1
+        }
+      ]
+    }
+  }
+}

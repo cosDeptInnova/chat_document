@@ -1,0 +1,283 @@
+{
+  "table_id": "inventario_A3MEDIA.xlsx::Portatiles_La Sexta",
+  "n_rows": 46,
+  "n_cols": 7,
+  "columns": {
+    "La Sexta": {
+      "dtype": "object",
+      "non_null": 46,
+      "nulls": 0,
+      "n_unique": 5,
+      "top_values": [
+        {
+          "value": "1.5",
+          "count": 42
+        },
+        {
+          "value": "Coste unitario",
+          "count": 1
+        },
+        {
+          "value": "Total",
+          "count": 1
+        },
+        {
+          "value": "63",
+          "count": 1
+        },
+        {
+          "value": "42",
+          "count": 1
+        }
+      ]
+    },
+    "col_2": {
+      "dtype": "object",
+      "non_null": 42,
+      "nulls": 4,
+      "n_unique": 42,
+      "top_values": [
+        {
+          "value": "Inventario",
+          "count": 1
+        },
+        {
+          "value": "70280",
+          "count": 1
+        },
+        {
+          "value": "70663",
+          "count": 1
+        },
+        {
+          "value": "79170",
+          "count": 1
+        },
+        {
+          "value": "79174",
+          "count": 1
+        },
+        {
+          "value": "83270",
+          "count": 1
+        },
+        {
+          "value": "83405",
+          "count": 1
+        },
+        {
+          "value": "83406",
+          "count": 1
+        },
+        {
+          "value": "83407",
+          "count": 1
+        },
+        {
+          "value": "83488",
+          "count": 1
+        }
+      ]
+    },
+    "col_3": {
+      "dtype": "object",
+      "non_null": 43,
+      "nulls": 3,
+      "n_unique": 4,
+      "top_values": [
+        {
+          "value": "PORTATIL",
+          "count": 36
+        },
+        {
+          "value": "SURFACE",
+          "count": 5
+        },
+        {
+          "value": "Clase",
+          "count": 1
+        },
+        {
+          "value": "IPAD PRO",
+          "count": 1
+        }
+      ]
+    },
+    "col_4": {
+      "dtype": "object",
+      "non_null": 43,
+      "nulls": 3,
+      "n_unique": 6,
+      "top_values": [
+        {
+          "value": "DELL",
+          "count": 26
+        },
+        {
+          "value": "HEWLETT PACKARD",
+          "count": 5
+        },
+        {
+          "value": "MICROSOFT",
+          "count": 5
+        },
+        {
+          "value": "LG",
+          "count": 5
+        },
+        {
+          "value": "Marca",
+          "count": 1
+        },
+        {
+          "value": "APPLE MAC",
+          "count": 1
+        }
+      ]
+    },
+    "col_5": {
+      "dtype": "object",
+      "non_null": 43,
+      "nulls": 3,
+      "n_unique": 12,
+      "top_values": [
+        {
+          "value": "Vostro 5590 15",
+          "count": 21
+        },
+        {
+          "value": "PRO 4",
+          "count": 5
+        },
+        {
+          "value": "14Z960-G.AR5WB",
+          "count": 4
+        },
+        {
+          "value": "LATITUDE E 5420",
+          "count": 2
+        },
+        {
+          "value": "Vostro 5590 14",
+          "count": 2
+        },
+        {
+          "value": "PROBOOK 440 G5",
+          "count": 2
+        },
+        {
+          "value": "PROBOOK 640 G1",
+          "count": 2
+        },
+        {
+          "value": "Modelo",
+          "count": 1
+        },
+        {
+          "value": "LATITUDE E 5470",
+          "count": 1
+        },
+        {
+          "value": "GRAM LG14Z96",
+          "count": 1
+        }
+      ]
+    },
+    "col_6": {
+      "dtype": "object",
+      "non_null": 43,
+      "nulls": 3,
+      "n_unique": 43,
+      "top_values": [
+        {
+          "value": "Número de Serie",
+          "count": 1
+        },
+        {
+          "value": "DS3F4S1",
+          "count": 1
+        },
+        {
+          "value": "B1Y56S1",
+          "count": 1
+        },
+        {
+          "value": "5CG5173M99",
+          "count": 1
+        },
+        {
+          "value": "5CG5173MHN",
+          "count": 1
+        },
+        {
+          "value": "6NSKQC2",
+          "count": 1
+        },
+        {
+          "value": "603NZDC040298",
+          "count": 1
+        },
+        {
+          "value": "603NZMM040299",
+          "count": 1
+        },
+        {
+          "value": "603NZ0CG040315",
+          "count": 1
+        },
+        {
+          "value": "038199561455",
+          "count": 1
+        }
+      ]
+    },
+    "col_7": {
+      "dtype": "object",
+      "non_null": 43,
+      "nulls": 3,
+      "n_unique": 20,
+      "top_values": [
+        {
+          "value": "INFORMATIVOS LA SEXTA",
+          "count": 11
+        },
+        {
+          "value": "INFORMATIVOS LA SEXTA PRODUCCION",
+          "count": 5
+        },
+        {
+          "value": "INFORMATIVOS LA SEXTA SET",
+          "count": 4
+        },
+        {
+          "value": "INFORMATIVOS LA SEXTA DESPACHO",
+          "count": 4
+        },
+        {
+          "value": "INFORMATIVOS LA SEXTA MULTIMEDIA",
+          "count": 3
+        },
+        {
+          "value": "INFORMATIVOS LA SEXTA REDACCION",
+          "count": 2
+        },
+        {
+          "value": "Ubicación",
+          "count": 1
+        },
+        {
+          "value": "INFORMATIVOS LA SEXTA ALTILLO",
+          "count": 1
+        },
+        {
+          "value": "LA SEXTA AUDIENCIA NACIONAL",
+          "count": 1
+        },
+        {
+          "value": "INFORMATIVOS MAS VALE TARDE",
+          "count": 1
+        }
+      ]
+    }
+  }
+}

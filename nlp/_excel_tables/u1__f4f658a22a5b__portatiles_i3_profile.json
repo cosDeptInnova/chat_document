@@ -1,0 +1,287 @@
+{
+  "table_id": "inventario_A3MEDIA.xlsx::Portatiles_I3",
+  "n_rows": 79,
+  "n_cols": 7,
+  "columns": {
+    "I3": {
+      "dtype": "object",
+      "non_null": 79,
+      "nulls": 0,
+      "n_unique": 5,
+      "top_values": [
+        {
+          "value": "1.5",
+          "count": 75
+        },
+        {
+          "value": "Coste unitario",
+          "count": 1
+        },
+        {
+          "value": "Total",
+          "count": 1
+        },
+        {
+          "value": "112.5",
+          "count": 1
+        },
+        {
+          "value": "75",
+          "count": 1
+        }
+      ]
+    },
+    "col_2": {
+      "dtype": "object",
+      "non_null": 76,
+      "nulls": 3,
+      "n_unique": 76,
+      "top_values": [
+        {
+          "value": "Inventario",
+          "count": 1
+        },
+        {
+          "value": "66460",
+          "count": 1
+        },
+        {
+          "value": "66461",
+          "count": 1
+        },
+        {
+          "value": "70279",
+          "count": 1
+        },
+        {
+          "value": "70291",
+          "count": 1
+        },
+        {
+          "value": "70672",
+          "count": 1
+        },
+        {
+          "value": "70676",
+          "count": 1
+        },
+        {
+          "value": "70734",
+          "count": 1
+        },
+        {
+          "value": "70735",
+          "count": 1
+        },
+        {
+          "value": "70736",
+          "count": 1
+        }
+      ]
+    },
+    "col_3": {
+      "dtype": "object",
+      "non_null": 76,
+      "nulls": 3,
+      "n_unique": 6,
+      "top_values": [
+        {
+          "value": "PORTATIL",
+          "count": 59
+        },
+        {
+          "value": "IPAD",
+          "count": 7
+        },
+        {
+          "value": "SURFACE",
+          "count": 6
+        },
+        {
+          "value": "IMAC",
+          "count": 2
+        },
+        {
+          "value": "Clase",
+          "count": 1
+        },
+        {
+          "value": "TABLET",
+          "count": 1
+        }
+      ]
+    },
+    "col_4": {
+      "dtype": "object",
+      "non_null": 76,
+      "nulls": 3,
+      "n_unique": 5,
+      "top_values": [
+        {
+          "value": "HEWLETT PACKARD",
+          "count": 32
+        },
+        {
+          "value": "APPLE MAC",
+          "count": 23
+        },
+        {
+          "value": "DELL",
+          "count": 14
+        },
+        {
+          "value": "MICROSOFT",
+          "count": 6
+        },
+        {
+          "value": "Marca",
+          "count": 1
+        }
+      ]
+    },
+    "col_5": {
+      "dtype": "object",
+      "non_null": 76,
+      "nulls": 3,
+      "n_unique": 24,
+      "top_values": [
+        {
+          "value": "PROBOOK 640 G1",
+          "count": 22
+        },
+        {
+          "value": "LATITUDE E 5470",
+          "count": 9
+        },
+        {
+          "value": "A 1396",
+          "count": 4
+        },
+        {
+          "value": "BOOKPRO A1286",
+          "count": 4
+        },
+        {
+          "value": "LATITUDE E 5420",
+          "count": 4
+        },
+        {
+          "value": "PRO 3",
+          "count": 3
+        },
+        {
+          "value": "ZBOOK 15",
+          "count": 3
+        },
+        {
+          "value": "ELITEBOOK REVOLVE 810 G2",
+          "count": 3
+        },
+        {
+          "value": "MACBOOK PRO A1989",
+          "count": 3
+        },
+        {
+          "value": "FUSION M290X",
+          "count": 2
+        }
+      ]
+    },
+    "col_6": {
+      "dtype": "object",
+      "non_null": 76,
+      "nulls": 3,
+      "n_unique": 76,
+      "top_values": [
+        {
+          "value": "Número de Serie",
+          "count": 1
+        },
+        {
+          "value": "GB038HQZA90",
+          "count": 1
+        },
+        {
+          "value": "GB038EBGA90",
+          "count": 1
+        },
+        {
+          "value": "DS365S1",
+          "count": 1
+        },
+        {
+          "value": "DS345S1",
+          "count": 1
+        },
+        {
+          "value": "B1Y66S1",
+          "count": 1
+        },
+        {
+          "value": "B1XY5S1",
+          "count": 1
+        },
+        {
+          "value": "C02HD9ADDV7L",
+          "count": 1
+        },
+        {
+          "value": "C02HD9WPDV7L",
+          "count": 1
+        },
+        {
+          "value": "C02HDA2ADV7L",
+          "count": 1
+        }
+      ]
+    },
+    "col_7": {
+      "dtype": "object",
+      "non_null": 76,
+      "nulls": 3,
+      "n_unique": 10,
+      "top_values": [
+        {
+          "value": "SISTEMAS DE INFORMACION DESARROLLO",
+          "count": 34
+        },
+        {
+          "value": "SISTEMAS DE INFORMACION SISTEMAS",
+          "count": 18
+        },
+        {
+          "value": "SISTEMAS DE INFORMACION DESARROLLO DIRECCION",
+          "count": 6
+        },
+        {
+          "value": "I3 TELEVISION",
+          "count": 6
+        },
+        {
+          "value": "SISTEMA DE INFORMACION DESARROLLO",
+          "count": 4
+        },
+        {
+          "value": "SISTEMAS DE INFORMACION CAU",
+          "count": 3
+        },
+        {
+          "value": "PENDIENTE DE LOCALIZAR",
+          "count": 2
+        },
+        {
+          "value": "Ubicación",
+          "count": 1
+        },
+        {
+          "value": "SISTEMAS DE INFORMACION COMUNICACIONES",
+          "count": 1
+        },
+        {
+          "value": "SISTEMAS DE INFORMACION SISTEMAS DIRECCION",
+          "count": 1
+        }
+      ]
+    }
+  }
+}

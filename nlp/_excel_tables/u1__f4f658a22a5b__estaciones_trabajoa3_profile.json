@@ -1,0 +1,191 @@
+{
+  "table_id": "inventario_A3MEDIA.xlsx::Estaciones trabajoA3",
+  "n_rows": 9,
+  "n_cols": 7,
+  "columns": {
+    "Antena 3": {
+      "dtype": "object",
+      "non_null": 9,
+      "nulls": 0,
+      "n_unique": 5,
+      "top_values": [
+        {
+          "value": "6",
+          "count": 5
+        },
+        {
+          "value": "Coste unitario",
+          "count": 1
+        },
+        {
+          "value": "Total",
+          "count": 1
+        },
+        {
+          "value": "30",
+          "count": 1
+        },
+        {
+          "value": "5",
+          "count": 1
+        }
+      ]
+    },
+    "col_2": {
+      "dtype": "object",
+      "non_null": 6,
+      "nulls": 3,
+      "n_unique": 6,
+      "top_values": [
+        {
+          "value": "Inventario",
+          "count": 1
+        },
+        {
+          "value": "83657",
+          "count": 1
+        },
+        {
+          "value": "85526",
+          "count": 1
+        },
+        {
+          "value": "91823",
+          "count": 1
+        },
+        {
+          "value": "91917",
+          "count": 1
+        },
+        {
+          "value": "93335",
+          "count": 1
+        }
+      ]
+    },
+    "col_3": {
+      "dtype": "object",
+      "non_null": 6,
+      "nulls": 3,
+      "n_unique": 3,
+      "top_values": [
+        {
+          "value": "IMAC",
+          "count": 3
+        },
+        {
+          "value": "ESTACION DE TRABAJO",
+          "count": 2
+        },
+        {
+          "value": "Clase",
+          "count": 1
+        }
+      ]
+    },
+    "col_4": {
+      "dtype": "object",
+      "non_null": 6,
+      "nulls": 3,
+      "n_unique": 3,
+      "top_values": [
+        {
+          "value": "APPLE MAC",
+          "count": 3
+        },
+        {
+          "value": "DELL",
+          "count": 2
+        },
+        {
+          "value": "Marca",
+          "count": 1
+        }
+      ]
+    },
+    "col_5": {
+      "dtype": "object",
+      "non_null": 6,
+      "nulls": 3,
+      "n_unique": 4,
+      "top_values": [
+        {
+          "value": "PRECISION TOWER 3620",
+          "count": 2
+        },
+        {
+          "value": "FUSION M290X",
+          "count": 2
+        },
+        {
+          "value": "Modelo",
+          "count": 1
+        },
+        {
+          "value": "PRO 16 INCH",
+          "count": 1
+        }
+      ]
+    },
+    "col_6": {
+      "dtype": "object",
+      "non_null": 6,
+      "nulls": 3,
+      "n_unique": 6,
+      "top_values": [
+        {
+          "value": "Número de Serie",
+          "count": 1
+        },
+        {
+          "value": "26TC232",
+          "count": 1
+        },
+        {
+          "value": "FFJYMK2",
+          "count": 1
+        },
+        {
+          "value": "DGKQ60B8FY14",
+          "count": 1
+        },
+        {
+          "value": "DGKQ70VDFY14",
+          "count": 1
+        },
+        {
+          "value": "C02ZLQWLMD6M",
+          "count": 1
+        }
+      ]
+    },
+    "col_7": {
+      "dtype": "object",
+      "non_null": 6,
+      "nulls": 3,
+      "n_unique": 5,
+      "top_values": [
+        {
+          "value": "SISTEMAS DE INFORMACION DESARROLLO",
+          "count": 2
+        },
+        {
+          "value": "Ubicación",
+          "count": 1
+        },
+        {
+          "value": "ATRES ADVERTISING EVENTOS",
+          "count": 1
+        },
+        {
+          "value": "DIVERSIFICACION",
+          "count": 1
+        },
+        {
+          "value": "MARKETING",
+          "count": 1
+        }
+      ]
+    }
+  }
+}

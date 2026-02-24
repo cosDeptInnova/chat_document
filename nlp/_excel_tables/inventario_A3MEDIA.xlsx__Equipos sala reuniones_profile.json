@@ -1,0 +1,187 @@
+{
+  "table_id": "inventario_A3MEDIA.xlsx::Equipos sala reuniones",
+  "n_rows": 32,
+  "n_cols": 6,
+  "columns": {
+    "I3": {
+      "dtype": "object",
+      "non_null": 32,
+      "nulls": 0,
+      "n_unique": 5,
+      "top_values": [
+        {
+          "value": "2.5",
+          "count": 28
+        },
+        {
+          "value": "Coste unitario",
+          "count": 1
+        },
+        {
+          "value": "Total",
+          "count": 1
+        },
+        {
+          "value": "70",
+          "count": 1
+        },
+        {
+          "value": "28",
+          "count": 1
+        }
+      ]
+    },
+    "col_2": {
+      "dtype": "object",
+      "non_null": 1,
+      "nulls": 31,
+      "n_unique": 1,
+      "top_values": [
+        {
+          "value": "Inventario",
+          "count": 1
+        }
+      ]
+    },
+    "col_3": {
+      "dtype": "object",
+      "non_null": 1,
+      "nulls": 31,
+      "n_unique": 1,
+      "top_values": [
+        {
+          "value": "Clase",
+          "count": 1
+        }
+      ]
+    },
+    "col_4": {
+      "dtype": "object",
+      "non_null": 29,
+      "nulls": 3,
+      "n_unique": 6,
+      "top_values": [
+        {
+          "value": "ASUS VIVO VC66",
+          "count": 13
+        },
+        {
+          "value": "INTEL NUC",
+          "count": 6
+        },
+        {
+          "value": "LENOVO ThinkCentre M700",
+          "count": 5
+        },
+        {
+          "value": "Mini PC ASUS PN62",
+          "count": 2
+        },
+        {
+          "value": "INTEL NUC 5i5MYHE",
+          "count": 2
+        },
+        {
+          "value": "Marca y Modelo",
+          "count": 1
+        }
+      ]
+    },
+    "col_5": {
+      "dtype": "object",
+      "non_null": 29,
+      "nulls": 3,
+      "n_unique": 28,
+      "top_values": [
+        {
+          "value": "F44D3064A9A3",
+          "count": 2
+        },
+        {
+          "value": "Número de Serie",
+          "count": 1
+        },
+        {
+          "value": "F44D30693D79",
+          "count": 1
+        },
+        {
+          "value": "HBMSAC014704",
+          "count": 1
+        },
+        {
+          "value": "F44D306A3FE7",
+          "count": 1
+        },
+        {
+          "value": "F44D3064F46E",
+          "count": 1
+        },
+        {
+          "value": "HAMSAC005399",
+          "count": 1
+        },
+        {
+          "value": "HBMSAC014756",
+          "count": 1
+        },
+        {
+          "value": "M8MRCG008573LN3",
+          "count": 1
+        },
+        {
+          "value": "PC0JG85B",
+          "count": 1
+        }
+      ]
+    },
+    "col_6": {
+      "dtype": "object",
+      "non_null": 29,
+      "nulls": 3,
+      "n_unique": 29,
+      "top_values": [
+        {
+          "value": "Ubicación",
+          "count": 1
+        },
+        {
+          "value": "Sala Atresmedia Publicidad 1",
+          "count": 1
+        },
+        {
+          "value": "Sala Atresmedia Publicidad 2",
+          "count": 1
+        },
+        {
+          "value": "Sala Ingeniería",
+          "count": 1
+        },
+        {
+          "value": "Sala Financiero Cristal",
+          "count": 1
+        },
+        {
+          "value": "Sala OCR 2",
+          "count": 1
+        },
+        {
+          "value": "Sala Dirección General",
+          "count": 1
+        },
+        {
+          "value": "Sala Gerencias",
+          "count": 1
+        },
+        {
+          "value": "Sala Consejero Delegado",
+          "count": 1
+        },
+        {
+          "value": "Sala OCR Dirección",
+          "count": 1
+        }
+      ]
+    }
+  }
+}
