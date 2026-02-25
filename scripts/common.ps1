@@ -198,7 +198,15 @@ function Stop-WindowsServiceRobust {
 }
 
 function Stop-ProcessTreeRobust {
-  param([Parameter(Mandatory=$true)][int]$ProcessId)
+  param(
+    [Parameter(Mandatory=$true)][int]$ProcessId,
+    $ProtectedPids = $null
+  )
+
+  if (Test-IsProtectedPid -ProcessId $ProcessId -ProtectedPids $ProtectedPids) {
+    Write-Host "[SAFEGUARD] Skip kill for protected PID $ProcessId"
+    return
+  }
 
   if (-not (Test-ProcessAlive -ProcessId $ProcessId)) { return }
 
@@ -211,7 +219,7 @@ function Stop-ProcessTreeRobust {
     )
     foreach ($childId in (As-Array $children)) {
       if ($childId -and $childId -ne $ProcessId) {
-        Stop-ProcessTreeRobust -ProcessId $childId
+        Stop-ProcessTreeRobust -ProcessId $childId -ProtectedPids $ProtectedPids
       }
     }
     if (Test-ProcessAlive -ProcessId $ProcessId) {
@@ -238,10 +246,16 @@ function Get-ParentProcessIdSafe {
 function Stop-ProcessWithAncestorsRobust {
   param(
     [Parameter(Mandatory=$true)][int]$ProcessId,
-    [int]$MaxDepth = 6
+    [int]$MaxDepth = 6,
+    $ProtectedPids = $null
   )
 
   if ($ProcessId -le 0) { return }
+
+  if (Test-IsProtectedPid -ProcessId $ProcessId -ProtectedPids $ProtectedPids) {
+    Write-Host "[SAFEGUARD] Skip ancestor kill for protected PID $ProcessId"
+    return
+  }
 
   # Build chain child -> parent -> grandparent, then kill from top to bottom.
   $chain = New-Object 'System.Collections.Generic.List[int]'
@@ -251,6 +265,11 @@ function Stop-ProcessWithAncestorsRobust {
   for ($depth = 0; $depth -lt $MaxDepth; $depth++) {
     if ($cursor -le 0) { break }
     if (-not $seen.Add($cursor)) { break }
+
+    if (Test-IsProtectedPid -ProcessId $cursor -ProtectedPids $ProtectedPids) {
+      break
+    }
+
     $chain.Add($cursor)
 
     $ppid = Get-ParentProcessIdSafe -ProcessId $cursor
@@ -260,7 +279,7 @@ function Stop-ProcessWithAncestorsRobust {
 
   [array]::Reverse($chain)
   foreach ($pidCandidate in $chain) {
-    Stop-ProcessTreeRobust -ProcessId $pidCandidate
+    Stop-ProcessTreeRobust -ProcessId $pidCandidate -ProtectedPids $ProtectedPids
   }
 }
 
@@ -285,6 +304,44 @@ function Get-PidsByPortHints {
   return @($hints.ToArray() | Select-Object -Unique)
 }
 
+function Get-ProtectedProcessIds {
+  $protected = New-Object 'System.Collections.Generic.HashSet[int]'
+
+  $currentPid = $PID
+  if ($currentPid -and $currentPid -gt 0) {
+    [void]$protected.Add([int]$currentPid)
+
+    $cursor = [int]$currentPid
+    for ($depth = 0; $depth -lt 12; $depth++) {
+      $ppid = Get-ParentProcessIdSafe -ProcessId $cursor
+      if ($ppid -le 0 -or $ppid -eq $cursor) { break }
+      if (-not $protected.Add([int]$ppid)) { break }
+      $cursor = [int]$ppid
+    }
+  }
+
+  return $protected
+}
+
+function Test-IsProtectedPid {
+  param(
+    [Parameter(Mandatory=$true)][int]$ProcessId,
+    [Parameter(Mandatory=$true)]$ProtectedPids
+  )
+
+  if ($ProcessId -le 0) { return $false }
+
+  if ($ProtectedPids -is [System.Collections.Generic.HashSet[int]]) {
+    return $ProtectedPids.Contains($ProcessId)
+  }
+
+  foreach ($p in (As-Array $ProtectedPids)) {
+    if ([int]$p -eq $ProcessId) { return $true }
+  }
+
+  return $false
+}
+
 function Ensure-PortFreeRobust {
   param(
     [Parameter(Mandatory=$true)][int]$Port,
@@ -298,6 +355,7 @@ function Ensure-PortFreeRobust {
   Warn-IfNotAdmin
 
   $killed = New-Object 'System.Collections.Generic.HashSet[int]'
+  $protectedPids = Get-ProtectedProcessIds
 
   for ($pass=1; $pass -le $MaxPasses; $pass++) {
 
@@ -310,6 +368,10 @@ function Ensure-PortFreeRobust {
 
       # avoid infinite repeats
       if ($killed.Contains($pidInt)) { continue }
+      if (Test-IsProtectedPid -ProcessId $pidInt -ProtectedPids $protectedPids) {
+        Write-Host "[$Context] pass $pass -> SKIP protected PID $pidInt (terminal/session process)"
+        continue
+      }
 
       $pinfo = Get-ProcessInfoSafe -ProcessId $pidInt
       $pname = if ($pinfo -and $pinfo.Name) { $pinfo.Name } else {
@@ -332,13 +394,13 @@ function Ensure-PortFreeRobust {
       # Kill PID (tree)
       if ($KillPortOwnerAnyProcess) {
         Write-Host "[$Context] pass $pass -> KILL PID $pidInt ($pname) holding port $Port"
-        Stop-ProcessWithAncestorsRobust -ProcessId $pidInt
+        Stop-ProcessWithAncestorsRobust -ProcessId $pidInt -ProtectedPids $protectedPids
         [void]$killed.Add($pidInt)
       } else {
         # If you ever want uvicorn-only logic, you can add it here;
         # current requirement: be robust and free the port.
         Write-Host "[$Context] pass $pass -> KILL PID $pidInt ($pname) holding port $Port"
-        Stop-ProcessWithAncestorsRobust -ProcessId $pidInt
+        Stop-ProcessWithAncestorsRobust -ProcessId $pidInt -ProtectedPids $protectedPids
         [void]$killed.Add($pidInt)
       }
     }
@@ -350,7 +412,7 @@ function Ensure-PortFreeRobust {
         if ($hintPidInt -le 0 -or $killed.Contains($hintPidInt)) { continue }
 
         Write-Host "[$Context] pass $pass -> KILL hint PID $hintPidInt (cmdline matched port $Port)"
-        Stop-ProcessWithAncestorsRobust -ProcessId $hintPidInt
+        Stop-ProcessWithAncestorsRobust -ProcessId $hintPidInt -ProtectedPids $protectedPids
         [void]$killed.Add($hintPidInt)
       }
     }
