@@ -1,6 +1,6 @@
 from datetime import datetime
 from sqlalchemy import (
-    Column, Integer, String, Boolean, ForeignKey, Text, DateTime,
+    Column, Integer, String, Boolean, ForeignKey, Text, DateTime, BigInteger,
     Enum, JSON, Float, Numeric, Table
 )
 from sqlalchemy.orm import relationship
@@ -75,6 +75,7 @@ class File(Base):
         nullable=False
     )
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    file_size = Column(BigInteger, default=0)
 
     user = relationship('User')
     department = relationship('Department')
@@ -111,6 +112,7 @@ class Message(Base):
     content = Column(Text, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
     is_liked = Column(Boolean, nullable=True, default=None)
+    sources = Column(JSON, default=list, nullable=True)
 
     conversation = relationship('Conversation', back_populates='messages')
     attachments = relationship(
