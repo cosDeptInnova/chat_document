@@ -630,6 +630,45 @@ function Resolve-StartOrder {
   return @(As-Array (Try-GetProp -Obj $Config -Name "StartOrder" -Default $null))
 }
 
+function Resolve-ServiceByName {
+  param(
+    [Parameter(Mandatory=$true)][hashtable]$Config,
+    [Parameter(Mandatory=$true)][string]$Name
+  )
+
+  $target = ($Name | ForEach-Object { $_.Trim() })
+  if (-not $target) { throw "Debe indicar un nombre de servicio." }
+
+  $services = @(Get-ServicesFromConfig -Config $Config)
+
+  $exact = @($services | Where-Object {
+    $n = Try-GetProp -Obj $_ -Name "Name" -Default ""
+    $n -and ($n -ieq $target)
+  })
+
+  if ((Count-Of $exact) -eq 1) { return $exact[0] }
+
+  if ((Count-Of $exact) -gt 1) {
+    throw "Configuración inválida: existen varios servicios con el nombre '$target'."
+  }
+
+  $partial = @($services | Where-Object {
+    $n = Try-GetProp -Obj $_ -Name "Name" -Default ""
+    $n -and $n.ToLowerInvariant().Contains($target.ToLowerInvariant())
+  })
+
+  if ((Count-Of $partial) -eq 1) { return $partial[0] }
+
+  $available = @($services | ForEach-Object { Try-GetProp -Obj $_ -Name "Name" -Default "" } | Where-Object { $_ })
+
+  if ((Count-Of $partial) -gt 1) {
+    $matches = ($partial | ForEach-Object { Try-GetProp -Obj $_ -Name "Name" -Default "" }) -join ", "
+    throw "Nombre ambiguo '$target'. Coincidencias: $matches. Servicios disponibles: $($available -join ', ')"
+  }
+
+  throw "Servicio no encontrado: '$target'. Disponibles: $($available -join ', ')"
+}
+
 function Sort-ServicesByStartOrder {
   param(
     [Parameter(Mandatory=$true)]$Services,
