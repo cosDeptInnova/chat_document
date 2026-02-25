@@ -127,6 +127,80 @@ def _mentions_named_file(prompt: str) -> bool:
     return bool(_FILE_NAME_PAT.search(prompt or ""))
 
 
+def _safe_positive_int(value: Any) -> Optional[int]:
+    """Convierte un valor potencialmente heterogéneo a entero positivo."""
+    if value is None:
+        return None
+    try:
+        if isinstance(value, bool):
+            return None
+        if isinstance(value, (int, float)):
+            parsed = int(value)
+        else:
+            text = str(value).strip()
+            if not text:
+                return None
+            parsed = int(float(text))
+        return parsed if parsed > 0 else None
+    except Exception:
+        return None
+
+
+def _resolve_page_number(meta: Dict[str, Any]) -> int:
+    """Resuelve la página de forma robusta para evitar caer siempre en página 1."""
+    candidates = [
+        meta.get("page"),
+        meta.get("page_number"),
+        meta.get("pdf_page"),
+        meta.get("page_index"),
+    ]
+
+    for raw in candidates:
+        parsed = _safe_positive_int(raw)
+        if parsed:
+            return parsed
+
+    # Algunos indexadores guardan índices base-0; tratamos ese caso explícitamente.
+    for raw in [meta.get("page"), meta.get("page_index")]:
+        try:
+            parsed = int(float(str(raw).strip()))
+            if parsed == 0:
+                return 1
+        except Exception:
+            continue
+
+    return 1
+
+
+def _resolve_fragment_number(meta: Dict[str, Any]) -> Optional[int]:
+    fragment_candidates = [
+        meta.get("fragment"),
+        meta.get("fragment_index"),
+        meta.get("source_fragment_index"),
+        meta.get("chunk_index"),
+        meta.get("local_chunk_index"),
+    ]
+
+    for raw in fragment_candidates:
+        if raw is None:
+            continue
+        try:
+            parsed = int(float(str(raw).strip()))
+            return parsed + 1 if parsed >= 0 else None
+        except Exception:
+            continue
+    return None
+
+
+def _compact_snippet(text: str, limit: int = 420) -> str:
+    cleaned = re.sub(r"\s+", " ", str(text or "")).strip()
+    if not cleaned:
+        return ""
+    if len(cleaned) <= limit:
+        return cleaned
+    return f"{cleaned[: limit - 1].rstrip()}…"
+
+
 class QueryRequest(BaseModel):
     message: Optional[str] = None
     prompt: Optional[str] = None
@@ -1564,31 +1638,76 @@ async def handle_query_to_llm(
                 clean_name = f.file_name.replace("[CONOCIMIENTO] ", "")
                 file_map[clean_name] = f.id
 
-            # 5. Cruzar datos
-            sources_temp = []
+            # 5. Cruzar datos y conservar trazabilidad de fragmentos
+            grouped_sources: Dict[tuple, Dict[str, Any]] = {}
             for r in rag_results:
                 doc_name_rag = r.get("doc_name") or r.get("file_name")
-                file_id = file_map.get(doc_name_rag)
-                
-                meta = r.get("meta") or r.get("payload") or {}
-                raw_page = meta.get("page") or meta.get("page_number")
-                page_number = int(raw_page) + 1 if (raw_page is not None and isinstance(raw_page, int)) else 1
+                if not doc_name_rag:
+                    continue
 
-                if file_id:
-                     sources_temp.append({
+                file_id = file_map.get(doc_name_rag)
+                if not file_id:
+                    continue
+
+                meta = r.get("meta") or r.get("payload") or {}
+                page_number = _resolve_page_number(meta)
+                fragment_number = _resolve_fragment_number(meta)
+                snippet = _compact_snippet(r.get("text") or "")
+
+                key = (file_id, page_number)
+                source_entry = grouped_sources.setdefault(
+                    key,
+                    {
                         "file_id": file_id,
                         "file_name": doc_name_rag,
                         "page": page_number,
-                        "snippet": "Documento RAG" 
-                    })
+                        "snippet": snippet or "Documento RAG",
+                        "fragment": fragment_number,
+                        "fragments": [],
+                    },
+                )
 
-            # 6. Eliminar duplicados
-            seen = set()
-            for s in sources_temp:
-                key = (s['file_id'], s['page'])
-                if key not in seen:
-                    unique_sources.append(s)
-                    seen.add(key)
+                if snippet and source_entry.get("snippet") == "Documento RAG":
+                    source_entry["snippet"] = snippet
+
+                fragment_payload = {
+                    "page": page_number,
+                    "fragment": fragment_number,
+                    "snippet": snippet or "Fragmento recuperado del índice RAG.",
+                }
+
+                existing_fragments = source_entry["fragments"]
+                if fragment_payload not in existing_fragments:
+                    existing_fragments.append(fragment_payload)
+
+                # también incluimos similares como apoyo para UI de trazabilidad
+                for similar in r.get("similar_blocks") or []:
+                    similar_meta = similar.get("meta") or {}
+                    similar_page = _resolve_page_number(similar_meta)
+                    similar_fragment = _resolve_fragment_number(similar_meta)
+                    similar_snippet = _compact_snippet(similar.get("text") or "")
+                    if not similar_snippet:
+                        continue
+                    similar_payload = {
+                        "page": similar_page,
+                        "fragment": similar_fragment,
+                        "snippet": similar_snippet,
+                    }
+                    if similar_payload not in existing_fragments:
+                        existing_fragments.append(similar_payload)
+
+            # 6. Normalizar y ordenar para salida estable
+            for source in grouped_sources.values():
+                source["fragments"] = sorted(
+                    source["fragments"],
+                    key=lambda x: (
+                        int(x.get("page") or 1),
+                        int(x.get("fragment") or 10**6),
+                    ),
+                )
+                unique_sources.append(source)
+
+            unique_sources.sort(key=lambda s: (s.get("file_name") or "", s.get("page") or 1))
 
         logging.info(f"Devolviendo sources: {unique_sources}")
 

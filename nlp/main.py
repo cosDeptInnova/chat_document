@@ -2420,6 +2420,14 @@ async def search_documents(
             except ValueError:
                 return -1
 
+        def _to_int(value):
+            try:
+                if value is None:
+                    return None
+                return int(float(str(value).strip()))
+            except Exception:
+                return None
+
         out = []
         for (text, doc_name, rrf_score, rerank_score) in sota:
             similars = []
@@ -2455,12 +2463,24 @@ async def search_documents(
                 except Exception:
                     pass
 
+            page_candidate = _to_int((meta_main or {}).get("page"))
+            if page_candidate is None:
+                page_candidate = _to_int((meta_main or {}).get("page_number"))
+
+            fragment_candidate = None
+            for fragment_key in ("fragment", "fragment_index", "source_fragment_index", "chunk_index", "local_chunk_index"):
+                fragment_candidate = _to_int((meta_main or {}).get(fragment_key))
+                if fragment_candidate is not None:
+                    break
+
             out.append({
                 "doc_name": doc_name,
                 "text": text,
                 "rrf_score": float(rrf_score),
                 "rerank_score": float(rerank_score),
                 "meta": meta_main,
+                "page": page_candidate,
+                "fragment_index": fragment_candidate,
                 "similar_blocks": similars,
             })
 
