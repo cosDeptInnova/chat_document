@@ -2463,9 +2463,20 @@ async def search_documents(
                 except Exception:
                     pass
 
-            page_candidate = _to_int((meta_main or {}).get("page"))
-            if page_candidate is None:
-                page_candidate = _to_int((meta_main or {}).get("page_number"))
+            raw_page_zero_based = _to_int((meta_main or {}).get("page"))
+            raw_page_index = _to_int((meta_main or {}).get("page_index"))
+            raw_page_number = _to_int((meta_main or {}).get("page_number"))
+            raw_pdf_page = _to_int((meta_main or {}).get("pdf_page"))
+
+            page_candidate = None
+            if raw_page_zero_based is not None and raw_page_zero_based >= 0:
+                page_candidate = raw_page_zero_based + 1
+            elif raw_page_index is not None and raw_page_index >= 0:
+                page_candidate = raw_page_index + 1
+            elif raw_page_number is not None:
+                page_candidate = raw_page_number if raw_page_number > 0 else 1
+            elif raw_pdf_page is not None:
+                page_candidate = raw_pdf_page if raw_pdf_page > 0 else 1
 
             fragment_candidate = None
             for fragment_key in ("fragment", "fragment_index", "source_fragment_index", "chunk_index", "local_chunk_index"):

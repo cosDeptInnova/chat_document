@@ -1,5 +1,11 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 
+const normalizeSnippetForSearch = (snippet) => {
+  const cleaned = String(snippet || '').replace(/\s+/g, ' ').trim();
+  if (!cleaned) return '';
+  return cleaned.slice(0, 120);
+};
+
 export default function PdfViewerModal ({ isOpen, onClose, fileUrl, fileName, page, source }) {
   const [visible, setVisible] = useState(false);
   const modalOverlayRef = useRef(null);
@@ -19,11 +25,13 @@ export default function PdfViewerModal ({ isOpen, onClose, fileUrl, fileName, pa
   }, [source, page]);
 
   const [activePage, setActivePage] = useState(page || source?.page || null);
+  const [activeFragmentIndex, setActiveFragmentIndex] = useState(0);
 
   useEffect(() => {
     if (isOpen) {
       setVisible(true);
       setActivePage(page || source?.page || fragments?.[0]?.page || null);
+      setActiveFragmentIndex(0);
     }
   }, [isOpen, page, source, fragments]);
 
@@ -48,7 +56,25 @@ export default function PdfViewerModal ({ isOpen, onClose, fileUrl, fileName, pa
   const isText = ['txt'].includes(ext);
   const isPreviewable = isPdf || isImage || isText;
 
-  const viewerUrl = isPdf && activePage ? `${fileUrl}#page=${activePage}` : fileUrl;
+  const activeFragment = fragments[activeFragmentIndex] || null;
+
+  const viewerUrl = useMemo(() => {
+    if (!isPdf) return fileUrl;
+
+    const params = new URLSearchParams();
+    if (activePage) {
+      params.set('page', String(activePage));
+    }
+
+    // Mejora UX: intenta posicionar también por texto del fragmento.
+    const snippetQuery = normalizeSnippetForSearch(activeFragment?.snippet);
+    if (snippetQuery) {
+      params.set('search', snippetQuery);
+    }
+
+    const fragmentString = params.toString();
+    return fragmentString ? `${fileUrl}#${fragmentString}` : fileUrl;
+  }, [isPdf, fileUrl, activePage, activeFragment]);
 
   return (
     <div
@@ -87,16 +113,19 @@ export default function PdfViewerModal ({ isOpen, onClose, fileUrl, fileName, pa
             <div className="space-y-1.5">
               {fragments.map((fragment, idx) => {
                 const fragmentPage = fragment?.page || null;
-                const buttonClass = fragmentPage && fragmentPage === activePage
+                const isActive = idx === activeFragmentIndex;
+                const buttonClass = isActive
                   ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30'
                   : 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900';
                 return (
                   <button
                     key={`${fragmentPage || 'np'}-${fragment?.fragment || idx}-${idx}`}
                     type="button"
-                    onClick={() => fragmentPage && setActivePage(fragmentPage)}
+                    onClick={() => {
+                      setActiveFragmentIndex(idx);
+                      if (fragmentPage) setActivePage(fragmentPage);
+                    }}
                     className={`w-full text-left p-2 rounded-md border ${buttonClass} hover:border-blue-400 transition-colors`}
-                    disabled={!fragmentPage}
                   >
                     <div className="text-[10px] md:text-xs text-gray-600 dark:text-gray-300 font-medium mb-0.5">
                       {fragmentPage ? `Página ${fragmentPage}` : 'Sin página'}{fragment?.fragment ? ` · Fragmento ${fragment.fragment}` : ''}
