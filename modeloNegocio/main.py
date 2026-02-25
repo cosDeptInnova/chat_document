@@ -146,6 +146,80 @@ def _safe_positive_int(value: Any) -> Optional[int]:
         return None
 
 
+def _resolve_page_number(meta: Dict[str, Any]) -> int:
+    """Resuelve la página de forma robusta para evitar caer siempre en página 1."""
+    candidates = [
+        meta.get("page"),
+        meta.get("page_number"),
+        meta.get("pdf_page"),
+        meta.get("page_index"),
+    ]
+
+    for raw in candidates:
+        parsed = _safe_positive_int(raw)
+        if parsed:
+            return parsed
+
+    # Algunos indexadores guardan índices base-0; tratamos ese caso explícitamente.
+    for raw in [meta.get("page"), meta.get("page_index")]:
+        try:
+            parsed = int(float(str(raw).strip()))
+            if parsed == 0:
+                return 1
+        except Exception:
+            continue
+
+    return 1
+
+
+def _resolve_fragment_number(meta: Dict[str, Any]) -> Optional[int]:
+    fragment_candidates = [
+        meta.get("fragment"),
+        meta.get("fragment_index"),
+        meta.get("source_fragment_index"),
+        meta.get("chunk_index"),
+        meta.get("local_chunk_index"),
+    ]
+
+    for raw in fragment_candidates:
+        if raw is None:
+            continue
+        try:
+            parsed = int(float(str(raw).strip()))
+            return parsed + 1 if parsed >= 0 else None
+        except Exception:
+            continue
+    return None
+
+
+def _compact_snippet(text: str, limit: int = 420) -> str:
+    cleaned = re.sub(r"\s+", " ", str(text or "")).strip()
+    if not cleaned:
+        return ""
+    if len(cleaned) <= limit:
+        return cleaned
+    return f"{cleaned[: limit - 1].rstrip()}…"
+
+
+def _safe_positive_int(value: Any) -> Optional[int]:
+    """Convierte un valor potencialmente heterogéneo a entero positivo."""
+    if value is None:
+        return None
+    try:
+        if isinstance(value, bool):
+            return None
+        if isinstance(value, (int, float)):
+            parsed = int(value)
+        else:
+            text = str(value).strip()
+            if not text:
+                return None
+            parsed = int(float(text))
+        return parsed if parsed > 0 else None
+    except Exception:
+        return None
+
+
 def _parse_int_like(value: Any) -> Optional[int]:
     if value is None:
         return None
