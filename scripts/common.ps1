@@ -153,8 +153,8 @@ function Get-ListenerPidsByPort {
       # Example:
       #  TCP    0.0.0.0:7100   0.0.0.0:0   LISTENING   1234
       if ($ln -match ":\s*$Port\s+.+LISTENING\s+(\d+)\s*$") {
-        $pid = [int]$Matches[1]
-        if ($pid -gt 0) { $pids += $pid }
+        $matchPid = [int]$Matches[1]
+        if ($matchPid -gt 0) { $pids += $matchPid }
       }
     }
   } catch { }
@@ -233,8 +233,8 @@ function Ensure-PortFreeRobust {
     $pids = @(Get-ListenerPidsByPort -Port $Port)
     if ((Count-Of $pids) -eq 0) { return $true }
 
-    foreach ($pid in $pids) {
-      $pidInt = [int]$pid
+    foreach ($listenerPid in $pids) {
+      $pidInt = [int]$listenerPid
       if ($pidInt -le 0) { continue }
 
       # avoid infinite repeats
@@ -281,8 +281,8 @@ function Ensure-PortFreeRobust {
 
   Write-Host "[$Context] ERROR: Port $Port still LISTEN after retries. PID(s): $($still -join ', ')"
 
-  foreach ($pid in $still) {
-    $pidInt = [int]$pid
+  foreach ($listenerPid in $still) {
+    $pidInt = [int]$listenerPid
     $pinfo = Get-ProcessInfoSafe -ProcessId $pidInt
     if ($pinfo) {
       Write-Host "---- PID $pidInt ----"
