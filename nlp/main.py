@@ -2420,6 +2420,14 @@ async def search_documents(
             except ValueError:
                 return -1
 
+        def _to_int(value):
+            try:
+                if value is None:
+                    return None
+                return int(float(str(value).strip()))
+            except Exception:
+                return None
+
         out = []
         for (text, doc_name, rrf_score, rerank_score) in sota:
             similars = []
@@ -2455,12 +2463,35 @@ async def search_documents(
                 except Exception:
                     pass
 
+            raw_page_zero_based = _to_int((meta_main or {}).get("page"))
+            raw_page_index = _to_int((meta_main or {}).get("page_index"))
+            raw_page_number = _to_int((meta_main or {}).get("page_number"))
+            raw_pdf_page = _to_int((meta_main or {}).get("pdf_page"))
+
+            page_candidate = None
+            if raw_page_zero_based is not None and raw_page_zero_based >= 0:
+                page_candidate = raw_page_zero_based + 1
+            elif raw_page_index is not None and raw_page_index >= 0:
+                page_candidate = raw_page_index + 1
+            elif raw_page_number is not None:
+                page_candidate = raw_page_number if raw_page_number > 0 else 1
+            elif raw_pdf_page is not None:
+                page_candidate = raw_pdf_page if raw_pdf_page > 0 else 1
+
+            fragment_candidate = None
+            for fragment_key in ("fragment", "fragment_index", "source_fragment_index", "chunk_index", "local_chunk_index"):
+                fragment_candidate = _to_int((meta_main or {}).get(fragment_key))
+                if fragment_candidate is not None:
+                    break
+
             out.append({
                 "doc_name": doc_name,
                 "text": text,
                 "rrf_score": float(rrf_score),
                 "rerank_score": float(rerank_score),
                 "meta": meta_main,
+                "page": page_candidate,
+                "fragment_index": fragment_candidate,
                 "similar_blocks": similars,
             })
 

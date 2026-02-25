@@ -14,6 +14,16 @@ const getIconForFile = (fileName) => {
 export const SourceChips = ({ sources, onSourceClick }) => {
   if (!sources || sources.length === 0) return null;
 
+  const buildSubtitle = (source) => {
+    const parts = [];
+    if (source.page) parts.push(`Página ${source.page}`);
+    if (source.fragment) parts.push(`Fragmento ${source.fragment}`);
+    if (Array.isArray(source.fragments) && source.fragments.length > 1) {
+      parts.push(`${source.fragments.length} evidencias`);
+    }
+    return parts.length > 0 ? parts.join(" · ") : "Documento";
+  };
+
   return (
     <div className="mt-2 md:mt-2.5 2xl:mt-3 pt-2 md:pt-2.5 2xl:pt-3 border-t border-gray-100 dark:border-gray-700/50">
       
@@ -55,8 +65,13 @@ export const SourceChips = ({ sources, onSourceClick }) => {
                 </span>
                 {/* Subtítulo página: Original era text-[10px] */}
                 <span className="text-[8px] md:text-[9px] 2xl:text-[10px] text-gray-500 dark:text-gray-400 mt-[1px]">
-                  {source.page ? `Página ${source.page}` : 'Documento'}
+                  {buildSubtitle(source)}
                 </span>
+                {source.snippet && (
+                  <span className="text-[8px] md:text-[9px] 2xl:text-[10px] text-gray-400 dark:text-gray-500 truncate block max-w-full">
+                    {source.snippet}
+                  </span>
+                )}
               </div>
             </button>
           )
