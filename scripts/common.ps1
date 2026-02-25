@@ -225,6 +225,66 @@ function Stop-ProcessTreeRobust {
   }
 }
 
+function Get-ParentProcessIdSafe {
+  param([Parameter(Mandatory=$true)][int]$ProcessId)
+
+  $pinfo = Get-ProcessInfoSafe -ProcessId $ProcessId
+  if ($pinfo -and $pinfo.ParentProcessId) {
+    return [int]$pinfo.ParentProcessId
+  }
+  return 0
+}
+
+function Stop-ProcessWithAncestorsRobust {
+  param(
+    [Parameter(Mandatory=$true)][int]$ProcessId,
+    [int]$MaxDepth = 6
+  )
+
+  if ($ProcessId -le 0) { return }
+
+  # Build chain child -> parent -> grandparent, then kill from top to bottom.
+  $chain = New-Object 'System.Collections.Generic.List[int]'
+  $seen  = New-Object 'System.Collections.Generic.HashSet[int]'
+
+  $cursor = $ProcessId
+  for ($depth = 0; $depth -lt $MaxDepth; $depth++) {
+    if ($cursor -le 0) { break }
+    if (-not $seen.Add($cursor)) { break }
+    $chain.Add($cursor)
+
+    $ppid = Get-ParentProcessIdSafe -ProcessId $cursor
+    if ($ppid -le 0 -or $ppid -eq $cursor) { break }
+    $cursor = $ppid
+  }
+
+  [array]::Reverse($chain)
+  foreach ($pidCandidate in $chain) {
+    Stop-ProcessTreeRobust -ProcessId $pidCandidate
+  }
+}
+
+function Get-PidsByPortHints {
+  param([Parameter(Mandatory=$true)][int]$Port)
+
+  $hints = New-Object 'System.Collections.Generic.List[int]'
+
+  try {
+    $all = @(Get-CimInstance Win32_Process -ErrorAction SilentlyContinue)
+    foreach ($proc in $all) {
+      if (-not $proc -or -not $proc.ProcessId -or -not $proc.CommandLine) { continue }
+      $cmd = $proc.CommandLine
+
+      # Common uvicorn styles: --port 5000, --port=5000, :5000
+      if ($cmd -match "(^|\s)--port(=|\s+)$Port(\s|$)" -or $cmd -match ":$Port(\s|$)") {
+        $hints.Add([int]$proc.ProcessId)
+      }
+    }
+  } catch { }
+
+  return @($hints.ToArray() | Select-Object -Unique)
+}
+
 function Ensure-PortFreeRobust {
   param(
     [Parameter(Mandatory=$true)][int]$Port,
@@ -272,14 +332,26 @@ function Ensure-PortFreeRobust {
       # Kill PID (tree)
       if ($KillPortOwnerAnyProcess) {
         Write-Host "[$Context] pass $pass -> KILL PID $pidInt ($pname) holding port $Port"
-        Stop-ProcessTreeRobust -ProcessId $pidInt
+        Stop-ProcessWithAncestorsRobust -ProcessId $pidInt
         [void]$killed.Add($pidInt)
       } else {
         # If you ever want uvicorn-only logic, you can add it here;
         # current requirement: be robust and free the port.
         Write-Host "[$Context] pass $pass -> KILL PID $pidInt ($pname) holding port $Port"
-        Stop-ProcessTreeRobust -ProcessId $pidInt
+        Stop-ProcessWithAncestorsRobust -ProcessId $pidInt
         [void]$killed.Add($pidInt)
+      }
+    }
+
+    if ($KillPortOwnerAnyProcess -and (Port-IsListening -Port $Port)) {
+      $hintPids = @(Get-PidsByPortHints -Port $Port)
+      foreach ($hintPid in $hintPids) {
+        $hintPidInt = [int]$hintPid
+        if ($hintPidInt -le 0 -or $killed.Contains($hintPidInt)) { continue }
+
+        Write-Host "[$Context] pass $pass -> KILL hint PID $hintPidInt (cmdline matched port $Port)"
+        Stop-ProcessWithAncestorsRobust -ProcessId $hintPidInt
+        [void]$killed.Add($hintPidInt)
       }
     }
 
