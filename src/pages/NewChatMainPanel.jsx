@@ -275,11 +275,38 @@ export default function NuevoChatMainPanel({
   const [selectedSource, setSelectedSource] = useState(null);
   const [pdfBlobUrl, setPdfBlobUrl] = useState(null); // Guardará la URL temporal del PDF
 
+  const normalizeFragments = (source) => {
+    const fragments = Array.isArray(source?.fragments) ? source.fragments : [];
+    if (fragments.length > 0) {
+      return fragments
+        .map((fragment, idx) => ({
+          page: Number(fragment?.page) || Number(source?.page) || null,
+          fragment: Number(fragment?.fragment) || null,
+          snippet: fragment?.snippet || source?.snippet || "",
+          idx,
+        }))
+        .sort((a, b) => (a.page || 1) - (b.page || 1) || (a.fragment || 99999) - (b.fragment || 99999));
+    }
+
+    return [{
+      page: Number(source?.page) || null,
+      fragment: Number(source?.fragment) || null,
+      snippet: source?.snippet || "",
+      idx: 0,
+    }];
+  };
+
   // 1. Abrir el Modal: Descarga el archivo y crea una URL local
   const handleOpenSource = async (source) => {
     try {
-      // Guardamos la fuente seleccionada para saber el título y página
-      setSelectedSource(source);
+      const normalizedSource = {
+        ...source,
+        page: Number(source?.page) || null,
+        fragment: Number(source?.fragment) || null,
+        fragments: normalizeFragments(source),
+      };
+
+      setSelectedSource(normalizedSource);
       
       // Llamamos a la función de api.js para traer el archivo binario (Blob)
       const blob = await fetchFileContent(source.file_id);
@@ -1396,6 +1423,7 @@ export default function NuevoChatMainPanel({
         conversationId: newConvId,
         searchSessionId: newSearchSessionId,
         messageId: newMessageId,
+        sources: newSources = [],
       } = await sendMessageToBackend(finalTextForBackend, {
         currentConversationId: conversationId,
         nlpDepartmentDirectory,
@@ -1424,6 +1452,7 @@ export default function NuevoChatMainPanel({
         role: "system",
         content: aiContent,
         is_liked: null,
+        sources: newSources,
       };
 
       setMessages((prev) => [...prev, aiResponse]);
@@ -2012,6 +2041,7 @@ export default function NuevoChatMainPanel({
           fileName={selectedSource.file_name}
           page={selectedSource.page}
           fileUrl={pdfBlobUrl} // Pasamos la URL temporal que creamos
+          source={selectedSource}
         />
       )}
     </div>
