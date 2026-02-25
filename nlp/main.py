@@ -31,6 +31,9 @@ import time
 import hashlib
 import threading
 from collections import OrderedDict
+from fastapi.responses import JSONResponse, HTMLResponse, FileResponse
+
+import mimetypes
 
 from cosmos_nlp_v3 import DocumentIndexer
 from chatdoc_indexer import (
@@ -1119,8 +1122,14 @@ async def upload_file(
 
     for f in files:
         file_path = target_directory / f.filename
+
+        # Leemos el contenido, calculamos el tamaño y escribimos
         async with aiofiles.open(file_path, 'wb') as out_file:
             content = await f.read()
+
+            # Calculamos el tamaño en bytes
+            file_size_bytes = len(content)
+
             await out_file.write(content)
 
         uploaded_files.append(str(file_path))
@@ -1132,7 +1141,8 @@ async def upload_file(
             file_path=str(file_path),
             file_name=f"[CONOCIMIENTO] {f.filename}",
             permission='READ',  # Enum('READ', 'WRITE', 'NONE')
-            created_at=datetime.utcnow()
+            created_at=datetime.utcnow(),
+            file_size = file_size_bytes
         )
 
         db.add(file_record)
@@ -1146,7 +1156,8 @@ async def upload_file(
             new_data={
                 "path": str(file_path),
                 "label": "CONOCIMIENTO",
-                "department": department or "private"
+                "department": department or "private",
+                "size": file_size_bytes
             },
             timestamp=datetime.utcnow()
         )
@@ -1155,45 +1166,140 @@ async def upload_file(
     db.commit()
     return JSONResponse(status_code=200, content={"message": "Archivos cargados correctamente.", "files": uploaded_files})
 
+@app.get("/files/{file_id}/content")
+async def get_file_content(
+    file_id: int,
+    auth: dict = Depends(verify_token),
+    db: Session = Depends(get_db)
+):
+    """
+    Endpoint para servir el PDF crudo al navegador (iframe) o words, excels, imágenes, txt...
+    """
+    # 1. Buscar el archivo en BBDD para obtener la ruta
+    file_record = db.query(FileModel).filter(FileModel.id == file_id).first()
+    
+    if not file_record:
+        raise HTTPException(status_code=404, detail="Archivo no encontrado en base de datos")
+
+    # 2. Verificar permisos básicos
+    user_id = auth["user_id"]
+    # Esto es opcional, para asegurarnos de que solo lo vea el dueño (aunque no lo pongo de momento porque se supone que con el token el usuario solo podria ver los suyos)
+    # if file_record.user_id != user_id: 
+    #     raise HTTPException(status_code=403, detail="No tienes permiso para ver este archivo")
+
+    # 3. Verificar que el archivo existe físicamente en el disco
+    file_path = Path(file_record.file_path)
+    if not file_path.exists():
+        logging.error(f"Error integridad: Archivo {file_id} no encontrado en ruta {file_path}")
+        raise HTTPException(status_code=404, detail="El archivo físico no se encuentra")
+
+    # 4. ADIVINAR EL TIPO DE ARCHIVO DINÁMICAMENTE (NUEVO)
+    mime_type, _ = mimetypes.guess_type(file_record.file_name)
+    if not mime_type:
+        mime_type = "application/octet-stream" # Fallback por si no lo reconoce
+
+    # 5. Devolver el stream con su tipo real
+    return FileResponse(
+        path=file_path,
+        filename=file_record.file_name,
+        media_type=mime_type, 
+        content_disposition_type="inline"
+    )
+
 @app.get("/list_files")
 async def list_files(
     department: Optional[str] = Query(None),
     token: dict = Depends(verify_token),
     db: Session = Depends(get_db)
 ):
-    user_id = token["user_id"]
-    session = await get_session_from_redis(user_id)
-    if not session:
-        raise HTTPException(403, "Sesión no encontrada o expirada.")
+    try:
+        # Usamos .get() para evitar crash si falta la clave
+        user_id = token.get("user_id") 
+        
+        session = await get_session_from_redis(user_id)
+        if not session:
+            raise HTTPException(403, "Sesión no encontrada o expirada.")
 
-    user_departments = session.get("departments", [])
-    user_directory = session.get("user_directory")
+        user_departments = session.get("departments", [])
+        files_db = []
 
-    if department:
-        department_data = next(
-            (dep for dep in user_departments if dep.get("department_directory") == department),
-            None
-        )
-        if not department_data:
-            raise HTTPException(403, f"No tiene acceso al departamento {department}.")
-        target = PATH_BASE_DEPARTMENTS / department_data["department_directory"] / "uploaded_files"
-    else:
-        target = PATH_BASE / user_directory / "uploaded_files"
+        # Lógica Departamento
+        if department:
+            department_data = next(
+                (dep for dep in user_departments if dep.get("department_directory") == department),
+                None
+            )
+            if not department_data:
+                raise HTTPException(status_code=403, detail=f"No tiene acceso al departamento {department}.")
 
-    files = [p.name for p in target.iterdir() if p.is_file()] if target.exists() else []
+            dept_obj = db.query(Department).filter(
+                Department.department_directory == department
+            ).first()
 
-    db.add(AuditLog(
-        user_id=user_id,
-        entity_name="FileList",
-        entity_id=0,
-        action="UPDATE",
-        old_data=None,
-        new_data={"department": department or "private", "files": files},
-        timestamp=datetime.utcnow()
-    ))
-    db.commit()
+            if dept_obj:
+                files_db = db.query(FileModel).filter(
+                    FileModel.department_id == dept_obj.id
+                ).all()
+            else:
+                files_db = []
 
-    return {"files": files}
+        # Lógica Personal
+        else:
+            files_db = db.query(FileModel).filter(
+                FileModel.user_id == user_id,
+                FileModel.department_id == None
+            ).all()
+
+        # Construcción Respuesta
+        response_files = []
+        for f in files_db:
+            # Usamos getattr para seguridad extra por si el modelo no se actualizó en memoria
+            raw_name = getattr(f, 'file_name', 'Desconocido')
+            clean_name = raw_name.replace("[CONOCIMIENTO] ", "")
+            
+            # Fecha segura
+            date_val = getattr(f, 'created_at', None)
+            date_str = date_val.isoformat() if date_val else None
+            
+            # Tamaño seguro
+            size_val = getattr(f, 'file_size', 0)
+
+            response_files.append({
+                "name": clean_name,
+                "date": date_str,
+                "size": size_val if size_val is not None else 0,
+                "owner": "Yo" if getattr(f, 'user_id', None) == user_id else "Compañero"
+            })
+
+        # Auditoría
+        try:
+            db.add(AuditLog(
+                user_id=user_id,
+                entity_name="FileList",
+                entity_id=0,
+                action="READ", 
+                old_data=None,
+                new_data={
+                    "department": department or "private", 
+                    "count": len(response_files)
+                },
+                timestamp=datetime.utcnow()
+            ))
+            db.commit()
+        except Exception as e_log:
+            print(f"Error guardando log (no crítico): {e_log}")
+            # No hacemos rollback general para no fallar el listado por culpa del log
+
+        return {"files": response_files}
+
+    except Exception as e:
+        # Imprime el error real en la consola
+        print("\n" + "="*50)
+        print("ERROR FATAL EN /list_files:")
+        print(f"Error: {str(e)}")
+        traceback.print_exc() # Imprime la línea exacta del fallo
+        print("="*50 + "\n")
+        raise HTTPException(status_code=500, detail=f"Error interno del servidor: {str(e)}")
 
 
 @app.delete("/delete_files")
@@ -1351,6 +1457,58 @@ async def delete_files(
         result["errors"] = errors
 
     return JSONResponse(status_code=200, content=result)
+
+@app.get("/download_file")
+async def download_file(
+    filename: str = Query(..., description="Nombre del archivo a descargar"),
+    department: Optional[str] = Query(None, description="Directorio del departamento (opcional)"),
+    token: dict = Depends(verify_token),
+    db: Session = Depends(get_db)
+):
+    user_id = token.get("user_id")
+    session_data = await get_session_from_redis(user_id)
+    if session_data is None:
+        raise HTTPException(status_code=403, detail="Sesión no encontrada o expirada.")
+
+    user_directory = session_data.get("user_directory")
+    user_departments = session_data.get("departments", [])
+
+    if department:
+        department_data = next(
+            (dep for dep in user_departments if dep.get("department_directory") == department),
+            None
+        )
+        if not department_data:
+            raise HTTPException(status_code=403, detail=f"No tiene acceso al departamento {department}.")
+        
+        target_directory = PATH_BASE_DEPARTMENTS / department_data["department_directory"] / "uploaded_files"
+    else:
+        target_directory = PATH_BASE / user_directory / "uploaded_files"
+
+    file_path = target_directory / filename
+
+    if not file_path.exists() or not file_path.is_file():
+        raise HTTPException(status_code=404, detail="El archivo no existe.")
+
+    try:
+        db.add(AuditLog(
+            user_id=user_id,
+            entity_name="File",
+            entity_id=0,
+            action="DOWNLOAD",
+            old_data=None,
+            new_data={"filename": filename, "department": department or "private"},
+            timestamp=datetime.utcnow()
+        ))
+        db.commit()
+    except Exception as e:
+        print(f"Error guardando audit log de descarga: {e}")
+
+    return FileResponse(
+        path=file_path, 
+        filename=filename, 
+        media_type='application/octet-stream'
+    )
 
 
 def _candidate_user_scan_dirs(user_directory: str) -> List[Path]:
