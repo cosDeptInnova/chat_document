@@ -61,6 +61,11 @@ Arrancar un servicio:
 Parar un servicio:
   .\stop-service.ps1 -Name <NombreServicio>
 
+
+Ejemplo (reinicio de un solo microservicio tras cambios en su código):
+  .\stop-service.ps1 -Name cosmos_mcp -ShowStatus
+  .\start-service.ps1 -Name cosmos_mcp -ShowStatus
+
 Los logs se almacenan en:
   ..\logs\<servicio>.out.log
   ..\logs\<servicio>.err.log

@@ -153,8 +153,8 @@ function Get-ListenerPidsByPort {
       # Example:
       #  TCP    0.0.0.0:7100   0.0.0.0:0   LISTENING   1234
       if ($ln -match ":\s*$Port\s+.+LISTENING\s+(\d+)\s*$") {
-        $pid = [int]$Matches[1]
-        if ($pid -gt 0) { $pids += $pid }
+        $matchPid = [int]$Matches[1]
+        if ($matchPid -gt 0) { $pids += $matchPid }
       }
     }
   } catch { }
@@ -233,8 +233,8 @@ function Ensure-PortFreeRobust {
     $pids = @(Get-ListenerPidsByPort -Port $Port)
     if ((Count-Of $pids) -eq 0) { return $true }
 
-    foreach ($pid in $pids) {
-      $pidInt = [int]$pid
+    foreach ($listenerPid in $pids) {
+      $pidInt = [int]$listenerPid
       if ($pidInt -le 0) { continue }
 
       # avoid infinite repeats
@@ -281,8 +281,8 @@ function Ensure-PortFreeRobust {
 
   Write-Host "[$Context] ERROR: Port $Port still LISTEN after retries. PID(s): $($still -join ', ')"
 
-  foreach ($pid in $still) {
-    $pidInt = [int]$pid
+  foreach ($listenerPid in $still) {
+    $pidInt = [int]$listenerPid
     $pinfo = Get-ProcessInfoSafe -ProcessId $pidInt
     if ($pinfo) {
       Write-Host "---- PID $pidInt ----"
@@ -628,6 +628,45 @@ function Get-ServicesFromConfig {
 function Resolve-StartOrder {
   param([Parameter(Mandatory=$true)][hashtable]$Config)
   return @(As-Array (Try-GetProp -Obj $Config -Name "StartOrder" -Default $null))
+}
+
+function Resolve-ServiceByName {
+  param(
+    [Parameter(Mandatory=$true)][hashtable]$Config,
+    [Parameter(Mandatory=$true)][string]$Name
+  )
+
+  $target = ($Name | ForEach-Object { $_.Trim() })
+  if (-not $target) { throw "Debe indicar un nombre de servicio." }
+
+  $services = @(Get-ServicesFromConfig -Config $Config)
+
+  $exact = @($services | Where-Object {
+    $n = Try-GetProp -Obj $_ -Name "Name" -Default ""
+    $n -and ($n -ieq $target)
+  })
+
+  if ((Count-Of $exact) -eq 1) { return $exact[0] }
+
+  if ((Count-Of $exact) -gt 1) {
+    throw "Configuración inválida: existen varios servicios con el nombre '$target'."
+  }
+
+  $partial = @($services | Where-Object {
+    $n = Try-GetProp -Obj $_ -Name "Name" -Default ""
+    $n -and $n.ToLowerInvariant().Contains($target.ToLowerInvariant())
+  })
+
+  if ((Count-Of $partial) -eq 1) { return $partial[0] }
+
+  $available = @($services | ForEach-Object { Try-GetProp -Obj $_ -Name "Name" -Default "" } | Where-Object { $_ })
+
+  if ((Count-Of $partial) -gt 1) {
+    $matches = ($partial | ForEach-Object { Try-GetProp -Obj $_ -Name "Name" -Default "" }) -join ", "
+    throw "Nombre ambiguo '$target'. Coincidencias: $matches. Servicios disponibles: $($available -join ', ')"
+  }
+
+  throw "Servicio no encontrado: '$target'. Disponibles: $($available -join ', ')"
 }
 
 function Sort-ServicesByStartOrder {

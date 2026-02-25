@@ -1,11 +1,20 @@
-param([Parameter(Mandatory=$true)][string]$Name)
+param(
+  [Parameter(Mandatory=$true)][string]$Name,
+  [switch]$ShowStatus
+)
+
+Set-StrictMode -Version Latest
+$ErrorActionPreference = "Stop"
 
 . "$PSScriptRoot\common.ps1"
 $config = Get-Config
 
 Activate-CondaEnv -EnvName $config.CondaEnv
 
-$svc = $config.Services | Where-Object { $_.Name -eq $Name }
-if (-not $svc) { throw "Servicio no encontrado: $Name" }
+$svc = Resolve-ServiceByName -Config $config -Name $Name
 
 Start-ServiceProcess -Config $config -Svc $svc
+
+if ($ShowStatus) {
+  Status-AllServices -Config $config
+}
