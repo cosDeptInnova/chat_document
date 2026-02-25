@@ -161,6 +161,7 @@ class MessageOut(BaseModel):
     content: str
     created_at: datetime
     is_liked: Optional[bool] = None
+    sources: Optional[List[Dict[str, Any]]] = []
 
     class Config:
         orm_mode = True
@@ -689,6 +690,7 @@ async def get_conversation(
                 content=m.content,
                 created_at=m.created_at,
                 is_liked=m.is_liked,
+                sources=m.sources
             )
             for m in msgs
         ],
@@ -1126,73 +1128,91 @@ async def handle_query_to_llm(
     status_label = "success"
     request_id = uuid.uuid4().hex[:8]
 
+    # Protección CSRF para consultas al LLM desde la SPA
     validate_csrf(request)
 
+    # Extraemos info ya validada (JWT + sesión Redis + token unívoco)
+    token_payload = auth["token_payload"]
     session_data = auth["session"]
     user_id = auth["user_id"]
     access_token = auth["access_token"]
 
     try:
-        logging.info(f"[LLM_ENTRY {request_id}] (main - /query/llm) Extrayendo el prompt de usuario...")
+        logging.info(
+            f"[LLM_ENTRY {request_id}] (main - /query/llm) Extrayendo el prompt de usuario desde el payload de la petición POST..."
+        )
 
+        # El nuevo front puede enviar el texto en `message` o en `prompt`
         raw_prompt = query.prompt or query.message
         prompt = (raw_prompt or "").strip()
         attached_file_ids = query.files or []
 
+        # 🔹 NUEVO: departamento explícito que envía el front (banco seleccionado)
+        # Usamos getattr para no romper si el modelo QueryRequest aún no lo tiene.
         requested_dept_dir = getattr(query, "department_directory", None)
         if requested_dept_dir:
-            logging.info("[LLM_ENTRY %s] department_directory solicitado: %s", request_id, requested_dept_dir)
+            logging.info(
+                "[LLM_ENTRY %s] department_directory solicitado explícitamente desde el front: %s",
+                request_id,
+                requested_dept_dir,
+            )
+
+        if attached_file_ids:
+            logging.info(
+                f"[LLM_ENTRY {request_id}] (main - /query/llm) IDs de archivos efímeros recibidos desde el front: {attached_file_ids}"
+            )
 
         if not prompt:
             status_label = "error"
+            logging.info(
+                f"[LLM_ENTRY {request_id}] (main - /query/llm) No prompt provided"
+            )
             msg = "\n\n(main - /query/llm) No prompt provided"
-            return {"error": msg, "reply": msg, "response": msg, "is_choice_needed": False}
+            return {
+                "error": msg,
+                "reply": msg,
+                "response": msg,
+                "is_choice_needed": False,
+            }
 
         if not user_id:
             status_label = "error"
+            logging.warning(
+                f"[LLM_ENTRY {request_id}] Token sin user_id. Devolviendo 401."
+            )
             raise HTTPException(status_code=401, detail="Token inválido")
 
         if not session_data:
             status_label = "error"
-            raise HTTPException(status_code=403, detail="Sesión expirada o no encontrada")
+            logging.warning(
+                f"[LLM_ENTRY {request_id}] Sesión no encontrada en Redis para user_id={user_id}"
+            )
+            raise HTTPException(
+                status_code=403, detail="Sesión expirada o no encontrada"
+            )
 
         if not access_token:
             status_label = "error"
-            raise HTTPException(status_code=403, detail="Token de sesión no disponible")
+            logging.warning(
+                f"[LLM_ENTRY {request_id}] Token de sesión no disponible en session_data para user_id={user_id}"
+            )
+            raise HTTPException(
+                status_code=403, detail="Token de sesión no disponible"
+            )
 
+        # Flow: 'R' (rápido) o 'C' (COSMOS inteligente)
         flow = (query.choice or "C").upper()
-        logging.info(f"[LLM_ENTRY {request_id}] Flow={flow}. Prompt len={len(prompt)}")
-
-        # ---------------------------------------------------------
-        # 0) Determinar conversation_id efectivo (robustez adjuntos)
-        # ---------------------------------------------------------
-        effective_conversation_id: Optional[int] = query.conversation_id
-
-        # Si hay adjuntos pero el front no manda conversation_id,
-        # intentamos recuperar el current_conversation_id desde Redis.
-        wants_files_early = _wants_ephemeral(prompt, attached_file_ids)
-        if effective_conversation_id is None and wants_files_early:
-            try:
-                # OJO: usa keyword para no confundir expires_in
-                state = await get_conversation_to_redis(user_id=user_id, conversation_id=None)
-                cand = state.get("current_conversation_id")
-                if cand is not None:
-                    effective_conversation_id = int(cand)
-                    logging.info(
-                        "[LLM_ENTRY %s] Inferido conversation_id=%s desde Redis (por adjuntos).",
-                        request_id,
-                        effective_conversation_id,
-                    )
-            except Exception as e:
-                logging.debug("[LLM_ENTRY %s] No se pudo inferir conversation_id desde Redis: %s", request_id, e)
+        logging.info(
+            f"[LLM_ENTRY {request_id}] Flow seleccionado: {flow}. Prompt len={len(prompt)}"
+        )
 
         # -------------------------------------------
-        # 1) Obtener o crear conversación (BD)
+        # 0) Obtener o crear conversación de BD
         # -------------------------------------------
         conversation, created = get_or_create_conversation(
             db=db,
             user_id=user_id,
-            conversation_id=effective_conversation_id,
+            conversation_id=query.conversation_id,
         )
 
         logging.info(
@@ -1201,121 +1221,171 @@ async def handle_query_to_llm(
         )
 
         # -------------------------------------------
-        # 2) Historial de conversación desde Redis (SCOPED)
+        # Historial de conversación desde Redis
         # -------------------------------------------
         if created:
-            # FIX CRÍTICO: usar keyword conversation_id (si no, se interpreta como expires_in)
-            try:
-                conversation_data = await reset_conversation_in_redis(
-                    user_id=user_id,
-                    conversation_id=conversation.id,
-                )
-            except Exception:
-                conversation_data = {"conversation_history": []}
+            # Nueva conversación ⇒ limpiamos contexto efímero en Redis
+            logging.info(
+                f"[LLM_ENTRY {request_id}] Nueva conversación creada; "
+                f"reseteando contexto efímero en Redis para user_id={user_id}"
+            )
+            await reset_conversation_in_redis(user_id)
+            conversation_data = {}
         else:
-            # FIX CRÍTICO: conversation.id debe ir en conversation_id=
-            conversation_data = await get_conversation_to_redis(
-                user_id=user_id,
-                conversation_id=conversation.id,
-            ) or {"conversation_history": []}
+            conversation_data = await get_conversation_to_redis(user_id) or {}
 
         logging.info(
-            f"[LLM_ENTRY {request_id}] Historial Redis (conv={conversation.id}): "
-            f"{len((conversation_data or {}).get('conversation_history', []))} entradas"
+            f"[LLM_ENTRY {request_id}] (main - /query/llm) Historial de conversación recuperado de Redis: "
+            f"{len(conversation_data.get('conversation_history', []))} entradas"
         )
 
-        # -------------------------------------------
-        # 3) Persistencia del mensaje USER en BD
-        # -------------------------------------------
-        conversation.conversation_text = (
-            (conversation.conversation_text + f"\nUSER: {prompt}").strip()
-            if conversation.conversation_text
-            else f"USER: {prompt}"
-        )
+        # Añadir turno de usuario al texto "plano" de la conversación
+        if conversation.conversation_text:
+            conversation.conversation_text += f"\nUSER: {prompt}"
+        else:
+            conversation.conversation_text = f"USER: {prompt}"
 
+        # Mensaje de usuario estructurado
         user_message = Message(
             conversation_id=conversation.id,
             sender="USER",
             content=prompt,
             created_at=datetime.now(timezone.utc),
         )
+
         db.add(user_message)
         db.add(conversation)
         db.commit()
         db.refresh(conversation)
 
         # -------------------------------------------
-        # 4) Planner (CrewAI)
+        # 0.1) ConversationMeta: configuración del hilo
+        # -------------------------------------------
+        if not conversation.meta:
+            try:
+                system_prompt = (
+                    crew_orchestrator.llm is not None
+                    and crew_orchestrator._build_system_instructions(flow)
+                    or ""
+                )
+                meta = ConversationMeta(
+                    conversation_id=conversation.id,
+                    system_prompt=system_prompt,
+                    temperature=float(os.getenv("CREW_TEMPERATURE", "0.2")),
+                    max_tokens=int(os.getenv("CREW_MAX_TOKENS", "1024")),
+                    created_at=datetime.now(timezone.utc),
+                )
+                db.add(meta)
+                db.commit()
+                logging.info(
+                    f"[LLM_ENTRY {request_id}] ConversationMeta creado para conversación {conversation.id}"
+                )
+            except Exception as e:
+                logging.warning(
+                    f"[LLM_ENTRY {request_id}] No se pudo crear ConversationMeta "
+                    f"para la conversación {conversation.id}: {e}"
+                )
+
+        # -------------------------------------------
+        # Historial de conversación desde Redis
+        # -------------------------------------------
+        if created:
+            # Nueva conversación en BD → limpiamos contexto efímero en Redis
+            logging.info(
+                f"[LLM_ENTRY {request_id}] Nueva conversación creada; "
+                f"reseteando contexto efímero en Redis para user_id={user_id}"
+            )
+            await reset_conversation_in_redis(user_id)
+            conversation_data = {}
+        else:
+            conversation_data = await get_conversation_to_redis(user_id) or {}
+
+        logging.info(
+            f"[LLM_ENTRY {request_id}] (main - /query/llm) Historial de conversación recuperado de Redis: "
+            f"{len(conversation_data.get('conversation_history', []))} entradas"
+        )
+
+        # -------------------------------------------
+        # 1) Planner con CrewAI (intent + normalización)
         # -------------------------------------------
         user_ctx = {
             "user_id": user_id,
             "access_token": access_token,
             "flow": flow,
+            # 🔹 NUEVO: pasamos también el departamento al planner por si quiere usarlo
             "department_directory": requested_dept_dir,
-            "conversation_id": conversation.id,
-            "attached_file_ids": attached_file_ids,
         }
 
-        logging.info(f"[LLM_ENTRY {request_id}] Llamando al planner...")
-        plan = await asyncio.to_thread(
-            crew_orchestrator.plan_query,
-            prompt,
-            conversation_data,
-            user_ctx,
+        logging.info(
+            f"[LLM_ENTRY {request_id}] Llamando al planner (plan_query) con flow={flow}"
         )
 
-        logging.info(f"[LLM_ENTRY {request_id}] Plan planner: {plan}")
+        plan = await asyncio.to_thread(
+            crew_orchestrator.plan_query,
+            prompt,            # user_prompt original
+            conversation_data, # history_data
+            user_ctx,          # user_ctx (incluye flow y departamento)
+        )
 
-        # -------------------------------------------
-        # 4.1) Heurística determinista anti-fallos planner
-        # -------------------------------------------
-        wants_files = _wants_ephemeral(prompt, attached_file_ids)
-        wants_internal = _wants_internal_docs(prompt)
-        named_file = _mentions_named_file(prompt)
-
-        if wants_files:
-            plan["needs_files"] = True
-            if not wants_internal:
-                plan["needs_rag"] = False
-
-        if named_file and not wants_files:
-            plan["needs_rag"] = True
-            plan["needs_files"] = False
+        logging.info(
+            f"[LLM_ENTRY {request_id}] (main - /query/llm) Plan generado por planner: {plan}"
+        )
 
         normalized_prompt = plan.get("normalized_question") or prompt
         rag_query = plan.get("rag_query") or normalized_prompt
         intent = plan.get("intent") or "otro"
         needs_rag = bool(plan.get("needs_rag", True))
-        needs_files = bool(plan.get("needs_files", False))
         needs_web = bool(plan.get("needs_web", False))
         filters = plan.get("filters") or {}
 
         logging.info(
-            f"[LLM_ENTRY {request_id}] Plan final: intent={intent}, needs_rag={needs_rag}, "
-            f"needs_files={needs_files}, needs_web={needs_web}, filters={filters}"
+            f"[LLM_ENTRY {request_id}] Plan interpretado: intent={intent}, "
+            f"needs_rag={needs_rag}, needs_web={needs_web}, filters={filters}"
         )
 
-        # -------------------------------------------
-        # 5) Archivos en vuelo (SCOPED + filtrado por IDs)
-        # -------------------------------------------
-        ephemeral_files: List[Dict[str, Any]] = []
-        if needs_files:
-            try:
-                ephemeral_files = await get_ephemeral_files(
-                    user_id=user_id,
-                    conversation_id=conversation.id,
-                    file_ids=attached_file_ids or None,
+        # (Por ahora, needs_web se ignora)
+
+        # Actualizar ConversationMeta con el último plan (opcional, pero útil para auditoría)
+        try:
+            meta = conversation.meta
+            if meta:
+                fragment = (
+                    "\n\n[Último plan del planner]: "
+                    f"{json.dumps(plan, ensure_ascii=False)}"
                 )
+                combined = (meta.system_prompt or "") + fragment
+                if len(combined) > 8000:
+                    combined = combined[-8000:]
+                meta.system_prompt = combined
+                db.add(meta)
+                db.commit()
                 logging.info(
-                    f"[LLM_ENTRY {request_id}] Ephemeral (conv={conversation.id}): {len(ephemeral_files)} archivos"
+                    f"[LLM_ENTRY {request_id}] ConversationMeta actualizado con el último plan del planner "
+                    f"para conversación {conversation.id}"
                 )
-            except Exception as e:
-                logging.warning(f"[LLM_ENTRY {request_id}] No se pudieron recuperar efímeros: {e}")
-                ephemeral_files = []
+        except Exception as e:
+            logging.warning(
+                f"[LLM_ENTRY {request_id}] No se pudo actualizar ConversationMeta con el plan del planner: {e}"
+            )
 
         # -------------------------------------------
-        # 6) RAG (solo si procede)
+        # 2) Archivos en vuelo (ephemeral)
         # -------------------------------------------
+        try:
+            ephemeral_files = await get_ephemeral_files(user_id)
+            logging.info(
+                f"[LLM_ENTRY {request_id}] Recuperados {len(ephemeral_files or [])} archivos en vuelo para user_id={user_id}"
+            )
+        except Exception as e:
+            logging.warning(
+                f"[LLM_ENTRY {request_id}] (main - /query/llm) No se pudieron recuperar archivos en vuelo: {e}"
+            )
+            ephemeral_files = []
+
+        # -------------------------------------------
+        # 3) RAG: llamada al microservicio NLP (según el plan)
+        # -------------------------------------------
+        # Estructura base por si algo falla o no se necesita RAG
         rag_payload: Dict[str, Any] = {
             "status": None,
             "results": [],
@@ -1324,122 +1394,416 @@ async def handle_query_to_llm(
             "cleaned_query": rag_query,
         }
 
+        # 🔹 NUEVO: decidir qué texto mandamos a NLP para /search
+        #
+        # Si el front ha añadido el prefijo "Contexto departamentos seleccionados: ...",
+        # queremos que /search lo vea (para detectar department_directory) y lo limpie allí.
+        # Si no hay prefijo, usamos el rag_query normal del planner.
         scope_prefix = "contexto departamentos seleccionados:"
-        rag_input_for_search = prompt if scope_prefix in prompt.lower() else rag_query
+        rag_input_for_search = rag_query
+        if scope_prefix in prompt.lower():
+            rag_input_for_search = prompt
 
         if needs_rag:
             try:
-                logging.info("[LLM_ENTRY %s] perform_rag_search query='%s'", request_id, rag_input_for_search)
-                rag_payload = await perform_rag_search(rag_input_for_search, access_token, flow=flow)
+                logging.info(
+                    "[LLM_ENTRY %s] Llamando a perform_rag_search con query_para_rag='%s'",
+                    request_id,
+                    rag_input_for_search,
+                )
+                rag_payload = await perform_rag_search(
+                    rag_input_for_search, access_token, flow=flow
+                )
+                logging.info(
+                    "[LLM_ENTRY %s] RAG status=%s, results=%d, aggregation=%s, "
+                    "used_department=%s, cleaned_query=%s",
+                    request_id,
+                    rag_payload.get("status"),
+                    len(rag_payload.get("results") or []),
+                    rag_payload.get("aggregation"),
+                    rag_payload.get("used_department"),
+                    rag_payload.get("cleaned_query"),
+                )
             except Exception as e:
-                logging.warning("[LLM_ENTRY %s] Error perform_rag_search: %s", request_id, e)
+                logging.warning(
+                    "[LLM_ENTRY %s] Error llamando a perform_rag_search: %s",
+                    request_id,
+                    e,
+                )
+        else:
+            logging.info(
+                "[LLM_ENTRY %s] Planner indica needs_rag = False; se omite llamada a RAG.",
+                request_id,
+            )
 
+        # Normalizamos campos de RAG para el resto del flujo
         rag_results: List[Dict[str, Any]] = rag_payload.get("results") or []
         rag_aggregation: Any = rag_payload.get("aggregation")
         rag_used_department: Optional[str] = rag_payload.get("used_department")
         rag_cleaned_query: str = rag_payload.get("cleaned_query") or rag_query
 
+        # status sintético: si no se pidió RAG, marcamos "skipped"
+        raw_status = rag_payload.get("status")
         if not needs_rag:
             rag_status = "skipped"
         else:
-            raw_status = rag_payload.get("status")
             rag_status = raw_status or ("no_results" if not rag_results else "ok")
 
+        # Log resumen que te confirma que similar_blocks está llegando
+        logging.info(
+            "[LLM_ENTRY %s] RAG resumen previo a run_chat: %s",
+            request_id,
+            [
+                {
+                    "doc_name": r.get("doc_name"),
+                    "sheet": (r.get("meta") or {}).get("sheet"),
+                    "similar_blocks_count": len(r.get("similar_blocks") or []),
+                }
+                for r in rag_results
+            ],
+        )
+
+        # -------------------------------------------
+        # 4) CrewAI: integrar todo el contexto (planner + RAG + archivos)
+        # -------------------------------------------
+
+        # Enriquecer el plan con la info de RAG para que el orquestador pueda usarla
         plan["rag_status"] = rag_status
         plan["rag_used_department"] = rag_used_department
         plan["rag_cleaned_query"] = rag_cleaned_query
         plan["rag_aggregation"] = rag_aggregation
+        # 🔹 NUEVO: lo que pidió el usuario explícitamente
         plan["requested_department"] = requested_dept_dir
-        plan["attached_file_ids"] = attached_file_ids
-        plan["conversation_id"] = conversation.id
 
-        # -------------------------------------------
-        # 7) CrewAI run_chat
-        # -------------------------------------------
+        logging.info(
+            f"[LLM_ENTRY {request_id}] Ejecutando crew_orchestrator.run_chat "
+            f"(normalized_prompt len={len(normalized_prompt)}, rag_results={len(rag_results)}, "
+            f"ephemeral_files={len(ephemeral_files)}, flow={flow}, intent={intent}, "
+            f"rag_status={rag_status})"
+        )
+
         response_text = await asyncio.to_thread(
             crew_orchestrator.run_chat,
-            normalized_prompt,
-            rag_results,
-            ephemeral_files,
-            conversation_data,
-            flow,
-            plan,
+            normalized_prompt,   # user_prompt (normalizado por el planner)
+            rag_results,         # rag_results (con meta + similar_blocks)
+            ephemeral_files,     # ephemeral_files
+            conversation_data,   # history_data
+            flow,                # flow
+            plan,                # plan del planner (enriquecido con rag_*)
         )
-        response_text = clean_text(response_text or "")
 
-        tracking_capsule = crew_orchestrator.build_tracking_capsule(
-            user_prompt=prompt,
-            response_text=response_text,
-            plan=plan,
-            rag_results=rag_results,
-            ephemeral_files=ephemeral_files,
+        response_text = clean_text(response_text or "")
+        logging.info(
+            f"[LLM_ENTRY {request_id}] Respuesta generada por CrewAI (con RAG):\n{response_text}"
         )
 
         # -------------------------------------------
-        # 8) Guardar historial en Redis (SCOPED)
+        # 5) Guardar conversación en Redis (historial ligero)
         # -------------------------------------------
         conversation_entry = {
-            "conversation_id": conversation.id,
+            "conversation_id": conversation.id,  # id REAL de BD
             "user_id": user_id,
             "prompt": prompt,
             "normalized_prompt": normalized_prompt,
             "response": response_text,
             "flow": flow,
             "planner_plan": plan,
-            "tracking_capsule": tracking_capsule,
             "timestamp": datetime.utcnow().isoformat(),
         }
         await save_conversation_to_redis(
-            user_id=user_id,
-            conversation_id=conversation.id,
+            user_id,
             expires_in=480,
             conversation_entry=conversation_entry,
         )
+        logging.info(
+            f"[LLM_ENTRY {request_id}] Historial en Redis actualizado para user_id={user_id}"
+        )
 
         # -------------------------------------------
-        # 9) Persistencia BOT en BD
+        # 6) UsageLog (placeholder, con tokens=0 por ahora)
         # -------------------------------------------
+        usage_entry = None
+        try:
+            usage_entry = UsageLog(
+                message_id=None,
+                conversation_id=conversation.id,
+                model_name=os.getenv("CREW_MODEL_NAME", "crewai-local-llm"),
+                prompt_tokens=0,
+                completion_tokens=0,
+                total_tokens=0,
+                cost=0.0,
+                created_at=datetime.now(timezone.utc),
+            )
+            logging.info(
+                f"[LLM_ENTRY {request_id}] UsageLog preparado para conversación {conversation.id}"
+            )
+        except Exception as e:
+            logging.warning(
+                f"[LLM_ENTRY {request_id}] No se pudo crear UsageLog: {e}"
+            )
+            usage_entry = None
+        
+        # ===========================================================
+        # PRE 7) PROCESAMIENTO DE FUENTES 
+        # ===========================================================
+        unique_sources = [] # Inicializamos vacío por seguridad (variable para mandar al front y a la bbdd los pdfs para mostrarl los del rag)
+
+        if rag_results:
+            # 1. Nombres crudos del RAG
+            raw_doc_names = list(set(r.get("doc_name") or r.get("file_name") for r in rag_results if (r.get("doc_name") or r.get("file_name"))))
+            
+            # 2. Buscamos solo los que tienen prefijo de conocimiento
+            search_names = [f"[CONOCIMIENTO] {name}" for name in raw_doc_names]
+            
+            # 3. Consulta a BBDD (Mantenemos FileModel como tú lo importas)
+            files_found = db.query(FileModel).filter(FileModel.file_name.in_(search_names)).all()
+            
+            # 4. Mapa: Nombre_Limpio -> ID
+            file_map = {}
+            for f in files_found:
+                clean_name = f.file_name.replace("[CONOCIMIENTO] ", "")
+                file_map[clean_name] = f.id
+
+            # 5. Cruzar datos
+            sources_temp = []
+            for r in rag_results:
+                doc_name_rag = r.get("doc_name") or r.get("file_name")
+                file_id = file_map.get(doc_name_rag)
+                
+                meta = r.get("meta") or r.get("payload") or {}
+                raw_page = meta.get("page") or meta.get("page_number")
+                page_number = int(raw_page) + 1 if (raw_page is not None and isinstance(raw_page, int)) else 1
+
+                if file_id:
+                     sources_temp.append({
+                        "file_id": file_id,
+                        "file_name": doc_name_rag,
+                        "page": page_number,
+                        "snippet": "Documento RAG" 
+                    })
+
+            # 6. Eliminar duplicados
+            seen = set()
+            for s in sources_temp:
+                key = (s['file_id'], s['page'])
+                if key not in seen:
+                    unique_sources.append(s)
+                    seen.add(key)
+
+        logging.info(f"Devolviendo sources: {unique_sources}")
+
+
+        # -------------------------------------------
+        # 7) Persistencia SÍNCRONA
+        # -------------------------------------------
+        
+        # A. Mensaje de BOT (Guardamos YA para tener el ID)
         bot_msg = Message(
             conversation_id=conversation.id,
             sender="BOT",
             content=response_text,
             created_at=datetime.now(timezone.utc),
+            sources=unique_sources
         )
         db.add(bot_msg)
         db.commit()
         db.refresh(bot_msg)
 
-        conversation.conversation_text = (
-            (conversation.conversation_text + f"\nBOT: {response_text}").strip()
-            if conversation.conversation_text
-            else f"BOT: {response_text}"
-        )
+        # B. UsageLog (vinculamos el ID si existe el log)
+        if usage_entry:
+            usage_entry.message_id = bot_msg.id
+            db.add(usage_entry)
+
+        # C. Auditoría (Planner, RAG, Answer) - Usamos la sesión 'db' principal
+        try:
+            # 1) PlannerRun
+            audit_planner = AuditLog(
+                user_id=user_id,
+                entity_name="PlannerRun",
+                entity_id=conversation.id,
+                action="CREATE",
+                new_data={
+                    "request_id": request_id,
+                    "prompt": prompt,
+                    "normalized_prompt": normalized_prompt,
+                    "flow": flow,
+                    "intent": intent,
+                    "planner_plan": plan,
+                    "requested_department": requested_dept_dir,
+                },
+                timestamp=datetime.now(timezone.utc),
+            )
+            db.add(audit_planner)
+
+            # 2) RAGSearch (solo si hubo RAG)
+            if rag_results:
+                audit_rag = AuditLog(
+                    user_id=user_id,
+                    entity_name="RAGSearch",
+                    entity_id=conversation.id,
+                    action="CREATE",
+                    new_data={
+                        "request_id": request_id,
+                        "rag_query": rag_query,
+                        "filters": filters,
+                        "status": rag_status,
+                        "used_department": rag_used_department,
+                        "cleaned_query": rag_cleaned_query,
+                        "aggregation": rag_aggregation,
+                        "results_count": len(rag_results),
+                        "results_doc_names": [r.get("doc_name") for r in rag_results],
+                        "ephemeral_files_count": len(ephemeral_files),
+                        "requested_department": requested_dept_dir,
+                    },
+                    timestamp=datetime.now(timezone.utc),
+                )
+                db.add(audit_rag)
+
+            # 3) LLMAnswer
+            audit_answer = AuditLog(
+                user_id=user_id,
+                entity_name="LLMAnswer",
+                entity_id=conversation.id,
+                action="CREATE",
+                new_data={
+                    "request_id": request_id,
+                    "response": response_text,
+                    "model": os.getenv("CREW_MODEL_NAME", "crewai-local-llm"),
+                    "flow": flow,
+                },
+                timestamp=datetime.now(timezone.utc),
+            )
+            db.add(audit_answer)
+
+            # Guardamos todos los logs
+            db.commit()
+        except Exception as e:
+            logging.warning(f"Error guardando auditoría: {e}")
+            # No hacemos rollback general para no perder el mensaje del bot
+
+        # -------------------------------------------
+        # 8) Actualizar texto "plano" de la conversación
+        # -------------------------------------------
+        if conversation.conversation_text:
+            conversation.conversation_text += f"\nBOT: {response_text}"
+        else:
+            conversation.conversation_text = f"BOT: {response_text}"
+
         db.add(conversation)
         db.commit()
         db.refresh(conversation)
 
+        # -------------------------------------------
+        # 9) Snapshot en ConversationHistory (event sourcing ligero)
+        # -------------------------------------------
+        try:
+            existing_history = (
+                db.query(ConversationHistory)
+                .filter(ConversationHistory.conversation_id == conversation.id)
+                .first()
+            )
+            operation = "INSERT" if existing_history is None else "UPDATE"
+
+            history_entry = ConversationHistory(
+                conversation_id=conversation.id,
+                user_id=user_id,
+                conversation_text=conversation.conversation_text,
+                created_at=conversation.created_at,
+                recorded_at=datetime.utcnow(),
+                operation=operation,
+            )
+            db.add(history_entry)
+            db.commit()
+            logging.info(
+                f"[LLM_ENTRY {request_id}] ConversationHistory {operation} registrado para conversación {conversation.id}"
+            )
+        except Exception as e:
+            logging.warning(
+                f"[LLM_ENTRY {request_id}] No se pudo registrar ConversationHistory "
+                f"para la conversación {conversation.id}: {e}"
+            )
+
+        logging.info(
+            f"[LLM_ENTRY {request_id}] /query/llm completado correctamente. conversation_id={conversation.id}"
+        )
+
+        try:
+            session_id = None
+            if isinstance(session_data, dict):
+                session_id = session_data.get("session_id")
+
+            # OJO: truncamos respuesta y prompt si quieres limitar tamaño
+            max_chars = int(os.getenv("COSMOS_BIZ_LOG_MAX_CHARS", "4000"))
+
+            log_entry = {
+                "timestamp": datetime.utcnow().isoformat(),
+                "request_id": request_id,
+                "user_id": user_id,
+                "session_id": session_id,
+                "conversation_id": conversation.id,
+                "flow": flow,
+                "intent": intent,
+                "prompt": prompt[:max_chars],
+                "normalized_prompt": normalized_prompt[:max_chars],
+                "rag": {
+                    "needs_rag": needs_rag,
+                    "rag_query": rag_query[:max_chars],
+                    "rag_status": rag_status,
+                    "used_department": rag_used_department,
+                    "results_count": len(rag_results),
+                    "requested_department": requested_dept_dir,
+                },
+                # Plan completo → útil para auditar comportamiento de crews
+                "planner_plan": plan,
+                # Respuesta recortada para no disparar tamaño
+                "response": (response_text or "")[:max_chars],
+            }
+
+            log_llm_interaction(
+                user_id=user_id,
+                session_id=session_id,
+                entry=log_entry,
+            )
+
+        except Exception as e:
+            logging.warning(
+                "[LLM_ENTRY %s] No se pudo registrar log de interacción LLM: %s",
+                request_id,
+                e,
+            )
+        
+        # RETORNO FINAL AL FRONTEND
         return {
-            "reply": response_text,
-            "response": response_text,
+            "reply": response_text,        
+            "response": response_text,     
             "is_choice_needed": False,
             "conversation_id": conversation.id,
             "id": bot_msg.id,
             "message_id": bot_msg.id,
+            "sources": unique_sources  # Las fuentes ya calculadas arriba
         }
 
     except HTTPException:
         raise
     except Exception as e:
-        logging.exception(f"[LLM_ENTRY {request_id}] Error procesando consulta")
+        logging.exception(
+            f"[LLM_ENTRY {request_id}] Ocurrió un error al procesar la consulta:"
+        )
         status_label = "error"
         error_msg = f"Error procesando la consulta: {e}"
-        return {"reply": error_msg, "response": error_msg, "is_choice_needed": False}
+        return {
+            "reply": error_msg,
+            "response": error_msg,
+            "is_choice_needed": False,
+        }
     finally:
         llm_query_counter.inc()
         llm_query_requests.labels(status=status_label).inc()
         elapsed = time.time() - start_time
         llm_query_latency.observe(elapsed)
-        logging.info(f"[LLM_ENTRY {request_id}] Métricas. status={status_label}, latency={elapsed:.3f}s")
+        logging.info(
+            f"[LLM_ENTRY {request_id}] Métricas actualizadas. status={status_label}, latency={elapsed:.3f}s"
+        )
 
 
 @app.get("/me", response_model=MeResponse)
