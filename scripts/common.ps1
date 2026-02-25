@@ -183,15 +183,24 @@ function Get-ServicesByPid {
   }
 }
 
+function Test-ProcessAlive {
+  param([Parameter(Mandatory=$true)][int]$ProcessId)
+  if ($ProcessId -le 0) { return $false }
+  try { Get-Process -Id $ProcessId -ErrorAction Stop | Out-Null; return $true } catch { return $false }
+}
+
 function Stop-WindowsServiceRobust {
   param([Parameter(Mandatory=$true)][string]$ServiceName)
 
+  if (-not $ServiceName) { return }
   try { Stop-Service -Name $ServiceName -Force -ErrorAction SilentlyContinue } catch { }
-  try { sc.exe stop $ServiceName | Out-Null } catch { }
+  try { sc.exe stop $ServiceName *> $null } catch { }
 }
 
 function Stop-ProcessTreeRobust {
   param([Parameter(Mandatory=$true)][int]$ProcessId)
+
+  if (-not (Test-ProcessAlive -ProcessId $ProcessId)) { return }
 
   # Try soft tree kill via CIM first
   try {
@@ -205,13 +214,15 @@ function Stop-ProcessTreeRobust {
         Stop-ProcessTreeRobust -ProcessId $childId
       }
     }
-    try { Stop-Process -Id $ProcessId -Force -ErrorAction SilentlyContinue } catch { }
+    if (Test-ProcessAlive -ProcessId $ProcessId) {
+      try { Stop-Process -Id $ProcessId -Force -ErrorAction SilentlyContinue } catch { }
+    }
   } catch { }
 
   # Hard fallback: taskkill /T /F (kills full tree reliably)
-  try {
-    taskkill /PID $ProcessId /T /F | Out-Null
-  } catch { }
+  if (Test-ProcessAlive -ProcessId $ProcessId) {
+    try { taskkill /PID $ProcessId /T /F *> $null } catch { }
+  }
 }
 
 function Ensure-PortFreeRobust {
@@ -575,10 +586,14 @@ function Stop-ServiceProcess {
   # 2) Kill wrapper PID if present
   $wrapperProc = Read-PidFileSafe -PidFile $pidFile
   if ($wrapperProc) {
-    try {
-      Write-Host "[$name] STOP wrapper PID $wrapperProc"
-      Stop-ProcessTreeRobust -ProcessId $wrapperProc
-    } catch { }
+    if (Test-ProcessAlive -ProcessId $wrapperProc) {
+      try {
+        Write-Host "[$name] STOP wrapper PID $wrapperProc"
+        Stop-ProcessTreeRobust -ProcessId $wrapperProc
+      } catch { }
+    } else {
+      Write-Host "[$name] wrapper PID $wrapperProc ya no existe."
+    }
   }
 
   if (Test-Path $pidFile) { Remove-Item $pidFile -Force -ErrorAction SilentlyContinue }
