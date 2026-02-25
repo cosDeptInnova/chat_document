@@ -1,6 +1,6 @@
 from datetime import datetime
 from sqlalchemy import (
-    Column, Integer, String, ForeignKey, Text, DateTime,
+    Column, Integer, String, ForeignKey, Text, DateTime, BigInteger,
     Enum, JSON, Float, Numeric, Table
 )
 from sqlalchemy.orm import relationship
@@ -75,6 +75,7 @@ class File(Base):
         nullable=False
     )
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    file_size = Column(BigInteger, default=0)
 
     user = relationship('User')
     department = relationship('Department')
