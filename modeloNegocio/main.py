@@ -201,99 +201,6 @@ def _compact_snippet(text: str, limit: int = 420) -> str:
     return f"{cleaned[: limit - 1].rstrip()}…"
 
 
-def _safe_positive_int(value: Any) -> Optional[int]:
-    """Convierte un valor potencialmente heterogéneo a entero positivo."""
-    if value is None:
-        return None
-    try:
-        if isinstance(value, bool):
-            return None
-        if isinstance(value, (int, float)):
-            parsed = int(value)
-        else:
-            text = str(value).strip()
-            if not text:
-                return None
-            parsed = int(float(text))
-        return parsed if parsed > 0 else None
-    except Exception:
-        return None
-
-
-def _parse_int_like(value: Any) -> Optional[int]:
-    if value is None:
-        return None
-    try:
-        if isinstance(value, bool):
-            return None
-        return int(float(str(value).strip()))
-    except Exception:
-        return None
-
-
-def _normalize_page(raw_value: Any, zero_based: bool) -> Optional[int]:
-    parsed = _parse_int_like(raw_value)
-    if parsed is None or parsed < 0:
-        return None
-    if zero_based:
-        return parsed + 1
-    return parsed if parsed > 0 else 1
-
-
-def _resolve_page_number(meta: Dict[str, Any], fallback_page: Any = None) -> int:
-    """Resuelve página 1-based priorizando señales explícitas y corrigiendo índices base-0."""
-    if not isinstance(meta, dict):
-        meta = {}
-
-    # page/page_index suelen venir base-0 desde el indexador
-    for key in ("page", "page_index"):
-        val = _normalize_page(meta.get(key), zero_based=True)
-        if val is not None:
-            return val
-
-    # page_number/pdf_page suelen venir ya 1-based
-    for key in ("page_number", "pdf_page"):
-        val = _normalize_page(meta.get(key), zero_based=False)
-        if val is not None:
-            return val
-
-    # fallback top-level de /search (si existe)
-    val = _normalize_page(fallback_page, zero_based=False)
-    if val is not None:
-        return val
-
-    return 1
-
-
-def _resolve_fragment_number(meta: Dict[str, Any]) -> Optional[int]:
-    fragment_candidates = [
-        meta.get("fragment"),
-        meta.get("fragment_index"),
-        meta.get("source_fragment_index"),
-        meta.get("chunk_index"),
-        meta.get("local_chunk_index"),
-    ]
-
-    for raw in fragment_candidates:
-        if raw is None:
-            continue
-        try:
-            parsed = int(float(str(raw).strip()))
-            return parsed + 1 if parsed >= 0 else None
-        except Exception:
-            continue
-    return None
-
-
-def _compact_snippet(text: str, limit: int = 420) -> str:
-    cleaned = re.sub(r"\s+", " ", str(text or "")).strip()
-    if not cleaned:
-        return ""
-    if len(cleaned) <= limit:
-        return cleaned
-    return f"{cleaned[: limit - 1].rstrip()}…"
-
-
 class QueryRequest(BaseModel):
     message: Optional[str] = None
     prompt: Optional[str] = None
@@ -1743,7 +1650,7 @@ async def handle_query_to_llm(
                     continue
 
                 meta = r.get("meta") or r.get("payload") or {}
-                page_number = _resolve_page_number(meta, fallback_page=r.get("page"))
+                page_number = _resolve_page_number(meta)
                 fragment_number = _resolve_fragment_number(meta)
                 snippet = _compact_snippet(r.get("text") or "")
 
@@ -1776,7 +1683,7 @@ async def handle_query_to_llm(
                 # también incluimos similares como apoyo para UI de trazabilidad
                 for similar in r.get("similar_blocks") or []:
                     similar_meta = similar.get("meta") or {}
-                    similar_page = _resolve_page_number(similar_meta, fallback_page=similar.get("page"))
+                    similar_page = _resolve_page_number(similar_meta)
                     similar_fragment = _resolve_fragment_number(similar_meta)
                     similar_snippet = _compact_snippet(similar.get("text") or "")
                     if not similar_snippet:
