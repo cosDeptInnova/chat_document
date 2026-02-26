@@ -1,0 +1,26 @@
+redis_url: "redis://localhost:6379/0"
+data_dir: "./data"
+
+# Dev: 1 GPU (4090)
+queues:
+  - name: "asr:gpu0"
+    cuda_visible_devices: "0"
+
+default_queue: "asr:gpu0"
+
+whisper_model: "large-v3"
+compute_type: "float16"
+asr_device: "cuda"
+
+diarization_enabled: 1
+pyannote_pipeline_path: ""   # set in .env or here (local path)
+diarization_device: "cuda"
+
+ffmpeg_path: "C:\\Users\\ruben\\AppData\\Local\\Microsoft\\WinGet\\Links\\ffmpeg.exe"
+
+allowed_upload_exts: [".wav", ".mp3", ".m4a", ".mp4", ".ogg", ".flac", ".webm"]
+
+job_timeout_seconds: 3600
+result_ttl_seconds: 604800
+failure_ttl_seconds: 604800
+wait_max_seconds: 60

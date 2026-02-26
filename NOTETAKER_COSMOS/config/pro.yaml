@@ -1,0 +1,53 @@
+redis_url: "redis://:694c60ba-d2e4-8333-8ea7-999b36b23e2e@127.0.0.1:6380/0"
+data_dir: "./data"
+
+# Pro: 2 GPUs (2x L40S)
+# Recomendación: 1 worker por GPU queue (y diarización siempre CPU dentro del job)
+queues:
+  - name: "asr:gpu0"
+    cuda_visible_devices: "0"
+  - name: "asr:gpu1"
+    cuda_visible_devices: "1"
+  # Opcional: cola CPU para fallback cuando la VRAM esté muy justa
+  - name: "asr:cpu"
+    cuda_visible_devices: ""
+
+default_queue: "asr:gpu0"
+
+# --- ASR (faster-whisper) ---
+# Ruta LOCAL al directorio del modelo convertido (CT2). Carga 100% offline.
+whisper_model: "C:\\Users\\ADM-mcabo\\Documents\\01.-MODELOS_LLM\\ASR_MODELS\\whisper"
+
+# Para limitar VRAM: int8_float16 suele ir bien; si aún te aprieta, usa int8.
+compute_type: "int8_float16"
+asr_device: "cuda"
+
+# VRAM budget estricto (<= 5GB) + margen de seguridad para coexistir con LLMs
+asr_vram_budget_mb: 5120
+asr_vram_headroom_mb: 512
+
+# En GPUs compartidas con LLMs: NO mantener el modelo residente entre jobs
+asr_keep_model_loaded: 0
+
+# Permite fallback a CPU si no hay VRAM (evita OOM)
+asr_allow_cpu_fallback: 1
+
+# --- Diarización (pyannote) ---
+diarization_enabled: 1
+
+# Ruta LOCAL al config.yaml (pipeline)
+pyannote_pipeline_path: "C:\\Users\\ADM-mcabo\\Documents\\01.-MODELOS_LLM\\ASR_MODELS\\pyannote\\config.yaml"
+
+# OBLIGATORIO por tu requisito: diarización en CPU
+diarization_device: "cpu"
+
+# ffmpeg
+ffmpeg_path: "C:\\Users\\ADM-mcabo\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-8.0.1-full_build\\bin\\ffmpeg.exe"
+
+
+allowed_upload_exts: [".wav", ".mp3", ".m4a", ".mp4", ".ogg", ".flac", ".webm"]
+
+job_timeout_seconds: 7200
+result_ttl_seconds: 604800
+failure_ttl_seconds: 604800
+wait_max_seconds: 60

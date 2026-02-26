@@ -1,0 +1,4 @@
+# Instala esto SOLO si quieres diarización pyannote en el mismo entorno.
+# Requiere PyTorch (instala el wheel CUDA adecuado para tu entorno/driver).
+torch>=2.2
+pyannote.audio>=3.1.1
