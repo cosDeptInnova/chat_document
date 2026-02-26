@@ -19,11 +19,15 @@ export default function PdfViewerModal ({ isOpen, onClose, fileUrl, fileName, pa
   }, [source, page]);
 
   const [activePage, setActivePage] = useState(page || source?.page || null);
+  const [activeFragmentIndex, setActiveFragmentIndex] = useState(0);
+  const [expandedFragments, setExpandedFragments] = useState({});
 
   useEffect(() => {
     if (isOpen) {
       setVisible(true);
       setActivePage(page || source?.page || fragments?.[0]?.page || null);
+      setActiveFragmentIndex(0);
+      setExpandedFragments({});
     }
   }, [isOpen, page, source, fragments]);
 
@@ -48,7 +52,16 @@ export default function PdfViewerModal ({ isOpen, onClose, fileUrl, fileName, pa
   const isText = ['txt'].includes(ext);
   const isPreviewable = isPdf || isImage || isText;
 
+  const activeFragment = fragments[activeFragmentIndex] || null;
+
   const viewerUrl = isPdf && activePage ? `${fileUrl}#page=${activePage}` : fileUrl;
+
+  const toggleFragmentExpanded = (idx) => {
+    setExpandedFragments((prev) => ({
+      ...prev,
+      [idx]: !prev[idx],
+    }));
+  };
 
   return (
     <div
@@ -87,27 +100,69 @@ export default function PdfViewerModal ({ isOpen, onClose, fileUrl, fileName, pa
             <div className="space-y-1.5">
               {fragments.map((fragment, idx) => {
                 const fragmentPage = fragment?.page || null;
-                const buttonClass = fragmentPage && fragmentPage === activePage
+                const selected = idx === activeFragmentIndex;
+                const buttonClass = selected
                   ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30'
                   : 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900';
+                const isExpanded = Boolean(expandedFragments[idx]);
                 return (
                   <button
                     key={`${fragmentPage || 'np'}-${fragment?.fragment || idx}-${idx}`}
                     type="button"
-                    onClick={() => fragmentPage && setActivePage(fragmentPage)}
+                    onClick={() => {
+                      setActiveFragmentIndex(idx);
+                      if (fragmentPage) setActivePage(fragmentPage);
+                    }}
                     className={`w-full text-left p-2 rounded-md border ${buttonClass} hover:border-blue-400 transition-colors`}
-                    disabled={!fragmentPage}
                   >
-                    <div className="text-[10px] md:text-xs text-gray-600 dark:text-gray-300 font-medium mb-0.5">
-                      {fragmentPage ? `Página ${fragmentPage}` : 'Sin página'}{fragment?.fragment ? ` · Fragmento ${fragment.fragment}` : ''}
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="text-[10px] md:text-xs text-gray-600 dark:text-gray-300 font-medium mb-0.5">
+                        {fragmentPage ? `Página ${fragmentPage}` : 'Fragmento sin página'}{fragment?.fragment ? ` · Fragmento ${fragment.fragment}` : ''}
+                      </div>
+                      <span className="text-[10px] text-blue-600 dark:text-blue-400 shrink-0">
+                        {selected ? 'Activo' : 'Abrir'}
+                      </span>
                     </div>
-                    <div className="text-[10px] md:text-xs text-gray-500 dark:text-gray-400 line-clamp-2">
+                    <div className={`text-[10px] md:text-xs text-gray-500 dark:text-gray-400 ${isExpanded ? '' : 'line-clamp-2'}`}>
                       {fragment?.snippet || 'Fragmento recuperado del índice RAG.'}
                     </div>
+                    {(fragment?.snippet || '').length > 160 && (
+                      <div className="mt-1">
+                        <span
+                          role="button"
+                          tabIndex={0}
+                          className="text-[10px] text-blue-600 dark:text-blue-400 hover:underline"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleFragmentExpanded(idx);
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              toggleFragmentExpanded(idx);
+                            }
+                          }}
+                        >
+                          {isExpanded ? 'Ver menos' : 'Ver más'}
+                        </span>
+                      </div>
+                    )}
                   </button>
                 );
               })}
             </div>
+          </div>
+        )}
+
+        {activeFragment && (
+          <div className="px-3 py-2 md:px-3.5 md:py-2.5 2xl:px-4 border-b border-gray-200 dark:border-gray-700 bg-blue-50/70 dark:bg-blue-900/20">
+            <div className="text-[11px] md:text-xs font-semibold text-blue-700 dark:text-blue-300 mb-1 uppercase tracking-wide">
+              Fragmento seleccionado
+            </div>
+            <p className="text-[10px] md:text-xs text-gray-700 dark:text-gray-200 whitespace-pre-wrap">
+              {activeFragment?.snippet || 'Fragmento recuperado del índice RAG.'}
+            </p>
           </div>
         )}
 
