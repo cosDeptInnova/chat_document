@@ -137,6 +137,28 @@ class Settings(BaseSettings):
     # Tu IA
     ai_service_url: str
     ai_service_api_key: Optional[str] = None
+
+    # Índice híbrido (Neo4j + Qdrant)
+    hybrid_rag_ingest_url: Optional[str] = Field(
+        None,
+        description="URL completa del endpoint /ingest del microservicio Hybrid RAG",
+    )
+    hybrid_rag_api_key: Optional[str] = Field(
+        None,
+        description="API key opcional para autenticación en Hybrid RAG",
+    )
+    hybrid_rag_timeout_seconds: int = Field(
+        20,
+        ge=5,
+        le=120,
+        description="Timeout por intento para enviar payloads al endpoint /ingest de Hybrid RAG",
+    )
+    hybrid_rag_max_retries: int = Field(
+        3,
+        ge=1,
+        le=10,
+        description="Máximo de intentos de reenvío al endpoint /ingest de Hybrid RAG",
+    )
     
     # Storage
     storage_type: str = "local"  # local or s3
