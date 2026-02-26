@@ -117,6 +117,16 @@ export const useCases = [
     initialMessage: "Hola, ¿qué cuestión legal quieres explorar en profundidad?",
   },
   {
+    title: "Reuniones Notetaker (privadas)",
+    description: "Consulta la base híbrida de reuniones (Qdrant + grafo) con control estricto por participante/invitado",
+    departments: ["Más usados", "RRHH", "Administración", "Comunicación", "Comercial"],
+    icon: BookOpenIcon,
+    tab: "nuevo",
+    popularity: 8,
+    engine: "notetaker_meetings",
+    initialMessage: "Hola, puedo ayudarte con reuniones en las que hayas participado o sido invitado.",
+  },
+  {
     title: "Hablar con documentos",
     description: "Sube cualquier archivo de texto grande e interactúa con ello mediante una de las crews de Cosmos",
     departments: ["Más usados", "RRHH", "Administración", "Comunicación", "Comercial"],

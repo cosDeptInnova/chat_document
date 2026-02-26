@@ -955,6 +955,21 @@ export async function sendLegalSearchMessage({
   });
 }
 
+export async function sendNotetakerMeetingsMessage({
+  prompt,
+  limit = 5,
+  history = [],
+}) {
+  return apiFetch("/integrations/notetaker/meetings/query", {
+    method: "POST",
+    body: {
+      prompt,
+      limit,
+      history,
+    },
+  });
+}
+
 export async function fetchNotetakerSsoUrl() {
   const url = `/api/notetaker/sso-url`;
 

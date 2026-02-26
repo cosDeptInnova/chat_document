@@ -96,6 +96,12 @@ AUTH_SSO_PUBLIC_BASE = os.getenv(
     "AUTH_SSO_PUBLIC_BASE",
     AUTH_SSO_INTERNAL_BASE,
 ).rstrip("/")
+NOTETAKER_HYBRID_RAG_QUERY_URL = os.getenv(
+    "NOTETAKER_HYBRID_RAG_QUERY_URL",
+    "http://localhost:8001/query",
+).strip()
+NOTETAKER_HYBRID_INTERNAL_CLIENT = os.getenv("NOTETAKER_HYBRID_INTERNAL_CLIENT", "modelo_negocio").strip()
+NOTETAKER_HYBRID_INTERNAL_SECRET = os.getenv("NOTETAKER_HYBRID_INTERNAL_SECRET", "").strip()
 _USER_LLM_LOCKS: "OrderedDict[str, asyncio.Lock]" = OrderedDict()
 _USER_LLM_LOCKS_MAX = int(os.getenv("LLM_USER_LLM_LOCKS_MAX", "5000"))
 
@@ -219,6 +225,12 @@ class ImagePromptRequest(BaseModel):
     prompt: str
     context: Optional[str] = ""
     image_data: str
+
+
+class NotetakerMeetingsQueryRequest(BaseModel):
+    prompt: str
+    limit: Optional[int] = 5
+    history: Optional[List[Dict[str, Any]]] = None
 
 class ContextRequest(BaseModel):
     context: str
@@ -2169,6 +2181,77 @@ async def notetaker_sso_url(
     except Exception as e:
         logger.exception("notetaker_sso_url: 500 inesperado: %s", e)
         raise HTTPException(status_code=500, detail="Error interno generando SSO URL.")
+
+
+@app.post("/integrations/notetaker/meetings/query", response_model=dict)
+async def query_notetaker_meetings(
+    payload: NotetakerMeetingsQueryRequest,
+    request: Request,
+    auth: Dict[str, Any] = Depends(get_current_auth),
+):
+    """
+    Proxy seguro hacia NOTETAKER_HYBRID_RAG_QUERY_URL.
+    Reutiliza autenticación SSO/sesión del modelo de negocio y fuerza aislamiento por user_id.
+    """
+    validate_csrf(request)
+
+    prompt = (payload.prompt or "").strip()
+    if not prompt:
+        raise HTTPException(status_code=400, detail="El prompt no puede estar vacío.")
+
+    user_id = str(auth["user_id"])
+    session_data = auth.get("session") or {}
+
+    upstream_body: Dict[str, Any] = {
+        "query": prompt,
+        "user_id": user_id,
+        "limit": max(1, min(int(payload.limit or 5), 30)),
+        "history": payload.history or [],
+        "request_context": {
+            "username": session_data.get("username"),
+            "email": session_data.get("email"),
+            "full_name": session_data.get("name") or session_data.get("username"),
+        },
+    }
+
+    headers = {
+        "Authorization": f"Bearer {auth['access_token']}",
+        "X-Request-ID": request.headers.get("X-Request-ID", str(uuid.uuid4())),
+        "X-Internal-Client": NOTETAKER_HYBRID_INTERNAL_CLIENT,
+    }
+    if NOTETAKER_HYBRID_INTERNAL_SECRET:
+        headers["X-Internal-Secret"] = NOTETAKER_HYBRID_INTERNAL_SECRET
+
+    try:
+        async with httpx.AsyncClient(timeout=45.0) as client:
+            resp = await client.post(
+                NOTETAKER_HYBRID_RAG_QUERY_URL,
+                json=upstream_body,
+                headers=headers,
+                cookies={"access_token": f"Bearer {auth['access_token']}"},
+            )
+    except Exception as e:
+        logger.exception("query_notetaker_meetings: error de red hacia híbrido: %s", e)
+        raise HTTPException(status_code=502, detail="No se pudo contactar con el motor de reuniones.")
+
+    if resp.status_code >= 400:
+        detail = None
+        try:
+            detail = (resp.json() or {}).get("detail")
+        except Exception:
+            detail = resp.text[:500]
+        raise HTTPException(status_code=resp.status_code, detail=detail or "Error consultando reuniones.")
+
+    data = resp.json()
+    assistant = data.get("assistant_response") or {}
+
+    return {
+        "reply": assistant.get("final_answer") or data.get("message") or "No se obtuvo respuesta.",
+        "response": assistant.get("final_answer") or data.get("message") or "No se obtuvo respuesta.",
+        "sources": data.get("context_package") or [],
+        "query_plan": data.get("query_plan") or {},
+        "results_found": data.get("results_found") or 0,
+    }
     
 if __name__ == "__main__":
     public_url = ngrok.connect(8000)
