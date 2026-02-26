@@ -21,6 +21,7 @@ from difflib import SequenceMatcher
 import re
 from jose import JWTError, jwt
 from sqlalchemy.orm import Session
+from sqlalchemy import desc
 from config.database import get_db
 from config.models import User, File as FileModel, AuditLog, Department
 from pathlib import Path
@@ -172,6 +173,28 @@ def generate_csrf_token() -> str:
     Genera un token CSRF aleatorio y seguro.
     """
     return secrets.token_urlsafe(32)
+
+
+def _normalize_user_filename(filename: str) -> str:
+    """
+    Normaliza nombre de archivo enviado por el cliente para evitar path traversal.
+    """
+    safe_name = os.path.basename((filename or "").strip())
+    if not safe_name or safe_name in {".", ".."}:
+        raise HTTPException(status_code=400, detail="Nombre de archivo inválido.")
+    return safe_name
+
+
+def _safe_target_file_path(target_directory: Path, filename: str) -> Path:
+    """
+    Construye ruta segura dentro de target_directory; bloquea escapes tipo ../
+    """
+    safe_name = _normalize_user_filename(filename)
+    candidate = (target_directory / safe_name).resolve()
+    base = target_directory.resolve()
+    if not str(candidate).startswith(str(base) + os.sep):
+        raise HTTPException(status_code=400, detail="Ruta de archivo inválida.")
+    return candidate
 
 
 def validate_csrf(request: Request) -> None:
@@ -1121,7 +1144,8 @@ async def upload_file(
     uploaded_files = []
 
     for f in files:
-        file_path = target_directory / f.filename
+        safe_filename = _normalize_user_filename(f.filename)
+        file_path = _safe_target_file_path(target_directory, safe_filename)
 
         # Leemos el contenido, calculamos el tamaño y escribimos
         async with aiofiles.open(file_path, 'wb') as out_file:
@@ -1135,17 +1159,37 @@ async def upload_file(
         uploaded_files.append(str(file_path))
 
         # -------- Persistencia real en BD --------
-        file_record = FileModel(
-            user_id=user_id,
-            department_id=department_obj.id if department_obj else None,
-            file_path=str(file_path),
-            file_name=f"[CONOCIMIENTO] {f.filename}",
-            permission='READ',  # Enum('READ', 'WRITE', 'NONE')
-            created_at=datetime.utcnow(),
-            file_size = file_size_bytes
-        )
+        existing_row = db.query(FileModel).filter(
+            FileModel.file_path == str(file_path)
+        ).order_by(desc(FileModel.created_at), desc(FileModel.id)).first()
 
-        db.add(file_record)
+        if existing_row:
+            existing_row.user_id = user_id
+            existing_row.department_id = department_obj.id if department_obj else None
+            existing_row.file_name = f"[CONOCIMIENTO] {safe_filename}"
+            existing_row.permission = 'READ'
+            existing_row.created_at = datetime.utcnow()
+            existing_row.file_size = file_size_bytes
+            file_record = existing_row
+        else:
+            file_record = FileModel(
+                user_id=user_id,
+                department_id=department_obj.id if department_obj else None,
+                file_path=str(file_path),
+                file_name=f"[CONOCIMIENTO] {safe_filename}",
+                permission='READ',  # Enum('READ', 'WRITE', 'NONE')
+                created_at=datetime.utcnow(),
+                file_size=file_size_bytes,
+            )
+            db.add(file_record)
+
+        # Limpieza defensiva de duplicados históricos del mismo path
+        dup_rows = db.query(FileModel).filter(
+            FileModel.file_path == str(file_path),
+            FileModel.id != file_record.id,
+        ).all()
+        for dup in dup_rows:
+            db.delete(dup)
 
         audit = AuditLog(
             user_id=user_id,
@@ -1251,8 +1295,33 @@ async def list_files(
             ).all()
 
         # Construcción Respuesta
+        latest_rows_by_path: Dict[str, FileModel] = {}
+        stale_paths: List[str] = []
+        for row in files_db:
+            path_obj = Path(row.file_path)
+            if not path_obj.exists() or not path_obj.is_file():
+                stale_paths.append(row.file_path)
+                continue
+
+            prev = latest_rows_by_path.get(row.file_path)
+            if prev is None:
+                latest_rows_by_path[row.file_path] = row
+                continue
+
+            prev_created = getattr(prev, "created_at", None) or datetime.min
+            row_created = getattr(row, "created_at", None) or datetime.min
+            if row_created >= prev_created:
+                latest_rows_by_path[row.file_path] = row
+
+        if stale_paths:
+            db.query(FileModel).filter(FileModel.file_path.in_(stale_paths)).delete(synchronize_session=False)
+
         response_files = []
-        for f in files_db:
+        for f in sorted(
+            latest_rows_by_path.values(),
+            key=lambda x: ((getattr(x, "created_at", None) or datetime.min), x.file_name),
+            reverse=True,
+        ):
             # Usamos getattr para seguridad extra por si el modelo no se actualizó en memoria
             raw_name = getattr(f, 'file_name', 'Desconocido')
             clean_name = raw_name.replace("[CONOCIMIENTO] ", "")
@@ -1351,21 +1420,21 @@ async def delete_files(
 
     dn_file = f"{index_base}_docnames.pkl"
     docs_file = f"{index_base}_documents.pkl"
-    if not os.path.exists(dn_file) or not os.path.exists(docs_file):
-        raise HTTPException(status_code=404, detail="Los archivos de índice no existen.")
 
-    #  Importante: invalidar cache antes de tocar datos (evita usar un indexer cacheado)
-    _invalidate_indexer_cache(str(index_base), str(indexer_user_id))
+    indexer = None
+    if os.path.exists(dn_file) and os.path.exists(docs_file):
+        #  Importante: invalidar cache antes de tocar datos (evita usar un indexer cacheado)
+        _invalidate_indexer_cache(str(index_base), str(indexer_user_id))
 
-    # Instanciar indexer en thread (bypass cache: vamos a mutar)
-    indexer = await asyncio.to_thread(
-        make_indexer,
-        files=None,
-        index_filepath=str(index_base),
-        user_id=indexer_user_id,
-        client_tag="",
-        use_cache=False,
-    )
+        # Instanciar indexer en thread (bypass cache: vamos a mutar)
+        indexer = await asyncio.to_thread(
+            make_indexer,
+            files=None,
+            index_filepath=str(index_base),
+            user_id=indexer_user_id,
+            client_tag="",
+            use_cache=False,
+        )
 
     raw_idx = await redis_client.get(redis_key)
     if raw_idx:
@@ -1382,17 +1451,19 @@ async def delete_files(
     errors: List[dict] = []
 
     for fn in filenames:
-        file_path = target_directory / fn
+        file_path = _safe_target_file_path(target_directory, fn)
         if not file_path.exists():
             not_found.append(fn)
+            db.query(FileModel).filter(FileModel.file_path == str(file_path)).delete(synchronize_session=False)
             continue
 
         try:
             file_path.unlink(missing_ok=False)
 
-            # delete_document_by_name en thread
-            removed_fragments = await asyncio.to_thread(indexer.delete_document_by_name, str(file_path))
-            logging.info(f"[delete_files] Eliminados {removed_fragments} fragmentos para '{file_path}'")
+            if indexer is not None:
+                # delete_document_by_name en thread
+                removed_fragments = await asyncio.to_thread(indexer.delete_document_by_name, str(file_path))
+                logging.info(f"[delete_files] Eliminados {removed_fragments} fragmentos para '{file_path}'")
 
             if department:
                 norm_file = os.path.normpath(str(file_path))
@@ -1402,9 +1473,7 @@ async def delete_files(
 
             deleted.append(fn)
 
-            file_row = db.query(FileModel).filter(FileModel.file_path == str(file_path)).first()
-            if file_row:
-                db.delete(file_row)
+            db.query(FileModel).filter(FileModel.file_path == str(file_path)).delete(synchronize_session=False)
 
             db.add(AuditLog(
                 user_id=user_id,
@@ -1421,7 +1490,10 @@ async def delete_files(
                 entity_id=0,
                 action="UPDATE",
                 old_data={"removed_file": fn},
-                new_data={"remaining_docs": len(indexer.documents)},
+                new_data={
+                    "remaining_docs": len(indexer.documents) if indexer is not None else None,
+                    "index_available": bool(indexer is not None),
+                },
                 timestamp=datetime.utcnow()
             ))
 
@@ -1448,7 +1520,8 @@ async def delete_files(
     db.commit()
 
     #  Importante: invalidar cache tras borrar (evita lecturas desfasadas)
-    _invalidate_indexer_cache(str(index_base), str(indexer_user_id))
+    if indexer is not None:
+        _invalidate_indexer_cache(str(index_base), str(indexer_user_id))
 
     result: dict = {"deleted": deleted}
     if not_found:
