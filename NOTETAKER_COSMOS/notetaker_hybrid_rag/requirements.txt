@@ -5,3 +5,4 @@ neo4j
 sentence-transformers
 langchain-text-splitters
 python-dotenv
+crewai

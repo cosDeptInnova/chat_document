@@ -1,14 +1,26 @@
-# Clase para Qdrant (Donde crearemos la colección y subiremos los vectores. La función es buscar porr significado)
+# Clase para Qdrant (Donde crearemos la colección y subiremos los vectores. La función es buscar por significado)
 
 import os
+import uuid
+from typing import Any, Dict, List, Optional
+
 from dotenv import load_dotenv
 from qdrant_client import QdrantClient
-from qdrant_client.models import Distance, VectorParams, PointStruct
-import uuid
+from qdrant_client.models import (
+    DatetimeRange,
+    Distance,
+    FieldCondition,
+    Filter,
+    MatchValue,
+    PointStruct,
+    Range,
+    VectorParams,
+)
 from sentence_transformers import SentenceTransformer
 
 # Cargamos las variables del archivo .env al inicio
 load_dotenv()
+
 
 class VectorDB:
     def __init__(self):
@@ -28,15 +40,14 @@ class VectorDB:
         # 2. Carga del Modelo
         try:
             self.model = SentenceTransformer(model_path)
-            
+
             # Detectamos el tamaño del vector del modelo automáticamente
             self.vector_size = self.model.get_sentence_embedding_dimension()
             print(f"Modelo cargado. Dimensión de vectores: {self.vector_size}")
         except Exception as e:
             print(f"Error cargando el modelo local: {e}. Asegúrate de que la ruta es correcta.")
-            # Si falla el modelo, paramos todo, ya que no podemos vectorizar.
             raise e
-        
+
         # 3.- Conectamos con Qdrant
         self.client = QdrantClient(host=host, port=port)
         self._create_collection_if_not_exists()
@@ -44,64 +55,113 @@ class VectorDB:
     def _create_collection_if_not_exists(self):
         """Crea la colección en Qdrant si no existe todavía."""
         try:
-            # Intentamos obtener la colección
             self.client.get_collection(collection_name=self.collection_name)
             print(f"Conectado a la colección: '{self.collection_name}'")
         except Exception:
-            # Si da error (404, porque no existe), la creamos
             print(f"Creando colección '{self.collection_name}' con tamaño {self.vector_size}...")
             self.client.create_collection(
                 collection_name=self.collection_name,
                 vectors_config=VectorParams(size=self.vector_size, distance=Distance.COSINE),
             )
             print(f"Colección '{self.collection_name}' creada con éxito.")
-    
-    # Modificado para recibir la lista de textos y la lista de payloads
-    def upsert_chunks(self, texts, payloads):
-        if not self.model: raise Exception("Modelo no cargado.")
-        if not texts: return []
-        
+
+    def upsert_chunks(self, texts: List[str], payloads: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        if not self.model:
+            raise Exception("Modelo no cargado.")
+        if not texts:
+            return []
+
         print(f"Vectorizando {len(texts)} fragmentos...")
         embeddings = self.model.encode(texts)
 
         points = []
-        chunk_metadata_list = [] # Para devolver a Neo4j
+        chunk_metadata_list = []
 
         for i, (vector, payload) in enumerate(zip(embeddings, payloads)):
             point_id = str(uuid.uuid4())
 
             chunk_metadata_list.append({
                 "chunk_id": point_id,
-                "index": payload.get("chunk_index", i)
+                "index": payload.get("chunk_index", i),
             })
 
-            points.append(PointStruct(
-                id=point_id,
-                vector=vector.tolist(),
-                payload=payload # Aquí va toda la metadata rica (doc_id, datetime, topics, etc.)
-            ))
-        
+            points.append(
+                PointStruct(
+                    id=point_id,
+                    vector=vector.tolist(),
+                    payload=payload,
+                )
+            )
+
         self.client.upsert(collection_name=self.collection_name, points=points)
         print(f"Subidos {len(texts)} chunks vectorizados a Qdrant.")
 
         return chunk_metadata_list
 
-    def search(self, query_text, limit=5):
-        """
-        Busca los fragmentos más parecidos a una pregunta.
-        """
+    def _build_filter(self, raw_filter: Optional[Dict[str, Any]]) -> Optional[Filter]:
+        if not raw_filter or not isinstance(raw_filter, dict):
+            return None
+
+        must_conditions: List[FieldCondition] = []
+        any_conditions: List[FieldCondition] = []
+
+        for item in raw_filter.get("must", []) or []:
+            if not isinstance(item, dict):
+                continue
+            key = str(item.get("key") or "").strip()
+            match_value = item.get("match")
+            if key and match_value is not None:
+                must_conditions.append(FieldCondition(key=key, match=MatchValue(value=match_value)))
+
+        for item in raw_filter.get("must_any", []) or []:
+            if not isinstance(item, dict):
+                continue
+            key = str(item.get("key") or "").strip()
+            match_value = item.get("match")
+            if key and match_value is not None:
+                any_conditions.append(FieldCondition(key=key, match=MatchValue(value=match_value)))
+
+        dt = raw_filter.get("datetime_range")
+        if isinstance(dt, dict):
+            dt_from = dt.get("from")
+            dt_to = dt.get("to")
+            if dt_from or dt_to:
+                try:
+                    must_conditions.append(
+                        FieldCondition(
+                            key="datetime",
+                            range=DatetimeRange(gte=dt_from, lte=dt_to),
+                        )
+                    )
+                except Exception:
+                    must_conditions.append(
+                        FieldCondition(
+                            key="datetime",
+                            range=Range(gte=dt_from, lte=dt_to),
+                        )
+                    )
+
+        if not must_conditions and not any_conditions:
+            return None
+
+        q_filter = Filter(must=must_conditions)
+        if any_conditions:
+            q_filter.should = any_conditions
+        return q_filter
+
+    def search(self, query_text: str, limit: int = 5, qdrant_filter: Optional[Dict[str, Any]] = None):
+        """Busca los fragmentos más parecidos a una pregunta con prefiltrado opcional."""
         if not self.model:
             return []
 
-        # Convertimos la pregunta del usuario en vector
         query_vector = self.model.encode(query_text).tolist()
-        
-        # Usamos query_points
+        query_filter = self._build_filter(qdrant_filter)
+
         response = self.client.query_points(
             collection_name=self.collection_name,
             query=query_vector,
-            limit=limit
+            limit=max(1, int(limit)),
+            query_filter=query_filter,
         )
-        
-        # Devuelve la lista de fragmentos encontrados
+
         return response.points
