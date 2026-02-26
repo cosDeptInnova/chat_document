@@ -5,6 +5,7 @@ import time
 import uuid
 from pathlib import Path
 from typing import Any, Dict, List, Optional
+from pathlib import Path
 
 from dotenv import load_dotenv
 from qdrant_client import QdrantClient
@@ -31,14 +32,8 @@ class VectorDB:
         port = int(os.getenv("QDRANT_PORT"))
         self.collection_name = os.getenv("QDRANT_COLLECTION")
 
-        local_embed_dir = os.getenv("LOCAL_EMBED_DIR")
-        embed_model_id = os.getenv("EMBED_MODEL_ID", "st-5")
-
-        if not local_embed_dir:
-            raise ValueError("ERROR CRÍTICO: No se ha definido LOCAL_EMBED_DIR en el archivo .env")
-
-        model_dir = Path(local_embed_dir).expanduser().resolve()
-        self.model = self._load_or_download_embedding_model(model_dir=model_dir, model_id=embed_model_id)
+        # 1.- Cargamos/descargamos el modelo de embeddings local con caché persistente
+        self.model = self._load_or_download_embedding_model()
 
         # Detectamos el tamaño del vector del modelo automáticamente
         self.vector_size = self.model.get_sentence_embedding_dimension()
@@ -47,6 +42,38 @@ class VectorDB:
         # 3.- Conectamos con Qdrant
         self.client = QdrantClient(host=host, port=port)
         self._create_collection_if_not_exists()
+
+
+    def _load_or_download_embedding_model(self) -> SentenceTransformer:
+        """
+        Carga el modelo ST-5 desde disco local y, si no existe, lo descarga una sola vez
+        al directorio LOCAL_EMBED_DIR para reutilizarlo en futuras ejecuciones.
+        """
+        local_embed_dir = (os.getenv("LOCAL_EMBED_DIR") or "").strip()
+        if not local_embed_dir:
+            raise ValueError("ERROR CRÍTICO: No se ha definido LOCAL_EMBED_DIR en el archivo .env")
+
+        model_source = (os.getenv("EMBED_MODEL_NAME") or "sentence-transformers/sentence-t5-base").strip()
+        model_dir = Path(local_embed_dir).expanduser().resolve()
+        model_dir.mkdir(parents=True, exist_ok=True)
+
+        config_file = model_dir / "config.json"
+        modules_file = model_dir / "modules.json"
+        model_exists = config_file.exists() and modules_file.exists()
+
+        if model_exists:
+            print(f"Cargando modelo de embeddings desde caché local: {model_dir}")
+            return SentenceTransformer(str(model_dir))
+
+        print(
+            "Modelo de embeddings local no encontrado. "
+            f"Descargando '{model_source}' por única vez en: {model_dir}"
+        )
+
+        model = SentenceTransformer(model_source)
+        model.save(str(model_dir))
+        print(f"Modelo guardado en caché local: {model_dir}")
+        return model
 
     def _load_or_download_embedding_model(self, model_dir: Path, model_id: str) -> SentenceTransformer:
         model_dir.mkdir(parents=True, exist_ok=True)
