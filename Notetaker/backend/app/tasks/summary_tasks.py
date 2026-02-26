@@ -1,9 +1,11 @@
 """Celery tasks for meeting summary processing with IA."""
 from datetime import datetime, timezone
+import uuid
 from celery import Task
 from app.celery_app import celery_app
 from app.database import SessionLocal
 from app.models.summary import Summary
+from app.models.meeting import Meeting
 from app.config import settings
 import httpx
 import logging
@@ -11,6 +13,107 @@ from typing import Any, Dict, List
 from celery.exceptions import Retry
 
 logger = logging.getLogger(__name__)
+
+
+def _build_hybrid_rag_payload(
+    meeting_id: str,
+    ia_data: Dict[str, Any],
+    meeting: Meeting | None,
+) -> Dict[str, Any]:
+    """Construye payload enriquecido para /ingest de Hybrid RAG con metadatos auditables."""
+    payload = dict(ia_data or {})
+    payload["meeting_id"] = meeting_id
+
+    if meeting is not None:
+        payload.setdefault("user_id", meeting.user_id)
+        payload.setdefault("file_name", meeting.title or f"meeting-{meeting_id}")
+        payload.setdefault("source_path", meeting.meeting_url)
+
+        if meeting.actual_start_time:
+            payload.setdefault("meeting_datetime", meeting.actual_start_time.isoformat())
+        elif meeting.scheduled_start_time:
+            payload.setdefault("meeting_datetime", meeting.scheduled_start_time.isoformat())
+
+    payload.setdefault("ingest_source", "notetaker_backend.summary_tasks")
+    payload.setdefault("ingest_version", "v1")
+    return payload
+
+
+def _send_to_hybrid_rag_ingest(
+    meeting_id: str,
+    ia_data: Dict[str, Any],
+    meeting: Meeting | None,
+) -> Dict[str, Any]:
+    """Envía el resultado de /analyze_vexa al endpoint /ingest sin romper el flujo principal."""
+    ingest_url = (settings.hybrid_rag_ingest_url or "").strip()
+    if not ingest_url:
+        return {"status": "disabled", "reason": "HYBRID_RAG_INGEST_URL no configurada"}
+
+    request_id = str(uuid.uuid4())
+    payload = _build_hybrid_rag_payload(meeting_id=meeting_id, ia_data=ia_data, meeting=meeting)
+
+    headers = {
+        "Content-Type": "application/json",
+        "X-Request-ID": request_id,
+        "X-Meeting-ID": meeting_id,
+    }
+    if settings.hybrid_rag_api_key:
+        headers["Authorization"] = f"Bearer {settings.hybrid_rag_api_key}"
+        headers["X-API-Key"] = settings.hybrid_rag_api_key
+
+    timeout_seconds = int(settings.hybrid_rag_timeout_seconds)
+    max_retries = int(settings.hybrid_rag_max_retries)
+    backoff_schedule = [1, 2, 4, 8]
+
+    last_error = None
+    for attempt in range(1, max_retries + 1):
+        try:
+            logger.info(
+                "📚 [CELERY] Enviando a Hybrid RAG (attempt=%s/%s meeting_id=%s request_id=%s)",
+                attempt,
+                max_retries,
+                meeting_id,
+                request_id,
+            )
+            response = httpx.post(
+                ingest_url,
+                json=payload,
+                headers=headers,
+                timeout=timeout_seconds,
+                verify=settings.ssl_verify,
+            )
+
+            if response.status_code in (200, 201):
+                return {
+                    "status": "success",
+                    "http_status": response.status_code,
+                    "request_id": request_id,
+                    "body": response.json() if response.content else {},
+                }
+
+            # 409 es idempotente/esperable cuando la reunión ya fue indexada.
+            if response.status_code == 409:
+                return {
+                    "status": "already_indexed",
+                    "http_status": 409,
+                    "request_id": request_id,
+                    "body": response.json() if response.content else {},
+                }
+
+            last_error = f"HTTP {response.status_code}: {response.text[:300]}"
+        except Exception as ex:  # noqa: BLE001
+            last_error = str(ex)
+
+        if attempt < max_retries:
+            import time
+
+            time.sleep(backoff_schedule[min(attempt - 1, len(backoff_schedule) - 1)])
+
+    return {
+        "status": "failed",
+        "request_id": request_id,
+        "error": last_error or "Error desconocido al invocar /ingest",
+    }
 
 
 def _parse_iso_to_seconds(s: str, base_seconds: float = 0.0) -> float:
@@ -403,9 +506,25 @@ def process_meeting_summary(self, meeting_id: str):
             # Éxito
             ia_data = ia_response.json()
             logger.info(f"✅ [CELERY] Respuesta IA recibida")
-            
+
+            meeting = db.query(Meeting).filter(Meeting.id == meeting_id).first()
+            hybrid_rag_result = _send_to_hybrid_rag_ingest(
+                meeting_id=meeting_id,
+                ia_data=ia_data,
+                meeting=meeting,
+            )
+            logger.info(
+                "📚 [CELERY] Resultado Hybrid RAG meeting_id=%s status=%s request_id=%s",
+                meeting_id,
+                hybrid_rag_result.get("status"),
+                hybrid_rag_result.get("request_id"),
+            )
+
+            ia_data_with_audit = dict(ia_data)
+            ia_data_with_audit["hybrid_rag_ingest"] = hybrid_rag_result
+
             summary.toon = ia_data.get("toon")
-            summary.ia_response_json = ia_data
+            summary.ia_response_json = ia_data_with_audit
             summary.processing_status = "completed"
             summary.is_final = True
             
@@ -416,8 +535,8 @@ def process_meeting_summary(self, meeting_id: str):
             # Legacy
             if ia_data.get("toon"):
                 summary.summary_text = ia_data.get("toon")
-            if ia_data.get("insights"):
-                summary.summary_json = ia_data.get("insights")
+            if ia_data_with_audit.get("insights"):
+                summary.summary_json = ia_data_with_audit.get("insights")
                 
             db.commit()
             return {"success": True, "meeting_id": meeting_id, "time": processing_time}

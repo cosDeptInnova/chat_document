@@ -7,7 +7,7 @@ import uvicorn
 from classes.graph_db import GraphDB
 from classes.vector_db import VectorDB
 from dotenv import load_dotenv
-from fastapi import Body, FastAPI, HTTPException, Response, status
+from fastapi import Body, FastAPI, HTTPException, Request, Response, status
 from hybrid_crew_orchestrator import HybridRAGCrewOrchestrator
 from pydantic import BaseModel, Field
 from utils import extract_chunks_and_metadata
@@ -45,22 +45,28 @@ def health_check():
 
 
 @app.post("/ingest")
-async def ingest_meeting(data: dict = Body(...), response: Response = None):
+async def ingest_meeting(
+    request: Request,
+    data: dict = Body(...),
+    response: Response = None,
+):
+    request_id = request.headers.get("x-request-id") or "n/a"
+    meeting_id = data.get("meeting_id") or data.get("charts_id")
+
     try:
-        meeting_id = data.get("meeting_id") or data.get("charts_id")
 
         if not meeting_id:
             raise HTTPException(status_code=400, detail="Faltan datos: meeting_id o charts_id")
 
         if neo_client.check_meeting_exists(meeting_id):
-            print(f"[AVISO] La reunión {meeting_id} ya fue indexada. Abortando.")
+            print(f"[INGEST][request_id={request_id}] [AVISO] La reunión {meeting_id} ya fue indexada. Abortando.")
             response.status_code = status.HTTP_409_CONFLICT
             return {
                 "status": "skipped",
                 "message": f"La reunión {meeting_id} ya existe en el sistema.",
             }
 
-        print(f"Procesando NUEVA reunión: {meeting_id}...")
+        print(f"[INGEST][request_id={request_id}] Procesando NUEVA reunión: {meeting_id}...")
 
         texts_to_vectorize, payloads = extract_chunks_and_metadata(data)
 
@@ -83,8 +89,10 @@ async def ingest_meeting(data: dict = Body(...), response: Response = None):
             "storage_report": {"qdrant_chunks": len(texts_to_vectorize), "neo4j_topics": len(temas)},
         }
 
+    except HTTPException:
+        raise
     except Exception as e:
-        print(f"ERROR PROCESANDO REUNIÓN: {str(e)}")
+        print(f"[INGEST][request_id={request_id}] ERROR PROCESANDO REUNIÓN: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Error en el pipeline híbrido: {str(e)}")
 
 
