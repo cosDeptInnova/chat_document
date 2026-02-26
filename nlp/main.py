@@ -1266,6 +1266,7 @@ async def list_files(
 
         user_departments = session.get("departments", [])
         files_db = []
+        active_directory: Optional[Path] = None
 
         # Lógica Departamento
         if department:
@@ -1275,6 +1276,8 @@ async def list_files(
             )
             if not department_data:
                 raise HTTPException(status_code=403, detail=f"No tiene acceso al departamento {department}.")
+
+            active_directory = (PATH_BASE_DEPARTMENTS / department_data["department_directory"] / "uploaded_files").resolve()
 
             dept_obj = db.query(Department).filter(
                 Department.department_directory == department
@@ -1289,13 +1292,18 @@ async def list_files(
 
         # Lógica Personal
         else:
+            user_directory = session.get("user_directory")
+            if not user_directory:
+                raise HTTPException(status_code=400, detail="Directorio de usuario no disponible en sesión.")
+
+            active_directory = (PATH_BASE / user_directory / "uploaded_files").resolve()
             files_db = db.query(FileModel).filter(
                 FileModel.user_id == user_id,
                 FileModel.department_id == None
             ).all()
 
         # Construcción Respuesta
-        latest_rows_by_path: Dict[str, FileModel] = {}
+        latest_rows_by_name: Dict[str, FileModel] = {}
         stale_paths: List[str] = []
         for row in files_db:
             path_obj = Path(row.file_path)
@@ -1303,22 +1311,34 @@ async def list_files(
                 stale_paths.append(row.file_path)
                 continue
 
-            prev = latest_rows_by_path.get(row.file_path)
+            if active_directory is not None:
+                try:
+                    resolved_path = path_obj.resolve()
+                    if not str(resolved_path).startswith(str(active_directory) + os.sep):
+                        continue
+                except Exception:
+                    continue
+
+            raw_name = getattr(row, 'file_name', '') or ''
+            clean_name = raw_name.replace("[CONOCIMIENTO] ", "").strip() or path_obj.name
+            dedupe_key = os.path.normcase(clean_name)
+
+            prev = latest_rows_by_name.get(dedupe_key)
             if prev is None:
-                latest_rows_by_path[row.file_path] = row
+                latest_rows_by_name[dedupe_key] = row
                 continue
 
             prev_created = getattr(prev, "created_at", None) or datetime.min
             row_created = getattr(row, "created_at", None) or datetime.min
             if row_created >= prev_created:
-                latest_rows_by_path[row.file_path] = row
+                latest_rows_by_name[dedupe_key] = row
 
         if stale_paths:
             db.query(FileModel).filter(FileModel.file_path.in_(stale_paths)).delete(synchronize_session=False)
 
         response_files = []
         for f in sorted(
-            latest_rows_by_path.values(),
+            latest_rows_by_name.values(),
             key=lambda x: ((getattr(x, "created_at", None) or datetime.min), x.file_name),
             reverse=True,
         ):
@@ -1330,8 +1350,12 @@ async def list_files(
             date_val = getattr(f, 'created_at', None)
             date_str = date_val.isoformat() if date_val else None
             
-            # Tamaño seguro
+            # Tamaño real en disco (si falla, fallback al almacenado)
             size_val = getattr(f, 'file_size', 0)
+            try:
+                size_val = Path(f.file_path).stat().st_size
+            except Exception:
+                pass
 
             response_files.append({
                 "name": clean_name,
