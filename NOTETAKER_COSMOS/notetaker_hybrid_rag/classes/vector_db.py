@@ -1,7 +1,9 @@
 # Clase para Qdrant (Donde crearemos la colección y subiremos los vectores. La función es buscar por significado)
 
 import os
+import time
 import uuid
+from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from dotenv import load_dotenv
@@ -29,28 +31,58 @@ class VectorDB:
         port = int(os.getenv("QDRANT_PORT"))
         self.collection_name = os.getenv("QDRANT_COLLECTION")
 
-        # 1.- Cargamos el modelo de Embeddings local
-        model_path = os.getenv("LOCAL_EMBED_DIR")
+        local_embed_dir = os.getenv("LOCAL_EMBED_DIR")
+        embed_model_id = os.getenv("EMBED_MODEL_ID", "st-5")
 
-        if not model_path:
+        if not local_embed_dir:
             raise ValueError("ERROR CRÍTICO: No se ha definido LOCAL_EMBED_DIR en el archivo .env")
 
-        print(f"Cargando modelo de embeddings desde: {model_path} ...")
+        model_dir = Path(local_embed_dir).expanduser().resolve()
+        self.model = self._load_or_download_embedding_model(model_dir=model_dir, model_id=embed_model_id)
 
-        # 2. Carga del Modelo
-        try:
-            self.model = SentenceTransformer(model_path)
-
-            # Detectamos el tamaño del vector del modelo automáticamente
-            self.vector_size = self.model.get_sentence_embedding_dimension()
-            print(f"Modelo cargado. Dimensión de vectores: {self.vector_size}")
-        except Exception as e:
-            print(f"Error cargando el modelo local: {e}. Asegúrate de que la ruta es correcta.")
-            raise e
+        # Detectamos el tamaño del vector del modelo automáticamente
+        self.vector_size = self.model.get_sentence_embedding_dimension()
+        print(f"Modelo cargado. Dimensión de vectores: {self.vector_size}")
 
         # 3.- Conectamos con Qdrant
         self.client = QdrantClient(host=host, port=port)
         self._create_collection_if_not_exists()
+
+    def _load_or_download_embedding_model(self, model_dir: Path, model_id: str) -> SentenceTransformer:
+        model_dir.mkdir(parents=True, exist_ok=True)
+        lock_path = model_dir.with_suffix(".lock")
+
+        def _has_local_model() -> bool:
+            return (model_dir / "config.json").exists() and any(model_dir.iterdir())
+
+        for _ in range(120):
+            try:
+                fd = os.open(lock_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+                os.close(fd)
+                break
+            except FileExistsError:
+                if _has_local_model():
+                    print(f"Modelo de embeddings ya disponible en local: {model_dir}")
+                    return SentenceTransformer(str(model_dir))
+                time.sleep(1.0)
+        else:
+            raise TimeoutError(f"Timeout esperando lock de descarga del modelo: {lock_path}")
+
+        try:
+            if _has_local_model():
+                print(f"Cargando modelo de embeddings local: {model_dir}")
+                return SentenceTransformer(str(model_dir))
+
+            print(f"Modelo local no encontrado. Descargando '{model_id}' y guardando en {model_dir} ...")
+            downloaded = SentenceTransformer(model_id)
+            downloaded.save(str(model_dir))
+            print("Descarga completada y modelo persistido en disco.")
+            return SentenceTransformer(str(model_dir))
+        finally:
+            try:
+                os.unlink(lock_path)
+            except FileNotFoundError:
+                pass
 
     def _create_collection_if_not_exists(self):
         """Crea la colección en Qdrant si no existe todavía."""

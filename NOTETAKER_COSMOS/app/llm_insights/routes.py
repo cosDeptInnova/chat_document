@@ -8,12 +8,15 @@ from fastapi.responses import Response
 import base64
 from fastapi.responses import FileResponse
 import asyncio
+import hashlib
 from pydantic import ValidationError
 import json
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 import logging
 from collections import Counter
+import httpx
+from redis import Redis
 
 from .models import (
     RenderPNGRequest,
@@ -90,6 +93,145 @@ _time_re = re.compile(r"\ba\s+las?\s+(\d{1,2})(?:[:\.](\d{2}))?\b", re.IGNORECAS
 _daynum_re = re.compile(r"\bd[ií]a\s+(\d{1,2})\b", re.IGNORECASE)
 _weekday_re = re.compile(r"\b(lunes|martes|mi[eé]rcoles|jueves|viernes|s[áa]bado|domingo)\b", re.IGNORECASE)
 _menos_re = re.compile(r"\b(\d{1,2})\s+menos\s+(\d{1,2})\b", re.IGNORECASE)
+
+HYBRID_INGEST_ENABLED = os.getenv("HYBRID_INGEST_ENABLED", "1").strip().lower() in {"1", "true", "yes", "on"}
+HYBRID_INGEST_URL = os.getenv("HYBRID_INGEST_URL", "http://localhost:8001/ingest").strip()
+HYBRID_INGEST_CONNECT_TIMEOUT_S = float(os.getenv("HYBRID_INGEST_CONNECT_TIMEOUT_S", "3"))
+HYBRID_INGEST_READ_TIMEOUT_S = float(os.getenv("HYBRID_INGEST_READ_TIMEOUT_S", "30"))
+HYBRID_INGEST_RETRIES = max(1, int(os.getenv("HYBRID_INGEST_RETRIES", "3")))
+HYBRID_INGEST_RETRY_BACKOFF_S = float(os.getenv("HYBRID_INGEST_RETRY_BACKOFF_S", "0.8"))
+HYBRID_INGEST_IDEMPOTENCY_TTL_S = max(300, int(os.getenv("HYBRID_INGEST_IDEMPOTENCY_TTL_S", str(30 * 24 * 3600))))
+
+_INGEST_REDIS: Optional[Redis] = None
+try:
+    from app.core.settings import get_settings
+    from app.jobs.queue import get_redis_conn
+
+    _INGEST_REDIS = get_redis_conn(get_settings())
+except Exception as exc:
+    logger.warning("Hybrid ingest idempotency with Redis is unavailable: %s", exc)
+
+
+def _meeting_dedupe_key(meeting_id: str) -> str:
+    stable = hashlib.sha256(meeting_id.encode("utf-8", errors="ignore")).hexdigest()[:32]
+    return f"insights:hybrid_ingest:meeting:{stable}"
+
+
+def _extract_meeting_id_for_ingest(analyze_request: AnalyzeRequest, analyze_response: AnalyzeResponse) -> Optional[str]:
+    for candidate in (
+        analyze_request.meeting_id,
+        getattr(analyze_response, "charts_id", None),
+    ):
+        if isinstance(candidate, str) and candidate.strip():
+            return candidate.strip()
+    return None
+
+
+def _build_hybrid_ingest_payload(
+    analyze_request: AnalyzeRequest,
+    analyze_response: AnalyzeResponse,
+    meeting_id: str,
+    *,
+    passthrough_meta: Optional[Dict[str, Any]] = None,
+) -> Dict[str, Any]:
+    payload = analyze_response.model_dump(mode="json")
+    payload["meeting_id"] = meeting_id
+    payload.setdefault("language", analyze_request.language)
+    if passthrough_meta:
+        payload.update({k: v for k, v in passthrough_meta.items() if v is not None})
+    return payload
+
+
+async def _send_to_hybrid_ingest_once(meeting_id: str, payload: Dict[str, Any]) -> None:
+    if not HYBRID_INGEST_ENABLED:
+        logger.info("Hybrid ingest disabled. meeting_id=%s", meeting_id)
+        return
+
+    dedupe_key = _meeting_dedupe_key(meeting_id)
+    if _INGEST_REDIS is not None:
+        try:
+            acquired = bool(_INGEST_REDIS.set(dedupe_key, "processing", nx=True, ex=HYBRID_INGEST_IDEMPOTENCY_TTL_S))
+            if not acquired:
+                current_status = _INGEST_REDIS.get(dedupe_key)
+                logger.info(
+                    "Hybrid ingest skipped by idempotency gate. meeting_id=%s redis_status=%s",
+                    meeting_id,
+                    current_status.decode("utf-8", errors="ignore") if current_status else "unknown",
+                )
+                return
+        except Exception as exc:
+            logger.exception("Hybrid ingest idempotency check failed for meeting_id=%s: %s", meeting_id, exc)
+
+    timeout = httpx.Timeout(
+        connect=HYBRID_INGEST_CONNECT_TIMEOUT_S,
+        read=HYBRID_INGEST_READ_TIMEOUT_S,
+        write=HYBRID_INGEST_READ_TIMEOUT_S,
+        pool=HYBRID_INGEST_CONNECT_TIMEOUT_S,
+    )
+
+    final_error: Optional[str] = None
+    for attempt in range(1, HYBRID_INGEST_RETRIES + 1):
+        try:
+            async with httpx.AsyncClient(timeout=timeout) as client:
+                resp = await client.post(HYBRID_INGEST_URL, json=payload)
+
+            if resp.status_code in (200, 201):
+                logger.info("Hybrid ingest success meeting_id=%s attempt=%d", meeting_id, attempt)
+                if _INGEST_REDIS is not None:
+                    _INGEST_REDIS.set(dedupe_key, "done", ex=HYBRID_INGEST_IDEMPOTENCY_TTL_S)
+                return
+
+            if resp.status_code == 409:
+                logger.info("Hybrid ingest already exists for meeting_id=%s (409) attempt=%d", meeting_id, attempt)
+                if _INGEST_REDIS is not None:
+                    _INGEST_REDIS.set(dedupe_key, "done", ex=HYBRID_INGEST_IDEMPOTENCY_TTL_S)
+                return
+
+            final_error = f"http_status={resp.status_code} body={resp.text[:400]}"
+            logger.warning(
+                "Hybrid ingest non-success response meeting_id=%s attempt=%d detail=%s",
+                meeting_id,
+                attempt,
+                final_error,
+            )
+        except (httpx.TimeoutException, httpx.TransportError) as exc:
+            final_error = f"{type(exc).__name__}: {exc}"
+            logger.warning("Hybrid ingest transient error meeting_id=%s attempt=%d error=%s", meeting_id, attempt, exc)
+        except Exception as exc:
+            final_error = f"{type(exc).__name__}: {exc}"
+            logger.exception("Hybrid ingest unexpected error meeting_id=%s attempt=%d", meeting_id, attempt)
+            break
+
+        if attempt < HYBRID_INGEST_RETRIES:
+            await asyncio.sleep(HYBRID_INGEST_RETRY_BACKOFF_S * attempt)
+
+    if _INGEST_REDIS is not None:
+        try:
+            _INGEST_REDIS.delete(dedupe_key)
+        except Exception:
+            logger.exception("Failed to release ingest idempotency key for meeting_id=%s", meeting_id)
+
+    logger.error("Hybrid ingest failed meeting_id=%s after retries. last_error=%s", meeting_id, final_error)
+
+
+async def _trigger_hybrid_ingest(
+    analyze_request: AnalyzeRequest,
+    analyze_response: AnalyzeResponse,
+    *,
+    passthrough_meta: Optional[Dict[str, Any]] = None,
+) -> None:
+    meeting_id = _extract_meeting_id_for_ingest(analyze_request, analyze_response)
+    if not meeting_id:
+        logger.info("Hybrid ingest skipped: meeting_id unavailable")
+        return
+
+    payload = _build_hybrid_ingest_payload(
+        analyze_request=analyze_request,
+        analyze_response=analyze_response,
+        meeting_id=meeting_id,
+        passthrough_meta=passthrough_meta,
+    )
+    await _send_to_hybrid_ingest_once(meeting_id, payload)
 
 
 
@@ -2191,7 +2333,9 @@ router = APIRouter(prefix="/v1/insights", tags=["insights"])
 @router.post("/analyze", response_model=AnalyzeResponse)
 async def analyze(req: AnalyzeRequest):
     transcript = resolve_transcript_from_request(req)
-    return await _analyze_from_transcript(req, transcript)
+    result = await _analyze_from_transcript(req, transcript)
+    await _trigger_hybrid_ingest(req, result)
+    return result
 
 @router.post("/analyze_vexa", response_model=AnalyzeResponse)
 async def analyze_vexa(request: Request, body: Any = Body(...)):
@@ -2269,6 +2413,14 @@ async def analyze_vexa(request: Request, body: Any = Body(...)):
             body["segments"] = _vexa_conversation_to_segments_list(raw.get("conversation") or [])
             body.pop("raw_transcript_json", None)
 
+    ingest_passthrough = {
+        "user_id": body.get("user_id"),
+        "doc_id": body.get("doc_id"),
+        "file_name": body.get("file_name"),
+        "source_path": body.get("source_path"),
+        "native_meeting_id": body.get("native_meeting_id"),
+    }
+
     # 4) Filtra campos extra si tu modelo los rechaza (recomendado)
     try:
         allowed = set(AnalyzeRequest.model_fields.keys())
@@ -2287,7 +2439,10 @@ async def analyze_vexa(request: Request, body: Any = Body(...)):
         logger.error("analyze_vexa ValidationError: %s", errs)
         raise HTTPException(status_code=422, detail=errs)
 
-    return await analyze(req)
+    transcript = resolve_transcript_from_request(req)
+    result = await _analyze_from_transcript(req, transcript)
+    await _trigger_hybrid_ingest(req, result, passthrough_meta=ingest_passthrough)
+    return result
 
 
 def _looks_like_turn_segments_list(xs: Any) -> bool:
