@@ -146,8 +146,8 @@ def _safe_positive_int(value: Any) -> Optional[int]:
         return None
 
 
-def _resolve_page_number(meta: Dict[str, Any]) -> int:
-    """Resuelve la página de forma robusta para evitar caer siempre en página 1."""
+def _resolve_page_number(meta: Dict[str, Any]) -> Optional[int]:
+    """Resuelve la página de forma robusta sin inventar página cuando no existe."""
     candidates = [
         meta.get("page"),
         meta.get("page_number"),
@@ -169,7 +169,7 @@ def _resolve_page_number(meta: Dict[str, Any]) -> int:
         except Exception:
             continue
 
-    return 1
+    return None
 
 
 def _resolve_fragment_number(meta: Dict[str, Any]) -> Optional[int]:
@@ -1701,13 +1701,18 @@ async def handle_query_to_llm(
                 source["fragments"] = sorted(
                     source["fragments"],
                     key=lambda x: (
-                        int(x.get("page") or 1),
+                        int(x.get("page") or 10**6),
                         int(x.get("fragment") or 10**6),
                     ),
                 )
                 unique_sources.append(source)
 
-            unique_sources.sort(key=lambda s: (s.get("file_name") or "", s.get("page") or 1))
+            unique_sources.sort(
+                key=lambda s: (
+                    s.get("file_name") or "",
+                    int(s.get("page") or 10**6),
+                )
+            )
 
         logging.info(f"Devolviendo sources: {unique_sources}")
 
