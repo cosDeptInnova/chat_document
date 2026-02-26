@@ -1,13 +1,15 @@
 # Punto de entrada FastAPI para ingestión y consulta híbrida RAG + GraphRAG.
 
 import os
+import re
 from typing import Any, Dict, List, Optional
 
 import uvicorn
 from classes.graph_db import GraphDB
 from classes.vector_db import VectorDB
 from dotenv import load_dotenv
-from fastapi import Body, FastAPI, HTTPException, Request, Response, status
+from fastapi import Body, Depends, FastAPI, HTTPException, Request, Response, status
+from jose import JWTError, jwt
 from hybrid_crew_orchestrator import HybridRAGCrewOrchestrator
 from pydantic import BaseModel, Field
 from utils import extract_chunks_and_metadata
@@ -34,9 +36,72 @@ except Exception as e:
 
 class QueryRequest(BaseModel):
     query: str = Field(..., min_length=1)
-    user_id: str = Field(..., min_length=1)
+    user_id: Optional[str] = Field(default=None)
     limit: int = Field(default=5, ge=1, le=30)
     history: List[Dict[str, Any]] = Field(default_factory=list)
+
+
+def verify_token(request: Request) -> Dict[str, Any]:
+    access_token = request.cookies.get("access_token")
+    token_str = None
+
+    if access_token:
+        token_str = access_token.replace("Bearer ", "").strip()
+    else:
+        auth = request.headers.get("Authorization")
+        if auth and auth.lower().startswith("bearer "):
+            token_str = auth[7:].strip()
+
+    if not token_str:
+        raise HTTPException(status_code=403, detail="No autorizado: token ausente.")
+
+    secret_key = os.getenv("SECRET_KEY", "")
+    algorithm = os.getenv("ALGORITHM", "HS256")
+    if not secret_key:
+        raise HTTPException(status_code=500, detail="Configuración inválida: SECRET_KEY ausente.")
+
+    try:
+        payload = jwt.decode(token_str, secret_key, algorithms=[algorithm])
+        user_id = payload.get("user_id")
+        if user_id is None:
+            raise HTTPException(status_code=403, detail="Token sin user_id.")
+        return payload
+    except JWTError:
+        raise HTTPException(status_code=403, detail="Token no válido o expirado.")
+
+
+def _normalize_identity(value: Optional[str]) -> str:
+    cleaned = re.sub(r"\s+", " ", str(value or "").strip().lower())
+    return cleaned
+
+
+def _authorized_participant_names(token: Dict[str, Any]) -> List[str]:
+    names: set[str] = set()
+    for key in ("full_name", "name", "username", "preferred_username", "email"):
+        raw = token.get(key)
+        if isinstance(raw, str) and raw.strip():
+            names.add(_normalize_identity(raw))
+            if key == "email" and "@" in raw:
+                names.add(_normalize_identity(raw.split("@", 1)[0]))
+    return [n for n in names if n]
+
+
+def _can_access_chunk(token_names: List[str], payload: Dict[str, Any], graph_context: Dict[str, Any]) -> bool:
+    if not token_names:
+        return False
+
+    participant_candidates: List[str] = []
+    for key in ("participants", "invited_participants"):
+        values = payload.get(key, [])
+        if isinstance(values, list):
+            participant_candidates.extend([str(v) for v in values if isinstance(v, str)])
+
+    graph_participants = graph_context.get("participants", []) if isinstance(graph_context, dict) else []
+    if isinstance(graph_participants, list):
+        participant_candidates.extend([str(v) for v in graph_participants if isinstance(v, str)])
+
+    normalized_participants = {_normalize_identity(name) for name in participant_candidates if str(name).strip()}
+    return any(name in normalized_participants for name in token_names)
 
 
 @app.get("/")
@@ -97,27 +162,31 @@ async def ingest_meeting(
 
 
 @app.post("/query")
-async def query_meetings(query_data: QueryRequest):
+async def query_meetings(query_data: QueryRequest, token: Dict[str, Any] = Depends(verify_token)):
     """Consulta híbrida con reescritura de query y filtros para Qdrant + explicación final."""
     try:
         user_query = query_data.query.strip()
         if not user_query:
             raise HTTPException(status_code=400, detail="Debes enviar una consulta no vacía")
 
+        token_user_id = str(token.get("user_id"))
+        if query_data.user_id and str(query_data.user_id) != token_user_id:
+            raise HTTPException(status_code=403, detail="No puedes consultar con un user_id distinto al autenticado.")
+
         plan = hybrid_crew.plan_query(
             user_query=user_query,
-            user_id=query_data.user_id,
+            user_id=token_user_id,
             history=query_data.history,
         )
 
         normalized_query = str(plan.get("normalized_query") or user_query).strip()
-        qdrant_filter = plan.get("qdrant_filter") or {"must": [{"key": "user_id", "match": query_data.user_id}]}
+        qdrant_filter = plan.get("qdrant_filter") or {}
 
         retrieval_hints = plan.get("retrieval_hints") or {}
         limit = int(retrieval_hints.get("limit") or query_data.limit)
         limit = max(1, min(30, limit))
 
-        print(f"Buscando respuesta para user={query_data.user_id}: '{normalized_query}'")
+        print(f"Buscando respuesta para user={token_user_id}: '{normalized_query}'")
 
         vector_results = qdrant_client.search(query_text=normalized_query, limit=limit, qdrant_filter=qdrant_filter)
 
@@ -142,6 +211,7 @@ async def query_meetings(query_data: QueryRequest):
                 },
             }
 
+        token_names = _authorized_participant_names(token)
         context_package = []
         for hit in vector_results:
             chunk_id = hit.id
@@ -149,6 +219,9 @@ async def query_meetings(query_data: QueryRequest):
             payload = hit.payload or {}
 
             graph_context = neo_client.get_chunk_context(chunk_id)
+            if not _can_access_chunk(token_names, payload, graph_context or {}):
+                continue
+
             paquete = {
                 "similarity_score": round(float(score or 0.0), 4),
                 "text_content": payload.get("chunk_text", ""),
@@ -162,6 +235,27 @@ async def query_meetings(query_data: QueryRequest):
                 "graph_context": graph_context if graph_context else {"status": "sin_contexto_grafo"},
             }
             context_package.append(paquete)
+
+        if not context_package:
+            return {
+                "status": "success",
+                "message": "No se encontraron reuniones autorizadas para este usuario.",
+                "query_plan": plan,
+                "context_package": [],
+                "assistant_response": {
+                    "final_answer": "No encontré reuniones en las que figures como participante o invitado para responder esa consulta.",
+                    "evidence_summary": [],
+                    "quality_assessment": {
+                        "coverage": "baja",
+                        "consistency": "alta",
+                        "temporal_alignment": "media",
+                    },
+                    "follow_up_questions": [
+                        "¿Quieres reformular la pregunta indicando otra reunión en la que participaste?"
+                    ],
+                    "audit_trail": ["participant_access_denied_or_empty"],
+                },
+            }
 
         assistant_response = hybrid_crew.explain_results(
             user_query=user_query,

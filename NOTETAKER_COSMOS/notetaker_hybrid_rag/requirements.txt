@@ -6,3 +6,4 @@ sentence-transformers
 langchain-text-splitters
 python-dotenv
 crewai
+python-jose[cryptography]

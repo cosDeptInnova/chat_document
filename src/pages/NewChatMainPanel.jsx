@@ -27,6 +27,7 @@ import {
   bootstrapLegalsearch,
   uploadLegalSearchFiles,
   sendLegalSearchMessage,
+  sendNotetakerMeetingsMessage,
   rateMessage,
   fetchFileContent
 } from "../lib/api";
@@ -46,8 +47,8 @@ export default function NuevoChatMainPanel({
   const urlChatId = searchParams.get("chatId");
   const urlChatMode = (searchParams.get("chatMode") || "modelo").toLowerCase();
 
-  // Modo de chat: "modelo" | "chatdoc" | "web" | "legal_explorer"
-  const chatMode = ["chatdoc", "web", "legal_explorer"].includes(urlChatMode) ? urlChatMode : "modelo";
+  // Modo de chat: "modelo" | "chatdoc" | "web" | "legal_explorer" | "notetaker_meetings"
+  const chatMode = ["chatdoc", "web", "legal_explorer", "notetaker_meetings"].includes(urlChatMode) ? urlChatMode : "modelo";
   const isSearchMode = chatMode === "web" || chatMode === "legal_explorer";
 
 
@@ -554,6 +555,29 @@ export default function NuevoChatMainPanel({
           docSessionId: null,
           rawData: data,
           searchSessionId: data?.search_session_id || nextSearchSessionId,
+        };
+      }
+
+      // 🗂️ MODO REUNIONES NOTETAKER
+      if (chatMode === "notetaker_meetings") {
+        const data = await sendNotetakerMeetingsMessage({
+          prompt: text,
+          limit: 8,
+          history: messages.slice(-8).map((m) => ({ role: m.role, content: m.content })),
+        });
+
+        const aiText =
+          data.reply ||
+          data.response ||
+          data.answer ||
+          data.content ||
+          "No se encontraron reuniones autorizadas para tu usuario.";
+
+        return {
+          content: aiText,
+          conversationId: currentConversationId || conversationId,
+          messageId: data.id || data.message_id || null,
+          sources: data.sources || [],
         };
       }
 
@@ -1802,6 +1826,8 @@ export default function NuevoChatMainPanel({
                       ? "Pregunta lo que necesites (buscaré en la web y citaré fuentes)"
                       : chatMode === "legal_explorer"
                       ? "Pregunta lo que necesites (exploración legal avanzada con fuentes)"
+                      : chatMode === "notetaker_meetings"
+                      ? "Pregunta sobre reuniones donde participaste o fuiste invitado"
                       : "Pregunta lo que necesites"
                   }
 

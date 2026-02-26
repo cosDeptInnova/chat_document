@@ -5,6 +5,36 @@ from dotenv import load_dotenv
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from datetime import datetime
 
+
+def _collect_participants(json_data):
+    """Intenta extraer participantes/invitados con tolerancia a formatos heterogéneos."""
+    out = set()
+
+    def _add_name(value):
+        if isinstance(value, str) and value.strip():
+            out.add(value.strip())
+
+    # normalized: [{speaker, ...}, ...]
+    for row in json_data.get("normalized", []) or []:
+        _add_name((row or {}).get("speaker"))
+
+    # insights/final_handoff suelen incluir estructuras de participantes
+    for section in (json_data.get("final_handoff", {}), json_data.get("insights", {})):
+        if not isinstance(section, dict):
+            continue
+        for key in ("participants", "attendees", "invitees", "invited_participants"):
+            vals = section.get(key, [])
+            if not isinstance(vals, list):
+                continue
+            for item in vals:
+                if isinstance(item, str):
+                    _add_name(item)
+                elif isinstance(item, dict):
+                    _add_name(item.get("name"))
+                    _add_name(item.get("display_name"))
+
+    return sorted(out)
+
 # Cargamos las variables de entorno para configuración
 load_dotenv()
 
@@ -43,6 +73,11 @@ def extract_chunks_and_metadata(json_data):
         "atmosphere": atmosphere,
         "decisiveness": decisiveness
     }
+
+    participants = _collect_participants(json_data)
+    if participants:
+        global_meta["participants"] = participants
+        global_meta["invited_participants"] = participants
 
     # 3. Configuración del Chunker
     chunk_size = int(os.getenv("CHUNK_SIZE", 4000))
