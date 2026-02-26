@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+qdrant-client==1.13.2
+neo4j
+sentence-transformers
+langchain-text-splitters
+python-dotenv
