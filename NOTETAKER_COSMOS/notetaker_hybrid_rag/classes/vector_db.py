@@ -5,7 +5,6 @@ import time
 import uuid
 from pathlib import Path
 from typing import Any, Dict, List, Optional
-from pathlib import Path
 
 from dotenv import load_dotenv
 from qdrant_client import QdrantClient
@@ -29,11 +28,30 @@ class VectorDB:
     def __init__(self):
         # Configuración desde variables de entorno (.env)
         host = os.getenv("QDRANT_HOST")
-        port = int(os.getenv("QDRANT_PORT"))
+        port_raw = os.getenv("QDRANT_PORT")
         self.collection_name = os.getenv("QDRANT_COLLECTION")
 
+        if not host:
+            raise ValueError("ERROR CRÍTICO: No se ha definido QDRANT_HOST en el archivo .env")
+        if not port_raw:
+            raise ValueError("ERROR CRÍTICO: No se ha definido QDRANT_PORT en el archivo .env")
+        if not self.collection_name:
+            raise ValueError("ERROR CRÍTICO: No se ha definido QDRANT_COLLECTION en el archivo .env")
+
+        try:
+            port = int(port_raw)
+        except ValueError as exc:
+            raise ValueError(f"ERROR CRÍTICO: QDRANT_PORT inválido: '{port_raw}'") from exc
+
         # 1.- Cargamos/descargamos el modelo de embeddings local con caché persistente
-        self.model = self._load_or_download_embedding_model()
+        local_embed_dir = (os.getenv("LOCAL_EMBED_DIR") or "").strip()
+        if not local_embed_dir:
+            raise ValueError("ERROR CRÍTICO: No se ha definido LOCAL_EMBED_DIR en el archivo .env")
+
+        model_id = (os.getenv("EMBED_MODEL_NAME") or "sentence-transformers/sentence-t5-base").strip()
+        model_dir = Path(local_embed_dir).expanduser().resolve()
+
+        self.model = self._load_or_download_embedding_model(model_dir=model_dir, model_id=model_id)
 
         # Detectamos el tamaño del vector del modelo automáticamente
         self.vector_size = self.model.get_sentence_embedding_dimension()
@@ -43,37 +61,6 @@ class VectorDB:
         self.client = QdrantClient(host=host, port=port)
         self._create_collection_if_not_exists()
 
-
-    def _load_or_download_embedding_model(self) -> SentenceTransformer:
-        """
-        Carga el modelo ST-5 desde disco local y, si no existe, lo descarga una sola vez
-        al directorio LOCAL_EMBED_DIR para reutilizarlo en futuras ejecuciones.
-        """
-        local_embed_dir = (os.getenv("LOCAL_EMBED_DIR") or "").strip()
-        if not local_embed_dir:
-            raise ValueError("ERROR CRÍTICO: No se ha definido LOCAL_EMBED_DIR en el archivo .env")
-
-        model_source = (os.getenv("EMBED_MODEL_NAME") or "sentence-transformers/sentence-t5-base").strip()
-        model_dir = Path(local_embed_dir).expanduser().resolve()
-        model_dir.mkdir(parents=True, exist_ok=True)
-
-        config_file = model_dir / "config.json"
-        modules_file = model_dir / "modules.json"
-        model_exists = config_file.exists() and modules_file.exists()
-
-        if model_exists:
-            print(f"Cargando modelo de embeddings desde caché local: {model_dir}")
-            return SentenceTransformer(str(model_dir))
-
-        print(
-            "Modelo de embeddings local no encontrado. "
-            f"Descargando '{model_source}' por única vez en: {model_dir}"
-        )
-
-        model = SentenceTransformer(model_source)
-        model.save(str(model_dir))
-        print(f"Modelo guardado en caché local: {model_dir}")
-        return model
 
     def _load_or_download_embedding_model(self, model_dir: Path, model_id: str) -> SentenceTransformer:
         model_dir.mkdir(parents=True, exist_ok=True)
