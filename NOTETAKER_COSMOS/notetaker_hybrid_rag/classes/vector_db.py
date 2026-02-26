@@ -1,7 +1,9 @@
 # Clase para Qdrant (Donde crearemos la colección y subiremos los vectores. La función es buscar por significado)
 
 import os
+import time
 import uuid
+from pathlib import Path
 from typing import Any, Dict, List, Optional
 from pathlib import Path
 
@@ -72,6 +74,42 @@ class VectorDB:
         model.save(str(model_dir))
         print(f"Modelo guardado en caché local: {model_dir}")
         return model
+
+    def _load_or_download_embedding_model(self, model_dir: Path, model_id: str) -> SentenceTransformer:
+        model_dir.mkdir(parents=True, exist_ok=True)
+        lock_path = model_dir.with_suffix(".lock")
+
+        def _has_local_model() -> bool:
+            return (model_dir / "config.json").exists() and any(model_dir.iterdir())
+
+        for _ in range(120):
+            try:
+                fd = os.open(lock_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+                os.close(fd)
+                break
+            except FileExistsError:
+                if _has_local_model():
+                    print(f"Modelo de embeddings ya disponible en local: {model_dir}")
+                    return SentenceTransformer(str(model_dir))
+                time.sleep(1.0)
+        else:
+            raise TimeoutError(f"Timeout esperando lock de descarga del modelo: {lock_path}")
+
+        try:
+            if _has_local_model():
+                print(f"Cargando modelo de embeddings local: {model_dir}")
+                return SentenceTransformer(str(model_dir))
+
+            print(f"Modelo local no encontrado. Descargando '{model_id}' y guardando en {model_dir} ...")
+            downloaded = SentenceTransformer(model_id)
+            downloaded.save(str(model_dir))
+            print("Descarga completada y modelo persistido en disco.")
+            return SentenceTransformer(str(model_dir))
+        finally:
+            try:
+                os.unlink(lock_path)
+            except FileNotFoundError:
+                pass
 
     def _create_collection_if_not_exists(self):
         """Crea la colección en Qdrant si no existe todavía."""
