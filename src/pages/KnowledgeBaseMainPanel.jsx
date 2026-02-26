@@ -162,8 +162,19 @@ export default function BaseConocimientosMainPanel({ isDarkMode }) {
     try {
       setExistingFilesLoading(true);
       const departmentValue = (activeTab === 'department' && role === "Supervisor") ? selectedDepartment : null;
-      await deleteRagFiles({ filenames: [filename], department: departmentValue });
+      const result = await deleteRagFiles({ filenames: [filename], department: departmentValue });
       await loadExistingFiles();
+
+      const issues = [];
+      if (Array.isArray(result?.not_found) && result.not_found.length > 0) {
+        issues.push(`No encontrados: ${result.not_found.join(", ")}`);
+      }
+      if (Array.isArray(result?.errors) && result.errors.length > 0) {
+        issues.push(`Errores: ${result.errors.map(item => item.file).join(", ")}`);
+      }
+      if (issues.length > 0) {
+        alert(`Borrado parcial. ${issues.join(" | ")}`);
+      }
     } catch (e) {
       alert("Error al borrar: " + e.message);
       setExistingFilesLoading(false);
@@ -178,8 +189,19 @@ export default function BaseConocimientosMainPanel({ isDarkMode }) {
     try {
       setExistingFilesLoading(true);
       const departmentValue = (activeTab === 'department' && role === "Supervisor") ? selectedDepartment : null;
-      await deleteRagFiles({ filenames: filenames, department: departmentValue });
+      const result = await deleteRagFiles({ filenames: filenames, department: departmentValue });
       await loadExistingFiles();
+
+      const issues = [];
+      if (Array.isArray(result?.not_found) && result.not_found.length > 0) {
+        issues.push(`No encontrados: ${result.not_found.join(", ")}`);
+      }
+      if (Array.isArray(result?.errors) && result.errors.length > 0) {
+        issues.push(`Errores: ${result.errors.map(item => item.file).join(", ")}`);
+      }
+      if (issues.length > 0) {
+        alert(`Borrado parcial. ${issues.join(" | ")}`);
+      }
     } catch (e) {
       alert("Error borrando: " + e.message);
       setExistingFilesLoading(false);
