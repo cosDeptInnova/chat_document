@@ -15,7 +15,7 @@ from dotenv import load_dotenv
 from fastapi import Body, Depends, FastAPI, HTTPException, Request, Response, status
 from jose import JWTError, jwt
 from hybrid_crew_orchestrator import HybridRAGCrewOrchestrator
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 from utils import extract_chunks_and_metadata
 
 # Cargar variables de entorno
@@ -45,10 +45,43 @@ except Exception as e:
 class QueryRequest(BaseModel):
     query: Optional[str] = Field(default=None, min_length=1)
     prompt: Optional[str] = Field(default=None, min_length=1)
+    message: Optional[str] = Field(default=None, min_length=1)
     user_id: Optional[str] = Field(default=None)
     limit: int = Field(default=5, ge=1, le=30)
     history: List[Dict[str, Any]] = Field(default_factory=list)
     request_context: Optional[Dict[str, Any]] = Field(default=None)
+
+    @model_validator(mode="before")
+    @classmethod
+    def normalize_input(cls, data: Any) -> Any:
+        if not isinstance(data, dict):
+            return data
+
+        normalized = dict(data)
+
+        for key in ("query", "prompt", "message"):
+            raw = normalized.get(key)
+            if raw is None:
+                continue
+            if isinstance(raw, str):
+                cleaned = raw.strip()
+                normalized[key] = cleaned or None
+            else:
+                normalized[key] = str(raw).strip() or None
+
+        if not any(normalized.get(k) for k in ("query", "prompt", "message")):
+            raw_alt = normalized.get("text")
+            if isinstance(raw_alt, str) and raw_alt.strip():
+                normalized["query"] = raw_alt.strip()
+
+        if not isinstance(normalized.get("history"), list):
+            normalized["history"] = []
+
+        request_context = normalized.get("request_context")
+        if request_context is not None and not isinstance(request_context, dict):
+            normalized["request_context"] = {}
+
+        return normalized
 
 
 def _resolve_jwt_config() -> Tuple[List[str], List[str]]:
@@ -148,9 +181,10 @@ async def verify_token(request: Request) -> Dict[str, Any]:
     for secret in secrets:
         try:
             payload = jwt.decode(token_str, secret, algorithms=algorithms)
-            user_id = payload.get("user_id")
+            user_id = payload.get("user_id") or payload.get("sub")
             if user_id is None:
-                raise HTTPException(status_code=403, detail="Token sin user_id.")
+                raise HTTPException(status_code=403, detail="Token sin user_id/sub.")
+            payload["user_id"] = str(user_id)
             session_data = await _get_session_from_redis(str(user_id))
             if session_data is None:
                 if REDIS_SESSION_REQUIRED:
@@ -187,7 +221,16 @@ def _authorized_participant_names(token: Dict[str, Any], request_context: Option
             if key == "email" and "@" in raw:
                 names.add(_normalize_identity(raw.split("@", 1)[0]))
 
-    for key in ("full_name", "name", "username", "preferred_username", "email", "sub"):
+    for key in (
+        "full_name",
+        "name",
+        "username",
+        "preferred_username",
+        "unique_name",
+        "upn",
+        "email",
+        "sub",
+    ):
         raw = token.get(key)
         if isinstance(raw, str) and raw.strip():
             names.add(_normalize_identity(raw))
@@ -215,31 +258,48 @@ def _merge_participant_filter(qdrant_filter: Dict[str, Any], allowed_names: List
     if not allowed_names:
         return merged
 
-    must_any = list(merged.get("must_any") or [])
-    existing_pairs = {
-        (str(item.get("key")), str(item.get("match")))
-        for item in must_any
+    must = list(merged.get("must") or [])
+
+    existing_match_any = None
+    for item in must:
+        if not isinstance(item, dict):
+            continue
+        if str(item.get("key")) != "participants_normalized":
+            continue
+        values = item.get("match_any")
+        if isinstance(values, list):
+            existing_match_any = [str(v).strip().lower() for v in values if str(v).strip()]
+            break
+
+    if existing_match_any is not None:
+        merged_values = sorted(set(existing_match_any).union(set(allowed_names)))
+        for item in must:
+            if isinstance(item, dict) and str(item.get("key")) == "participants_normalized":
+                item["match_any"] = merged_values
+                break
+    else:
+        must.append({"key": "participants_normalized", "match_any": sorted(set(allowed_names))})
+
+    # Compatibilidad: si el planner dejó filtros de participante en must_any,
+    # los eliminamos para evitar OR inseguro a nivel de privacidad.
+    must_any = [
+        item
+        for item in (merged.get("must_any") or [])
         if isinstance(item, dict)
-    }
+        and str(item.get("key")) != "participants_normalized"
+    ]
 
-    for name in allowed_names:
-        key_pair = ("participants_normalized", str(name))
-        if key_pair not in existing_pairs:
-            must_any.append({"key": "participants_normalized", "match": name})
-            existing_pairs.add(key_pair)
+    merged["must"] = must
+    if must_any:
+        merged["must_any"] = must_any
+    elif "must_any" in merged:
+        merged.pop("must_any", None)
 
-    merged["must_any"] = must_any
     return merged
 
 
 def _can_access_chunk(token: Dict[str, Any], token_names: List[str], payload: Dict[str, Any], graph_context: Dict[str, Any]) -> bool:
-    # 1) Control principal por owner del documento/reunión (más robusto para producción)
-    token_user_id = str(token.get("user_id") or "").strip()
-    payload_user_id = str(payload.get("user_id") or "").strip()
-    if token_user_id and payload_user_id and token_user_id == payload_user_id:
-        return True
-
-    # 2) Filtro por identidad de participante/invitado para reuniones compartidas
+    # Control de privacidad por identidad de participante/invitado.
     if not token_names:
         return False
 
@@ -318,7 +378,7 @@ async def ingest_meeting(
 async def query_meetings(query_data: QueryRequest, token: Dict[str, Any] = Depends(verify_token)):
     """Consulta híbrida con reescritura de query y filtros para Qdrant + explicación final."""
     try:
-        user_query = str(query_data.query or query_data.prompt or "").strip()
+        user_query = str(query_data.query or query_data.prompt or query_data.message or "").strip()
         if not user_query:
             raise HTTPException(status_code=400, detail="Debes enviar una consulta no vacía")
 

@@ -13,6 +13,7 @@ from qdrant_client.models import (
     Distance,
     FieldCondition,
     Filter,
+    MatchAny,
     MatchValue,
     PointStruct,
     Range,
@@ -156,6 +157,12 @@ class VectorDB:
                 continue
             key = str(item.get("key") or "").strip()
             match_value = item.get("match")
+            match_any = item.get("match_any")
+            if key and isinstance(match_any, list):
+                any_values = [v for v in match_any if v is not None and str(v).strip()]
+                if any_values:
+                    must_conditions.append(FieldCondition(key=key, match=MatchAny(any=any_values)))
+                    continue
             if key and match_value is not None:
                 must_conditions.append(FieldCondition(key=key, match=MatchValue(value=match_value)))
 
