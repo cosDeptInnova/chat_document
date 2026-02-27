@@ -27,8 +27,6 @@ const WEBSEARCH_API_BASE =
 const LEGALSEARCH_API_BASE =
   process.env.REACT_APP_LEGALSEARCH_API_BASE || "/api/legalsearch";
 
-const NOTETAKER_MEETINGS_API_BASE =
-  process.env.REACT_APP_NOTETAKER_MEETINGS_API_BASE || "/api/notetaker-meetings";
 
 // CSRF web_search (csrftoken_websearch)
 function getWebsearchCsrfToken() {
@@ -259,39 +257,6 @@ async function legalsearchFetch(
     if (csrf) {
       opts.headers["X-CSRFToken"] = csrf;
     }
-  }
-
-  const res = await fetch(url, opts);
-  if (!res.ok) {
-    const text = await res.text().catch(() => "");
-    throw new Error(`Error ${res.status} en ${url}: ${text}`);
-  }
-
-  const ct = res.headers.get("content-type") || "";
-  if (ct.includes("application/json")) {
-    return res.json();
-  }
-  return res.text();
-}
-
-async function notetakerMeetingsFetch(
-  path,
-  { method = "GET", headers = {}, body } = {},
-) {
-  const url = `${NOTETAKER_MEETINGS_API_BASE}${path}`;
-  const opts = {
-    method,
-    credentials: "include",
-    headers: {
-      ...headers,
-    },
-  };
-
-  if (body instanceof FormData) {
-    opts.body = body;
-  } else if (body !== undefined) {
-    opts.body = JSON.stringify(body);
-    opts.headers["Content-Type"] = "application/json";
   }
 
   const res = await fetch(url, opts);
@@ -1001,12 +966,11 @@ export async function sendNotetakerMeetingsMessage({
 }) {
   const normalizedQuery = String(query || prompt || "").trim();
 
-  return notetakerMeetingsFetch("/query", {
+  // Flujo oficial: Front -> modelo_negocio -> notetaker_hybrid_rag (/query).
+  return apiFetch("/integrations/notetaker/meetings/query", {
     method: "POST",
     body: {
-      // Compatibilidad con variantes del backend híbrido:
-      // - query (actual)
-      // - prompt (legacy)
+      // Compatibilidad con variantes de payload (query/prompt)
       query: normalizedQuery,
       prompt: normalizedQuery,
       limit,

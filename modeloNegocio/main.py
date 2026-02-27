@@ -228,7 +228,8 @@ class ImagePromptRequest(BaseModel):
 
 
 class NotetakerMeetingsQueryRequest(BaseModel):
-    prompt: str
+    prompt: Optional[str] = None
+    query: Optional[str] = None
     limit: Optional[int] = 5
     history: Optional[List[Dict[str, Any]]] = None
 
@@ -2195,9 +2196,9 @@ async def query_notetaker_meetings(
     """
     validate_csrf(request)
 
-    prompt = (payload.prompt or "").strip()
+    prompt = str(payload.query or payload.prompt or "").strip()
     if not prompt:
-        raise HTTPException(status_code=400, detail="El prompt no puede estar vacío.")
+        raise HTTPException(status_code=400, detail="La consulta no puede estar vacía.")
 
     user_id = str(auth["user_id"])
     session_data = auth.get("session") or {}
@@ -2245,9 +2246,13 @@ async def query_notetaker_meetings(
     data = resp.json()
     assistant = data.get("assistant_response") or {}
 
+    final_answer = assistant.get("final_answer") or data.get("message") or "No se obtuvo respuesta."
+
     return {
-        "reply": assistant.get("final_answer") or data.get("message") or "No se obtuvo respuesta.",
-        "response": assistant.get("final_answer") or data.get("message") or "No se obtuvo respuesta.",
+        "reply": final_answer,
+        "response": final_answer,
+        "assistant_response": assistant,
+        "context_package": data.get("context_package") or [],
         "sources": data.get("context_package") or [],
         "query_plan": data.get("query_plan") or {},
         "results_found": data.get("results_found") or 0,
