@@ -8,6 +8,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 import uvicorn
 import redis.asyncio as aioredis
+from redis.exceptions import RedisError
 from classes.graph_db import GraphDB
 from classes.vector_db import VectorDB
 from dotenv import load_dotenv
@@ -24,6 +25,7 @@ app = FastAPI(title="NoteTaker Hybrid RAG API")
 logger = logging.getLogger("notetaker_hybrid_rag")
 
 _redis_client: Optional[aioredis.Redis] = None
+REDIS_SESSION_REQUIRED = os.getenv("NOTETAKER_REQUIRE_REDIS_SESSION", "false").strip().lower() in {"1", "true", "yes", "on"}
 
 # INICIALIZACIÓN DE BASES DE DATOS
 try:
@@ -90,7 +92,12 @@ def _get_redis_client() -> Optional[aioredis.Redis]:
     if _redis_client is not None:
         return _redis_client
 
-    redis_host = os.getenv("REDIS_HOST", "localhost").strip()
+    redis_host = (
+        os.getenv("REDIS_HOST")
+        or os.getenv("COSMOS_REDIS_HOST")
+        or os.getenv("AUTH_REDIS_HOST")
+        or "localhost"
+    ).strip()
     redis_port = int(os.getenv("REDIS_PORT", "6379"))
     redis_db = int(os.getenv("REDIS_SESSION_DB", "0"))
     try:
@@ -106,7 +113,12 @@ async def _get_session_from_redis(user_id: str) -> Optional[Dict[str, Any]]:
     if client is None:
         return None
 
-    raw = await client.get(f"session:{user_id}")
+    try:
+        raw = await client.get(f"session:{user_id}")
+    except (RedisError, OSError) as e:
+        logger.warning("No se pudo consultar Redis para session:%s (%s)", user_id, e)
+        return None
+
     if not raw:
         return None
 
@@ -141,9 +153,15 @@ async def verify_token(request: Request) -> Dict[str, Any]:
                 raise HTTPException(status_code=403, detail="Token sin user_id.")
             session_data = await _get_session_from_redis(str(user_id))
             if session_data is None:
-                raise HTTPException(status_code=403, detail="Sesión expirada o no encontrada en Redis.")
+                if REDIS_SESSION_REQUIRED:
+                    raise HTTPException(status_code=403, detail="Sesión expirada o no encontrada en Redis.")
+                logger.warning(
+                    "verify_token: Redis no disponible o sin sesión para user_id=%s; se aplica fallback JWT-only.",
+                    user_id,
+                )
+                session_data = {}
             session_token = str(session_data.get("token") or "").strip()
-            if not session_token or session_token != token_str:
+            if session_token and session_token != token_str:
                 raise HTTPException(status_code=403, detail="Sesión revocada o token no coincide con Redis.")
             payload["_session"] = session_data
             return payload
@@ -158,7 +176,7 @@ def _normalize_identity(value: Optional[str]) -> str:
     return cleaned
 
 
-def _authorized_participant_names(token: Dict[str, Any]) -> List[str]:
+def _authorized_participant_names(token: Dict[str, Any], request_context: Optional[Dict[str, Any]] = None) -> List[str]:
     names: set[str] = set()
 
     session_data = token.get("_session") if isinstance(token.get("_session"), dict) else {}
@@ -175,6 +193,15 @@ def _authorized_participant_names(token: Dict[str, Any]) -> List[str]:
             names.add(_normalize_identity(raw))
             if key == "email" and "@" in raw:
                 names.add(_normalize_identity(raw.split("@", 1)[0]))
+
+    if isinstance(request_context, dict):
+        for key in ("full_name", "name", "username", "preferred_username", "email"):
+            raw = request_context.get(key)
+            if isinstance(raw, str) and raw.strip():
+                names.add(_normalize_identity(raw))
+                if key == "email" and "@" in raw:
+                    names.add(_normalize_identity(raw.split("@", 1)[0]))
+
     return [n for n in names if n]
 
 
@@ -308,7 +335,7 @@ async def query_meetings(query_data: QueryRequest, token: Dict[str, Any] = Depen
         normalized_query = str(plan.get("normalized_query") or user_query).strip()
         qdrant_filter = plan.get("qdrant_filter") or {}
 
-        allowed_names = _authorized_participant_names(token)
+        allowed_names = _authorized_participant_names(token, query_data.request_context)
         if not allowed_names:
             raise HTTPException(status_code=403, detail="Token sin identidad de participante para aplicar filtros de acceso.")
 
