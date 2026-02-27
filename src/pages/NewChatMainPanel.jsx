@@ -37,6 +37,7 @@ export default function NuevoChatMainPanel({
   isDarkMode,
   initialMessage: initialMessageProp,
   chatId: chatIdProp,
+  user,
 }) {
   // Ajustes de voz desde Settings
   const { volume, speed, tone, language } = useSettings();
@@ -295,6 +296,29 @@ export default function NuevoChatMainPanel({
       snippet: source?.snippet || "",
       idx: 0,
     }];
+  };
+
+  const buildNotetakerHistory = (allMessages) => {
+    const pairs = [];
+    let pendingQuery = "";
+
+    (allMessages || []).forEach((m) => {
+      if (!m || m.role === "system") return;
+      const content = String(m.content || "").trim();
+      if (!content) return;
+
+      if (m.role === "user") {
+        pendingQuery = content;
+        return;
+      }
+
+      if (m.role === "assistant" && pendingQuery) {
+        pairs.push({ query: pendingQuery, answer: content });
+        pendingQuery = "";
+      }
+    });
+
+    return pairs.slice(-6);
   };
 
   // 1. Abrir el Modal: Descarga el archivo y crea una URL local
@@ -558,29 +582,6 @@ export default function NuevoChatMainPanel({
         };
       }
 
-      // 🗂️ MODO REUNIONES NOTETAKER
-      if (chatMode === "notetaker_meetings") {
-        const data = await sendNotetakerMeetingsMessage({
-          prompt: text,
-          limit: 8,
-          history: messages.slice(-8).map((m) => ({ role: m.role, content: m.content })),
-        });
-
-        const aiText =
-          data.reply ||
-          data.response ||
-          data.answer ||
-          data.content ||
-          "No se encontraron reuniones autorizadas para tu usuario.";
-
-        return {
-          content: aiText,
-          conversationId: currentConversationId || conversationId,
-          messageId: data.id || data.message_id || null,
-          sources: data.sources || [],
-        };
-      }
-
       // 🧠 MODO MODELO / 🌐 WEB: subida efímera
       const data = await uploadEphemeralFiles(files);
       console.log("Respuesta /api/modelo/uploadfile/:", data);
@@ -721,6 +722,39 @@ export default function NuevoChatMainPanel({
           searchSessionId:
             data.search_session_id || data.searchSessionId || nextSearchSessionId,
           messageId: data.id || data.message_id || null,
+        };
+      }
+
+      // 🗂️ MODO REUNIONES NOTETAKER
+      if (chatMode === "notetaker_meetings") {
+        const history = buildNotetakerHistory(messages);
+        const userId = user?.user_id || user?.id || null;
+
+        const data = await sendNotetakerMeetingsMessage({
+          query: text,
+          limit: 8,
+          history,
+          userId,
+          requestContext: {
+            username: user?.username || null,
+            email: user?.email || null,
+            full_name: user?.full_name || user?.name || user?.username || null,
+          },
+        });
+
+        const aiText =
+          data?.assistant_response?.final_answer ||
+          data?.reply ||
+          data?.response ||
+          data?.answer ||
+          data?.content ||
+          "No se encontraron reuniones autorizadas para tu usuario.";
+
+        return {
+          content: aiText,
+          conversationId: currentConversationId || conversationId,
+          messageId: data.id || data.message_id || null,
+          sources: Array.isArray(data?.context_package) ? data.context_package : [],
         };
       }
 
