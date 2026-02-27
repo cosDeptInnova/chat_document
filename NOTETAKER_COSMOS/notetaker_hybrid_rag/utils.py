@@ -1,9 +1,15 @@
 # Aquí irá la lógica de procesamiento (usaremos el JSON en forrmato toon)
 
 import os
+import re
 from dotenv import load_dotenv
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from datetime import datetime
+
+
+def _normalize_identity(value):
+    cleaned = re.sub(r"\s+", " ", str(value or "").strip().lower())
+    return cleaned
 
 
 def _collect_participants(json_data):
@@ -34,6 +40,19 @@ def _collect_participants(json_data):
                     _add_name(item.get("display_name"))
 
     return sorted(out)
+
+
+def _collect_normalized_participants(participants):
+    normalized = set()
+    for raw in participants:
+        clean = _normalize_identity(raw)
+        if clean:
+            normalized.add(clean)
+        if isinstance(raw, str) and "@" in raw:
+            local = _normalize_identity(raw.split("@", 1)[0])
+            if local:
+                normalized.add(local)
+    return sorted(normalized)
 
 # Cargamos las variables de entorno para configuración
 load_dotenv()
@@ -78,6 +97,7 @@ def extract_chunks_and_metadata(json_data):
     if participants:
         global_meta["participants"] = participants
         global_meta["invited_participants"] = participants
+        global_meta["participants_normalized"] = _collect_normalized_participants(participants)
 
     # 3. Configuración del Chunker
     chunk_size = int(os.getenv("CHUNK_SIZE", 4000))
