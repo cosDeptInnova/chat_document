@@ -754,7 +754,10 @@ export default function NuevoChatMainPanel({
           content: aiText,
           conversationId: currentConversationId || conversationId,
           messageId: data.id || data.message_id || null,
-          sources: Array.isArray(data?.context_package) ? data.context_package : [],
+          sources:
+            (Array.isArray(data?.context_package) && data.context_package) ||
+            (Array.isArray(data?.sources) && data.sources) ||
+            [],
         };
       }
 
