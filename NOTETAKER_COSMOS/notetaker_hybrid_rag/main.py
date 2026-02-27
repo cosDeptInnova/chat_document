@@ -41,6 +41,7 @@ class QueryRequest(BaseModel):
     user_id: Optional[str] = Field(default=None)
     limit: int = Field(default=5, ge=1, le=30)
     history: List[Dict[str, Any]] = Field(default_factory=list)
+    request_context: Optional[Dict[str, Any]] = Field(default=None)
 
 
 def _resolve_jwt_config() -> Tuple[List[str], List[str]]:
@@ -112,13 +113,40 @@ def _normalize_identity(value: Optional[str]) -> str:
 
 def _authorized_participant_names(token: Dict[str, Any]) -> List[str]:
     names: set[str] = set()
-    for key in ("full_name", "name", "username", "preferred_username", "email"):
+    for key in ("full_name", "name", "username", "preferred_username", "email", "sub"):
         raw = token.get(key)
         if isinstance(raw, str) and raw.strip():
             names.add(_normalize_identity(raw))
             if key == "email" and "@" in raw:
                 names.add(_normalize_identity(raw.split("@", 1)[0]))
     return [n for n in names if n]
+
+
+
+def _merge_participant_filter(qdrant_filter: Dict[str, Any], allowed_names: List[str]) -> Dict[str, Any]:
+    """
+    Refuerza el filtro de Qdrant para recuperar únicamente chunks donde figure
+    el participante autenticado. Usa metadata normalizada para robustez.
+    """
+    merged = dict(qdrant_filter or {})
+    if not allowed_names:
+        return merged
+
+    must_any = list(merged.get("must_any") or [])
+    existing_pairs = {
+        (str(item.get("key")), str(item.get("match")))
+        for item in must_any
+        if isinstance(item, dict)
+    }
+
+    for name in allowed_names:
+        key_pair = ("participants_normalized", str(name))
+        if key_pair not in existing_pairs:
+            must_any.append({"key": "participants_normalized", "match": name})
+            existing_pairs.add(key_pair)
+
+    merged["must_any"] = must_any
+    return merged
 
 
 def _can_access_chunk(token: Dict[str, Any], token_names: List[str], payload: Dict[str, Any], graph_context: Dict[str, Any]) -> bool:
@@ -224,6 +252,12 @@ async def query_meetings(query_data: QueryRequest, token: Dict[str, Any] = Depen
         normalized_query = str(plan.get("normalized_query") or user_query).strip()
         qdrant_filter = plan.get("qdrant_filter") or {}
 
+        allowed_names = _authorized_participant_names(token)
+        if not allowed_names:
+            raise HTTPException(status_code=403, detail="Token sin identidad de participante para aplicar filtros de acceso.")
+
+        qdrant_filter = _merge_participant_filter(qdrant_filter, allowed_names)
+
         retrieval_hints = plan.get("retrieval_hints") or {}
         limit = int(retrieval_hints.get("limit") or query_data.limit)
         limit = max(1, min(30, limit))
@@ -253,7 +287,6 @@ async def query_meetings(query_data: QueryRequest, token: Dict[str, Any] = Depen
                 },
             }
 
-        token_names = _authorized_participant_names(token)
         context_package = []
         for hit in vector_results:
             chunk_id = hit.id
@@ -261,7 +294,7 @@ async def query_meetings(query_data: QueryRequest, token: Dict[str, Any] = Depen
             payload = hit.payload or {}
 
             graph_context = neo_client.get_chunk_context(chunk_id)
-            if not _can_access_chunk(token, token_names, payload, graph_context or {}):
+            if not _can_access_chunk(token, allowed_names, payload, graph_context or {}):
                 continue
 
             paquete = {
