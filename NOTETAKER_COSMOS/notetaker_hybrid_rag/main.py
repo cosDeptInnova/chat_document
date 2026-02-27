@@ -3,9 +3,11 @@
 import logging
 import os
 import re
+import json
 from typing import Any, Dict, List, Optional, Tuple
 
 import uvicorn
+import redis.asyncio as aioredis
 from classes.graph_db import GraphDB
 from classes.vector_db import VectorDB
 from dotenv import load_dotenv
@@ -20,6 +22,8 @@ load_dotenv()
 
 app = FastAPI(title="NoteTaker Hybrid RAG API")
 logger = logging.getLogger("notetaker_hybrid_rag")
+
+_redis_client: Optional[aioredis.Redis] = None
 
 # INICIALIZACIÓN DE BASES DE DATOS
 try:
@@ -37,7 +41,8 @@ except Exception as e:
 
 
 class QueryRequest(BaseModel):
-    query: str = Field(..., min_length=1)
+    query: Optional[str] = Field(default=None, min_length=1)
+    prompt: Optional[str] = Field(default=None, min_length=1)
     user_id: Optional[str] = Field(default=None)
     limit: int = Field(default=5, ge=1, le=30)
     history: List[Dict[str, Any]] = Field(default_factory=list)
@@ -69,16 +74,51 @@ def _resolve_jwt_config() -> Tuple[List[str], List[str]]:
     return secrets, algorithms
 
 
-def verify_token(request: Request) -> Dict[str, Any]:
+def _extract_raw_token(request: Request) -> Optional[str]:
     access_token = request.cookies.get("access_token")
-    token_str = None
-
     if access_token:
-        token_str = access_token.replace("Bearer ", "").strip()
-    else:
-        auth = request.headers.get("Authorization")
-        if auth and auth.lower().startswith("bearer "):
-            token_str = auth[7:].strip()
+        return access_token.replace("Bearer ", "").strip()
+
+    auth = request.headers.get("Authorization")
+    if auth and auth.lower().startswith("bearer "):
+        return auth[7:].strip()
+    return None
+
+
+def _get_redis_client() -> Optional[aioredis.Redis]:
+    global _redis_client
+    if _redis_client is not None:
+        return _redis_client
+
+    redis_host = os.getenv("REDIS_HOST", "localhost").strip()
+    redis_port = int(os.getenv("REDIS_PORT", "6379"))
+    redis_db = int(os.getenv("REDIS_SESSION_DB", "0"))
+    try:
+        _redis_client = aioredis.Redis(host=redis_host, port=redis_port, db=redis_db, decode_responses=True)
+        return _redis_client
+    except Exception as e:
+        logger.warning("No se pudo inicializar Redis para validación de sesión: %s", e)
+        return None
+
+
+async def _get_session_from_redis(user_id: str) -> Optional[Dict[str, Any]]:
+    client = _get_redis_client()
+    if client is None:
+        return None
+
+    raw = await client.get(f"session:{user_id}")
+    if not raw:
+        return None
+
+    try:
+        data = json.loads(raw)
+        return data if isinstance(data, dict) else None
+    except Exception:
+        return None
+
+
+async def verify_token(request: Request) -> Dict[str, Any]:
+    token_str = _extract_raw_token(request)
 
     if not token_str:
         raise HTTPException(status_code=403, detail="No autorizado: token ausente.")
@@ -99,6 +139,13 @@ def verify_token(request: Request) -> Dict[str, Any]:
             user_id = payload.get("user_id")
             if user_id is None:
                 raise HTTPException(status_code=403, detail="Token sin user_id.")
+            session_data = await _get_session_from_redis(str(user_id))
+            if session_data is None:
+                raise HTTPException(status_code=403, detail="Sesión expirada o no encontrada en Redis.")
+            session_token = str(session_data.get("token") or "").strip()
+            if not session_token or session_token != token_str:
+                raise HTTPException(status_code=403, detail="Sesión revocada o token no coincide con Redis.")
+            payload["_session"] = session_data
             return payload
         except JWTError:
             continue
@@ -113,6 +160,15 @@ def _normalize_identity(value: Optional[str]) -> str:
 
 def _authorized_participant_names(token: Dict[str, Any]) -> List[str]:
     names: set[str] = set()
+
+    session_data = token.get("_session") if isinstance(token.get("_session"), dict) else {}
+    for key in ("name", "full_name", "username", "email"):
+        raw = session_data.get(key) if isinstance(session_data, dict) else None
+        if isinstance(raw, str) and raw.strip():
+            names.add(_normalize_identity(raw))
+            if key == "email" and "@" in raw:
+                names.add(_normalize_identity(raw.split("@", 1)[0]))
+
     for key in ("full_name", "name", "username", "preferred_username", "email", "sub"):
         raw = token.get(key)
         if isinstance(raw, str) and raw.strip():
@@ -235,7 +291,7 @@ async def ingest_meeting(
 async def query_meetings(query_data: QueryRequest, token: Dict[str, Any] = Depends(verify_token)):
     """Consulta híbrida con reescritura de query y filtros para Qdrant + explicación final."""
     try:
-        user_query = query_data.query.strip()
+        user_query = str(query_data.query or query_data.prompt or "").strip()
         if not user_query:
             raise HTTPException(status_code=400, detail="Debes enviar una consulta no vacía")
 
