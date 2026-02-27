@@ -558,29 +558,6 @@ export default function NuevoChatMainPanel({
         };
       }
 
-      // 🗂️ MODO REUNIONES NOTETAKER
-      if (chatMode === "notetaker_meetings") {
-        const data = await sendNotetakerMeetingsMessage({
-          prompt: text,
-          limit: 8,
-          history: messages.slice(-8).map((m) => ({ role: m.role, content: m.content })),
-        });
-
-        const aiText =
-          data.reply ||
-          data.response ||
-          data.answer ||
-          data.content ||
-          "No se encontraron reuniones autorizadas para tu usuario.";
-
-        return {
-          content: aiText,
-          conversationId: currentConversationId || conversationId,
-          messageId: data.id || data.message_id || null,
-          sources: data.sources || [],
-        };
-      }
-
       // 🧠 MODO MODELO / 🌐 WEB: subida efímera
       const data = await uploadEphemeralFiles(files);
       console.log("Respuesta /api/modelo/uploadfile/:", data);
@@ -721,6 +698,30 @@ export default function NuevoChatMainPanel({
           searchSessionId:
             data.search_session_id || data.searchSessionId || nextSearchSessionId,
           messageId: data.id || data.message_id || null,
+        };
+      }
+
+      // 🗂️ MODO REUNIONES NOTETAKER
+      if (chatMode === "notetaker_meetings") {
+        const data = await sendNotetakerMeetingsMessage({
+          query: text,
+          limit: 8,
+          history: messages.slice(-8).map((m) => ({ role: m.role, content: m.content })),
+        });
+
+        const aiText =
+          data?.assistant_response?.final_answer ||
+          data?.reply ||
+          data?.response ||
+          data?.answer ||
+          data?.content ||
+          "No se encontraron reuniones autorizadas para tu usuario.";
+
+        return {
+          content: aiText,
+          conversationId: currentConversationId || conversationId,
+          messageId: data.id || data.message_id || null,
+          sources: Array.isArray(data?.context_package) ? data.context_package : [],
         };
       }
 

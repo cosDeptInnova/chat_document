@@ -27,6 +27,9 @@ const WEBSEARCH_API_BASE =
 const LEGALSEARCH_API_BASE =
   process.env.REACT_APP_LEGALSEARCH_API_BASE || "/api/legalsearch";
 
+const NOTETAKER_MEETINGS_API_BASE =
+  process.env.REACT_APP_NOTETAKER_MEETINGS_API_BASE || "/api/notetaker-meetings";
+
 // CSRF web_search (csrftoken_websearch)
 function getWebsearchCsrfToken() {
   return getCookieValue("csrftoken_websearch");
@@ -256,6 +259,39 @@ async function legalsearchFetch(
     if (csrf) {
       opts.headers["X-CSRFToken"] = csrf;
     }
+  }
+
+  const res = await fetch(url, opts);
+  if (!res.ok) {
+    const text = await res.text().catch(() => "");
+    throw new Error(`Error ${res.status} en ${url}: ${text}`);
+  }
+
+  const ct = res.headers.get("content-type") || "";
+  if (ct.includes("application/json")) {
+    return res.json();
+  }
+  return res.text();
+}
+
+async function notetakerMeetingsFetch(
+  path,
+  { method = "GET", headers = {}, body } = {},
+) {
+  const url = `${NOTETAKER_MEETINGS_API_BASE}${path}`;
+  const opts = {
+    method,
+    credentials: "include",
+    headers: {
+      ...headers,
+    },
+  };
+
+  if (body instanceof FormData) {
+    opts.body = body;
+  } else if (body !== undefined) {
+    opts.body = JSON.stringify(body);
+    opts.headers["Content-Type"] = "application/json";
   }
 
   const res = await fetch(url, opts);
@@ -956,14 +992,14 @@ export async function sendLegalSearchMessage({
 }
 
 export async function sendNotetakerMeetingsMessage({
-  prompt,
+  query,
   limit = 5,
   history = [],
 }) {
-  return apiFetch("/integrations/notetaker/meetings/query", {
+  return notetakerMeetingsFetch("/query", {
     method: "POST",
     body: {
-      prompt,
+      query,
       limit,
       history,
     },
