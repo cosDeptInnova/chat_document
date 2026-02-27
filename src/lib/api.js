@@ -993,15 +993,26 @@ export async function sendLegalSearchMessage({
 
 export async function sendNotetakerMeetingsMessage({
   query,
+  prompt = null,
   limit = 5,
   history = [],
+  userId = null,
+  requestContext = null,
 }) {
+  const normalizedQuery = String(query || prompt || "").trim();
+
   return notetakerMeetingsFetch("/query", {
     method: "POST",
     body: {
-      query,
+      // Compatibilidad con variantes del backend híbrido:
+      // - query (actual)
+      // - prompt (legacy)
+      query: normalizedQuery,
+      prompt: normalizedQuery,
       limit,
       history,
+      user_id: userId,
+      request_context: requestContext,
     },
   });
 }

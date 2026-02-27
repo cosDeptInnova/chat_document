@@ -118,6 +118,7 @@ export default function MainLayout({ user, setUser }) {
         initialMessage={initialMessage}
         chatId={searchParams.get("chatId")}
         chatMode={chatMode}
+        user={user}
       />
     );
   } else if (selectedOption === "casos") {
