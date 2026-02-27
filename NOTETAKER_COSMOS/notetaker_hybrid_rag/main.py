@@ -15,7 +15,7 @@ from dotenv import load_dotenv
 from fastapi import Body, Depends, FastAPI, HTTPException, Request, Response, status
 from jose import JWTError, jwt
 from hybrid_crew_orchestrator import HybridRAGCrewOrchestrator
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, Field, ValidationError, model_validator
 from utils import extract_chunks_and_metadata
 
 # Cargar variables de entorno
@@ -186,6 +186,7 @@ async def verify_token(request: Request) -> Dict[str, Any]:
                 raise HTTPException(status_code=403, detail="Token sin user_id/sub.")
             payload["user_id"] = str(user_id)
             session_data = await _get_session_from_redis(str(user_id))
+            payload["_raw_token"] = token_str
             if session_data is None:
                 if REDIS_SESSION_REQUIRED:
                     raise HTTPException(status_code=403, detail="Sesión expirada o no encontrada en Redis.")
@@ -198,6 +199,7 @@ async def verify_token(request: Request) -> Dict[str, Any]:
             if session_token and session_token != token_str:
                 raise HTTPException(status_code=403, detail="Sesión revocada o token no coincide con Redis.")
             payload["_session"] = session_data
+            payload["_session_check"] = "ok" if session_data else "jwt_only"
             return payload
         except JWTError:
             continue
@@ -374,10 +376,30 @@ async def ingest_meeting(
         raise HTTPException(status_code=500, detail=f"Error en el pipeline híbrido: {str(e)}")
 
 
+def _validation_error_to_text(exc: ValidationError) -> str:
+    errors = []
+    for issue in exc.errors():
+        loc = ".".join([str(piece) for piece in issue.get("loc", []) if piece != "__root__"])
+        msg = str(issue.get("msg", "dato inválido"))
+        errors.append(f"{loc or 'body'}: {msg}")
+    return "; ".join(errors)
+
+
 @app.post("/query")
-async def query_meetings(query_data: QueryRequest, token: Dict[str, Any] = Depends(verify_token)):
+async def query_meetings(
+    payload: Dict[str, Any] = Body(default_factory=dict),
+    token: Dict[str, Any] = Depends(verify_token),
+):
     """Consulta híbrida con reescritura de query y filtros para Qdrant + explicación final."""
     try:
+        try:
+            query_data = QueryRequest.model_validate(payload or {})
+        except ValidationError as exc:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Payload inválido para /query. {_validation_error_to_text(exc)}",
+            ) from exc
+
         user_query = str(query_data.query or query_data.prompt or query_data.message or "").strip()
         if not user_query:
             raise HTTPException(status_code=400, detail="Debes enviar una consulta no vacía")
@@ -406,6 +428,11 @@ async def query_meetings(query_data: QueryRequest, token: Dict[str, Any] = Depen
         limit = max(1, min(30, limit))
 
         logger.info("Buscando respuesta para user=%s query='%s'", token_user_id, normalized_query)
+        if token.get("_session_check") == "jwt_only":
+            logger.warning(
+                "query_meetings: consulta en modo JWT-only para user_id=%s (sin sesión Redis verificable).",
+                token_user_id,
+            )
 
         vector_results = qdrant_client.search(query_text=normalized_query, limit=limit, qdrant_filter=qdrant_filter)
 
@@ -487,6 +514,7 @@ async def query_meetings(query_data: QueryRequest, token: Dict[str, Any] = Depen
             "query_received": user_query,
             "normalized_query": normalized_query,
             "results_found": len(context_package),
+            "auth_mode": token.get("_session_check", "unknown"),
             "query_plan": plan,
             "context_package": context_package,
             "assistant_response": assistant_response,
