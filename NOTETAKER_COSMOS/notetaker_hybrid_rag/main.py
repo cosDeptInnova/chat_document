@@ -1,8 +1,9 @@
 # Punto de entrada FastAPI para ingestión y consulta híbrida RAG + GraphRAG.
 
+import logging
 import os
 import re
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 import uvicorn
 from classes.graph_db import GraphDB
@@ -18,6 +19,7 @@ from utils import extract_chunks_and_metadata
 load_dotenv()
 
 app = FastAPI(title="NoteTaker Hybrid RAG API")
+logger = logging.getLogger("notetaker_hybrid_rag")
 
 # INICIALIZACIÓN DE BASES DE DATOS
 try:
@@ -41,6 +43,31 @@ class QueryRequest(BaseModel):
     history: List[Dict[str, Any]] = Field(default_factory=list)
 
 
+def _resolve_jwt_config() -> Tuple[List[str], List[str]]:
+    """
+    Obtiene claves/algoritmos JWT con tolerancia a distintos nombres de variables.
+    Permite convivir con despliegues legacy (SECRET_KEY) y SSO (COSMOS_SECRET_KEY).
+    """
+    secret_candidates = [
+        os.getenv("SECRET_KEY"),
+        os.getenv("COSMOS_SECRET_KEY"),
+        os.getenv("JWT_SECRET_KEY"),
+        os.getenv("AUTH_SECRET_KEY"),
+    ]
+    secrets = [s.strip() for s in secret_candidates if isinstance(s, str) and s.strip()]
+
+    algorithm_candidates = [
+        os.getenv("ALGORITHM"),
+        os.getenv("COSMOS_JWT_ALG"),
+        os.getenv("JWT_ALGORITHM"),
+    ]
+    algorithms = [a.strip() for a in algorithm_candidates if isinstance(a, str) and a.strip()]
+    if not algorithms:
+        algorithms = ["HS256"]
+
+    return secrets, algorithms
+
+
 def verify_token(request: Request) -> Dict[str, Any]:
     access_token = request.cookies.get("access_token")
     token_str = None
@@ -55,19 +82,27 @@ def verify_token(request: Request) -> Dict[str, Any]:
     if not token_str:
         raise HTTPException(status_code=403, detail="No autorizado: token ausente.")
 
-    secret_key = os.getenv("SECRET_KEY", "")
-    algorithm = os.getenv("ALGORITHM", "HS256")
-    if not secret_key:
-        raise HTTPException(status_code=500, detail="Configuración inválida: SECRET_KEY ausente.")
+    secrets, algorithms = _resolve_jwt_config()
+    if not secrets:
+        raise HTTPException(
+            status_code=500,
+            detail=(
+                "Configuración inválida: no hay clave JWT. "
+                "Define SECRET_KEY, COSMOS_SECRET_KEY o JWT_SECRET_KEY."
+            ),
+        )
 
-    try:
-        payload = jwt.decode(token_str, secret_key, algorithms=[algorithm])
-        user_id = payload.get("user_id")
-        if user_id is None:
-            raise HTTPException(status_code=403, detail="Token sin user_id.")
-        return payload
-    except JWTError:
-        raise HTTPException(status_code=403, detail="Token no válido o expirado.")
+    for secret in secrets:
+        try:
+            payload = jwt.decode(token_str, secret, algorithms=algorithms)
+            user_id = payload.get("user_id")
+            if user_id is None:
+                raise HTTPException(status_code=403, detail="Token sin user_id.")
+            return payload
+        except JWTError:
+            continue
+
+    raise HTTPException(status_code=403, detail="Token no válido o expirado.")
 
 
 def _normalize_identity(value: Optional[str]) -> str:
@@ -86,7 +121,14 @@ def _authorized_participant_names(token: Dict[str, Any]) -> List[str]:
     return [n for n in names if n]
 
 
-def _can_access_chunk(token_names: List[str], payload: Dict[str, Any], graph_context: Dict[str, Any]) -> bool:
+def _can_access_chunk(token: Dict[str, Any], token_names: List[str], payload: Dict[str, Any], graph_context: Dict[str, Any]) -> bool:
+    # 1) Control principal por owner del documento/reunión (más robusto para producción)
+    token_user_id = str(token.get("user_id") or "").strip()
+    payload_user_id = str(payload.get("user_id") or "").strip()
+    if token_user_id and payload_user_id and token_user_id == payload_user_id:
+        return True
+
+    # 2) Filtro por identidad de participante/invitado para reuniones compartidas
     if not token_names:
         return False
 
@@ -186,7 +228,7 @@ async def query_meetings(query_data: QueryRequest, token: Dict[str, Any] = Depen
         limit = int(retrieval_hints.get("limit") or query_data.limit)
         limit = max(1, min(30, limit))
 
-        print(f"Buscando respuesta para user={token_user_id}: '{normalized_query}'")
+        logger.info("Buscando respuesta para user=%s query='%s'", token_user_id, normalized_query)
 
         vector_results = qdrant_client.search(query_text=normalized_query, limit=limit, qdrant_filter=qdrant_filter)
 
@@ -219,7 +261,7 @@ async def query_meetings(query_data: QueryRequest, token: Dict[str, Any] = Depen
             payload = hit.payload or {}
 
             graph_context = neo_client.get_chunk_context(chunk_id)
-            if not _can_access_chunk(token_names, payload, graph_context or {}):
+            if not _can_access_chunk(token, token_names, payload, graph_context or {}):
                 continue
 
             paquete = {
